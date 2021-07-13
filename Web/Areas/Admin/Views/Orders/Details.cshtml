@@ -1,0 +1,104 @@
+﻿@model ViewModel.ViewModels.OrderDetailsVm
+<head>
+    <style>
+        
+
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row" style="background-color:red;height:80px;margin-bottom:50px">
+            <div class=clearfix>
+                <div class="card col-2">
+                    Mã đơn Hàng
+                    @Model.IdOrder
+                </div>
+                <div class="float-end card col-2">
+                    <button class="btn btn-primary clickme222" data-IdOrder="@Model.IdOrder", data-IdProduct="@Model.IdProduct" >
+                        Update
+                    </button>
+                </div>
+
+            </div>
+
+
+        </div>
+        <div class="row ">
+            <div class="col-8 col bg-primary" style="height:500px">
+                <h4>Order Infomation</h4>
+                <hr />
+                <dl class="row">
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.IdOrder)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.IdOrder)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.IdProduct)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.IdProduct)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Quality)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Quality)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Price)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Price)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.StatusDetails)
+                    </dt>
+                    <dd class="col-sm-5">
+                        <div class="form-group">
+                            <select id="a" name="select2" asp-items="@ViewBag.Status" class="form-control">
+                                <option>@Html.DisplayFor(model => model.StatusDetails)</option>
+                            </select>
+                        </div>
+                    </dd>
+                </dl>
+            </div>
+            <div class="col-4 col bg-danger" style=" height:500px">
+            </div>
+
+        </div>
+    </div>
+</body>
+@section Scripts{ 
+<script>
+    $(document).ready(function ()
+    {
+        $(".clickme222").click(function ()
+        {
+            var IdOrder = $(this).attr("data-IdOrder");
+            var IdProduct = $(this).attr("data-IdProduct");
+            var status2 = $("#a option:selected").text();
+            $.ajax(
+                {
+                    type: "POST",
+                    url: '/Orders/Change',
+                    data: {
+                        IdOrder: IdOrder,
+                        IdProduct: IdProduct,
+                        x: status2
+                    },
+                    success: function () {
+                        window.location.href = '@Url.Action("Details","Orders")' + '?IdOrder' + IdOrder, +"?IdProduct" + IdProduct;
+                    }
+                });
+
+        });
+    });
+
+
+
+
+</script>
+}

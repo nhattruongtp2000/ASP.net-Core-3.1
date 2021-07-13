@@ -1,0 +1,61 @@
+﻿@model ViewModel.ViewModels.ProductCreateVm
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>ProductCreateVm</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" enctype="multipart/form-data" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ProductName" class="control-label"></label>
+                <input asp-for="ProductName" class="form-control" />
+                <span asp-validation-for="ProductName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdCategory" class="control-label"></label>
+                <input asp-for="IdCategory" class="form-control" />
+                <span asp-validation-for="IdCategory" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateAccept" class="control-label"></label>
+                <input asp-for="DateAccept" class="form-control" />
+                <span asp-validation-for="DateAccept" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="UseVoucher" /> @Html.DisplayNameFor(model => model.UseVoucher)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdBrand" class="control-label"></label>
+                <select asp-for="IdBrand" class="form-control" asp-items="@ViewBag.Brands"> 
+                    <option>Select Brands</option>
+                </select>
+                <span asp-validation-for="IdBrand" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="PhotoReview" class="control-label"></label>
+                <input type="file" name="PhotoReview" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

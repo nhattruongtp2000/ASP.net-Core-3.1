@@ -1,0 +1,54 @@
+﻿@model IEnumerable<ViewModel.ViewModels.QuantityProducts>
+
+@{
+    ViewData["Title"] = "AnalystQuantityProduct";
+}
+
+<h1>TOP </h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+@{ 
+    int i = 1;
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdProduct)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalQuantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IFromFile)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                TOP @i
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdProduct)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalQuantity)
+            </td>
+            <td>
+                <img href="#" src="~/@item.IFromFile" class="rounded-circle" height="40" width="40"/>
+
+
+            </td>
+        </tr>
+        i++;
+}
+    </tbody>
+</table>

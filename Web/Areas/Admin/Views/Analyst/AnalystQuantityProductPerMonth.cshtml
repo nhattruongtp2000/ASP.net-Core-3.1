@@ -1,0 +1,166 @@
+﻿@model IEnumerable<ViewModel.ViewModels.QuantityProducts>
+
+<head>
+    <!-- Step 1 - Include the fusioncharts core library -->
+    <script type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/fusioncharts.js"></script>
+    <!-- Step 2 - Include the fusion theme -->
+    <script type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.fusion.js"></script>
+
+
+</head>
+<body>
+    <form class="form-inline" asp-action="AnalystQuantityProductPerMonth" method="post">
+        <div name="month" class="form-group">
+            <label>Month</label>
+            <select name="month" class=" col-4 me-2">
+                <option selected>--</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+                <option>7</option>
+                <option>8</option>
+                <option>9</option>
+                <option>10</option>
+                <option>11</option>
+                <option>12</option>
+            </select>
+
+            <label>Year</label>
+            <select name="year" class="col-4 me-2">
+                <option selected>--</option>
+                <option>2020</option>
+                <option>2021</option>
+                <option>2022</option>
+            </select>
+
+            <button class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+
+    <div id="test"></div>
+    @if (Model != null)
+    {
+        <h2>Thống kê sản phẩm bán chạy tháng @ViewBag.month năm @ViewBag.year</h2>
+
+        <div id="chart-container"></div>
+        @*<table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.IdProduct)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.TotalQuantity)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    TOP @i
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.IdProduct)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TotalQuantity)
+                                </td>
+                            </tr>
+                            i++;
+                        }
+                    </tbody>
+                </table>
+            *@
+    }
+
+    </body>
+
+@section Scripts{
+    <script>
+        var listmonth = '@ViewBag.list';
+        var obj = JSON.parse(listmonth);
+        const categories = [
+            {
+                "category": [
+                    { "label": "1" },
+                    { "label": "2" },
+                    { "label": "3" },
+                    { "label": "4" },
+                    { "label": "5" },
+                    { "label": "6" },
+                    { "label": "7" },
+                    { "label": "8" },
+                    { "label": "9" },
+                    { "label": "10" },
+
+                ]
+            }
+        ];
+        // Construct the dataset comprising multiple series
+        const dataset = [
+            {
+                "seriesName": "Profit",
+                "renderAs": "area",
+                "data": [
+                    { "value": obj[0] },
+                    { "value": obj[1] },
+                    { "value": obj[2] },
+                    { "value": obj[3] },
+                    { "value": obj[4] },
+                    { "value": obj[5] },
+                    { "value": obj[6] },
+                    { "value": obj[7] },
+                    { "value": obj[8] },
+                    { "value": obj[9] },
+                    { "value": obj[10] },
+                ]
+            }
+        ];
+
+        //STEP 3 - Chart Configurations
+        var chartConfigurations = {
+            type: 'mscombi2d',
+            renderAt: 'chart-container',
+            width: '1000',
+            height: '600',
+            dataFormat: 'json',
+            dataSource: {
+                "chart": {
+                    "caption": "Truong Company",
+                    "subCaption": "Quantity Product analysis per month",
+                    "xAxisname": "Top",
+                    "yAxisName": "Total Quantity",
+                    "numberPrefix": "",
+                    "divlineColor": "#999999",
+                    "divLineIsDashed": "1",
+                    "divLineDashLen": "1",
+                    "divLineGapLen": "1",
+                    "toolTipColor": "#ffffff",
+                    "toolTipBorderThickness": "0",
+                    "toolTipBgColor": "#000000",
+                    "toolTipBgAlpha": "80",
+                    "toolTipBorderRadius": "2",
+                    "toolTipPadding": "5",
+                    "theme": "fusion"
+                },
+                "categories": categories,
+                "dataset": dataset
+            }
+        }
+        FusionCharts.ready(function () {
+            var fusioncharts = new FusionCharts(chartConfigurations);
+            fusioncharts.render();
+        });
+
+        document.getElementById("test").innerHTML = listmonth[0];
+    </script>
+}
