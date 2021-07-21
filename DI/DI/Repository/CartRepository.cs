@@ -1,17 +1,22 @@
-﻿using Data.Data;
+﻿using BraintreeHttp;
+using Data.Data;
 using Data.DB;
 using Data.Utilities.Constants;
 using DI.DI.Interace;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using PayPal.Core;
+using PayPal.v1.Payments;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ViewModel.ViewModels;
+
 
 namespace DI.DI.Repository
 {
@@ -21,15 +26,19 @@ namespace DI.DI.Repository
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
-        public CartRepository(Iden2Context iden2Context, IHttpContextAccessor httpContextAccessor, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
+        private readonly string _clientId;
+        private readonly string _secretKey;
+        public CartRepository(Iden2Context iden2Context, IHttpContextAccessor httpContextAccessor, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager,IConfiguration config)
         {
             _iden2Context = iden2Context;
             _httpContextAccessor = httpContextAccessor;
             _signInManager = signInManager;
             _userManager = userManager;
+            _clientId = "AV-BEqQ4nyfYnUsK6_tkEim9gvX_wWaldPQETeF8DqUg6StRBlikt07ap6efAfcUd477BY77DmZ-ZNMN";
+            _secretKey = /*config["PaypalSettings:SecretKey"];         */  "ENt8I6wQejmZJpmoe10v1Ah-q8G16mBsCjpVcgQsvIHbhLmGDXiC9K-hDJFFqQbVhi9m427R3QUNqI27";
         }
 
-
+        public double TyGiaUSD = 23300;//store in Database
         public void AddtoCart(int IdProduct)
         {
             var x = _iden2Context.Products.Where(x => x.IdProduct == IdProduct).FirstOrDefault();
@@ -150,13 +159,14 @@ namespace DI.DI.Repository
                 };
                 _iden2Context.OrderDetails.Add(orderdetails);
             }
-            var a = new Order()
+            var a = new Data.Data.Order()
             {
                 IdOrder= IdOrder,
                 IdUser = Id,
                 Status = Data.Enums.Status.Process,
                 OrderDay = DateTime.Now,
-                TotalPice = total
+                TotalPice = total,
+                PaymentType= "Direct Payment"
             };
             if (a.TotalPice >= 1000)
             {
@@ -198,6 +208,147 @@ namespace DI.DI.Repository
                 PhotoReview = x.ptt.PhotoReview
             }).ToListAsync();
             return checkout;
+        }
+
+        public async Task<string> PayPal(double total)
+            {
+            var environment = new SandboxEnvironment(_clientId, _secretKey);
+            var client = new PayPalHttpClient(environment);
+            var Carts = GetCartItems();
+            total = Math.Round(total/TyGiaUSD, 2);
+
+            var itemList = new ItemList()
+            {
+                Items = new List<Item>()
+            };
+
+            foreach(var item in Carts)
+            {
+                itemList.Items.Add(new Item() 
+                {
+                Name=item.Product.ProductName,
+                Currency="USD",
+                Price=Math.Round(item.Product.Price/TyGiaUSD,2).ToString(),
+                Quantity=item.Quantity.ToString(),
+                Sku="sku",
+                Tax="0"               
+                });
+            }
+
+            //payment
+
+            Random generator = new Random();
+            string paypalOrderId = generator.Next(0, 1000000).ToString("D6");
+            var payment = new Payment()
+            {
+                Intent = "sale",
+
+                Transactions = new List<Transaction>()
+                {
+                    new Transaction()
+                    {
+                        Amount=new Amount()
+                        {
+                            Total=total.ToString(),
+                            Currency="USD",
+                            Details=new AmountDetails
+                            {
+                                Tax="0",
+                                Shipping="0",
+                                Subtotal=total.ToString()
+                            }
+                        },
+                        ItemList=itemList,
+                        Description="descrip",
+                        InvoiceNumber=paypalOrderId.ToString()
+                    }
+                },
+                RedirectUrls = new RedirectUrls()
+                {
+                    CancelUrl = "https://localhost:5002/Cart/CheckoutFail",
+                    ReturnUrl = "https://localhost:5002/Cart/CheckoutSuccess"
+                }               ,
+                Payer = new Payer()
+                {
+                    PaymentMethod = "paypal"
+                }
+            };
+
+            PaymentCreateRequest request = new PaymentCreateRequest();
+            request.RequestBody(payment);
+
+            try
+            {
+              var response = await client.Execute(request);
+                var statusCode = response.StatusCode;
+                Payment result = response.Result<Payment>();
+
+                var links = result.Links.GetEnumerator();
+                string paypalRedirectUrl = null;
+                while (links.MoveNext())
+                {
+                    LinkDescriptionObject lnk = links.Current;
+                    if (lnk.Rel.ToLower().Trim().Equals("approval_url"))
+                    {
+                        //saving the payapalredirect URL to which user will be redirected for payment  
+                        paypalRedirectUrl = lnk.Href;
+                    }
+                }
+                return paypalRedirectUrl;
+            }
+            catch (HttpException httpException)
+            {
+                var statusCode = httpException.StatusCode;
+                var debugId = httpException.Headers.GetValues("PayPal-Debug-Id").FirstOrDefault();
+
+                //Process when Checkout with Paypal fails
+                return "/Cart/CheckoutFail";
+
+            }
+        }
+
+        public async Task<string> CheckoutSuccess(decimal total)
+        {
+            Random generator = new Random();
+            string IdOrder = generator.Next(0, 1000000).ToString("D6");
+
+
+            var user = await _userManager.GetUserAsync(_httpContextAccessor.HttpContext.User);
+            string Id = user.Id;
+            var freeProduct = await _iden2Context.Products.Where(x => x.IsFree == true).FirstOrDefaultAsync();
+
+            var b = GetCartItems();
+            foreach (var item in b)
+            {
+                var orderdetails = new OrderDetails()
+                {
+                    IdOrder = IdOrder,
+                    IdProduct = item.Product.IdProduct,
+                    StatusDetails = Data.Enums.Status.Process,
+                    Price = item.Product.Price * item.Quantity,
+                    Quality = item.Quantity
+                };
+                _iden2Context.OrderDetails.Add(orderdetails);
+            }
+            var a = new Data.Data.Order()
+            {
+                IdOrder = IdOrder,
+                IdUser = Id,
+                Status = Data.Enums.Status.Process,
+                OrderDay = DateTime.Now,
+                TotalPice = total,
+                PaymentType = "PayPal Payment"
+            };
+
+            _iden2Context.Orders.Add(a);
+            ClearCart();
+            await _iden2Context.SaveChangesAsync();
+            return IdOrder;
+        }
+
+        public Task<string> CheckoutFail()
+        {
+            throw new NotImplementedException();
         }
     }
 }

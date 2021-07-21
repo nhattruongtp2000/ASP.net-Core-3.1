@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ViewModel.ViewModels;
+using X.PagedList;
 
 namespace DI.DI.Repository
 {
@@ -43,11 +44,14 @@ namespace DI.DI.Repository
 
         
 
-        public async Task<List<OrdersVm>> GetAll()
+        public async Task<IPagedList<OrdersVm>> GetAll(int? page)
         {
             var orders = from p in _iden2Context.Orders
                          join pt in _iden2Context.OrderDetails on p.IdOrder equals pt.IdOrder
                          select new { p, pt };
+
+            var pageNumber = page ?? 1;
+            int pageSize = 10;
 
             var c =await orders.Select(x => new OrdersVm() 
             { 
@@ -57,7 +61,7 @@ namespace DI.DI.Repository
             IdUser=x.p.IdUser,
             OrderDay=x.p.OrderDay,
             TotalPice=x.p.TotalPice
-            }).ToListAsync();
+            }).ToPagedListAsync(pageNumber,pageSize);
             return c;
         }
 

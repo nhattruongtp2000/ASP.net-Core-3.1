@@ -26,6 +26,12 @@ namespace DI.DI.Interace
 
         Task<List<OrderDetailsVm>> Checkout(string IdUser);
 
+        Task<string> PayPal(double total);
+
+        Task<string> CheckoutSuccess(decimal total);
+
+        Task<string> CheckoutFail();
+
         
     }
 }

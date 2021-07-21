@@ -27,14 +27,14 @@ namespace Web.Controllers
             return View();
         }
 
-        public async Task<IActionResult> GetAllProduct(string key)
+        public async Task<IActionResult> GetAllProduct(string key,int? page)
         {
 
-            var c = await _iproductRepository.GetAll();
+            var c = await _iproductRepository.GetAll2(page);
 
             if (key != null)
             {
-                 c = await _iproductRepository.Search(key);
+                 c = await _iproductRepository.Search(key,page);
             }
             return View(c);
         }

@@ -11,6 +11,7 @@ using Data.Data;
 using Microsoft.AspNetCore.Http;
 using ViewModel;
 using Microsoft.AspNetCore.Identity;
+using X.PagedList;
 
 namespace DI.DI.Repository
 {
@@ -71,7 +72,7 @@ namespace DI.DI.Repository
         public async Task<List<ProductVm>> GetAll()
         {
             var products = _iden2Context.Products;
-        
+       
 
             var a =await products.Select(x => new ProductVm()
             {
@@ -85,6 +86,28 @@ namespace DI.DI.Repository
                 IsFree=x.IsFree,
                 Price=x.Price
             }).ToListAsync();
+            return a;
+        }
+
+        public async Task<IPagedList<ProductVm>> GetAll2(int? page)
+        {
+            var products = _iden2Context.Products;
+
+            var pageNumber = page ?? 1;
+            int pageSize=3;
+
+            var a = await products.Select(x => new ProductVm()
+            {
+                IdProduct = x.IdProduct,
+                DateAccept = x.DateAccept,
+                IdBrand = x.IdBrand,
+                ProductName = x.ProductName,
+                UseVoucher = x.UseVoucher,
+                PhotoReview = x.PhotoReview,
+                IdCategory = x.IdCategory,
+                IsFree = x.IsFree,
+                Price = x.Price
+            }).ToPagedListAsync(pageNumber, pageSize);
             return a;
         }
 
@@ -141,11 +164,13 @@ namespace DI.DI.Repository
             return a;
         }
 
-        public async Task<List<ProductVm>> Search(string key)
+        public async Task<IPagedList<ProductVm>> Search(string key,int? page)
         {
             var products =  _iden2Context.Products.Where(x => x.ProductName.Contains(key));
+            var pageNumber = page ?? 1;
+            int pageSize = 10;
 
-            var a=await products.Select(x=> new ProductVm()
+            var a =await products.Select(x=> new ProductVm()
             {
                 IdProduct = x.IdProduct,
                 DateAccept = x.DateAccept,
@@ -155,7 +180,7 @@ namespace DI.DI.Repository
                 Price=x.Price,
                 IdCategory=x.IdCategory,
                 PhotoReview=x.PhotoReview
-            }).ToListAsync();
+            }).ToPagedListAsync(pageNumber,pageSize);
 
             return a;
         }

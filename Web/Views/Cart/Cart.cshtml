@@ -93,6 +93,12 @@
         <td>
             <button data-total="@total" class="purchase btn btn-success">Gửi đơn hàng</button>
         </td>
+        <td>
+            <div>
+                <a data-total="@total"  class="paypal btn btn-primary">PayPal</a>
+            </div>
+
+        </td>
     </tr>
     <tr>
         <td>
@@ -140,8 +146,28 @@
                             window.location.href = '/Cart/Success'
                         }
                     });
+                });               
+            });
+
+            $(document).ready(function ()
+            {
+                $(".paypal").click(function (event)
+                {
+                    event.preventDefault();
+                    var Total = $(this).attr("data-total");
+                    $.ajax({
+                        type: "POST",
+                        url: '/Cart/PayPal',
+                        data: {
+                            Total:Total,
+                        },
+                        success: function (result) {
+                            window.location.href = result.redirectToUrl;
+                        }
+                    });
                 });
             });
+
         </script>
 
     }

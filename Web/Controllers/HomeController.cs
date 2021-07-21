@@ -26,7 +26,7 @@ namespace Web.Controllers
         }
 
 
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> Indexx()
         {
             var x = new HomeVm()

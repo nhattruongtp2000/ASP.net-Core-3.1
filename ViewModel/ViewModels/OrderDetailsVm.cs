@@ -14,7 +14,7 @@ namespace ViewModel.ViewModels
 
         public int Quality { get; set; }
 
-        public int Price { get; set; }
+        public decimal Price { get; set; }
 
         public string PhotoReview { get; set; }
 

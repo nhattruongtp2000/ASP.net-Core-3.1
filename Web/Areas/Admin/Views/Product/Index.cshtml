@@ -1,5 +1,6 @@
 ﻿@model IEnumerable<ViewModel.ViewModels.ProductVm>
-
+@using X.PagedList.Mvc.Core
+@using X.PagedList
 
 @if (ViewBag.Success != null)
 {
@@ -63,7 +64,7 @@
     </thead>
     <tbody>
         @foreach (var item in Model)
-        {            
+        {
 
             <tr>
                 <td>
@@ -91,7 +92,7 @@
                     <img src="~/@item.PhotoReview" class="rounded-circle" height="40" width="40" />
                 </td>
                 <td>
-                    @Html.CheckBoxFor(modelItem => item.IsFree,new{ disabled="disabled" })
+                    @Html.CheckBoxFor(modelItem => item.IsFree, new { disabled = "disabled" })
                 </td>
                 <td>
                     <a href="/Admin/Product/Edit/?IdProduct=@item.IdProduct">Edit</a>|
@@ -99,14 +100,23 @@
                     <a href="/Admin/Product/Delete/?IdProduct=@item.IdProduct">Delete</a>|
                     <a href="/Admin/Product/AddImages/?IdProduct=@item.IdProduct">AddImages</a>|
                     @*@Html.ActionLink("Edit", "Edit", new { IdProduct = item.IdProduct }) |
-        @Html.ActionLink("Details", "Details", new { IdProduct = item.IdProduct }) |
-        @Html.ActionLink("Delete", "Delete", new { IdProduct = item.IdProduct })
-        @Html.ActionLink("AddImages", "AddImages", new { IdProduct = item.IdProduct })*@
+                        @Html.ActionLink("Details", "Details", new { IdProduct = item.IdProduct }) |
+                        @Html.ActionLink("Delete", "Delete", new { IdProduct = item.IdProduct })
+                        @Html.ActionLink("AddImages", "AddImages", new { IdProduct = item.IdProduct })*@
                 </td>
             </tr>
         }
+
+
     </tbody>
 </table>
+@Html.PagedListPager((IPagedList)Model, page => Url.Action("Index", new { page = page }),
+    new X.PagedList.Mvc.Common.PagedListRenderOptionsBase
+    {
+        LiElementClasses = new string[] { "page-item" },
+        PageClasses = new string[] { "page-link" }
+
+    })
 
 
 

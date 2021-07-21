@@ -1,4 +1,5 @@
 ﻿using DI.DI.Interace;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -53,6 +54,7 @@ namespace Web.Controllers
             return View(_cartRepository.GetCartItems());
         }
 
+        [Authorize]
         public async Task<IActionResult> Purchase(int Total)
         {
            string a= await _cartRepository.Purchase(Total);
@@ -72,6 +74,25 @@ namespace Web.Controllers
             return View();
         }
        
+        [Authorize]
+        public async Task<IActionResult> PayPal(double Total)
+        {
+            TempData["test"] = Total.ToString();
+            var a = await _cartRepository.PayPal(Total);
+            return Json(new { redirectToUrl = a });
+        }
 
+        public  IActionResult CheckoutFail()
+        {         
+            return View();
+        }
+
+        public async Task<IActionResult> CheckoutSuccess()
+        {
+            var a = TempData["test"].ToString();
+            decimal b = decimal.Parse(a);
+            var paypal = await _cartRepository.CheckoutSuccess(b);
+            return View();
+        }
     }
 }

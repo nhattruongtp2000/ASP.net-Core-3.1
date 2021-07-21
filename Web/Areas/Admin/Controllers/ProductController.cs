@@ -24,7 +24,7 @@ namespace Web.Areas.Admin.Controllers
         }
 
         
-        public async Task<IActionResult> Index(string key)
+        public async Task<IActionResult> Index(string key,int? page)
         {
             if (TempData["Success"] != null)
             {
@@ -43,8 +43,8 @@ namespace Web.Areas.Admin.Controllers
 
 
 
-            var prSearch = await _IproductRepository.Search(key);
-            var products = await _IproductRepository.GetAll();
+            var prSearch = await _IproductRepository.Search(key,page);
+            var products = await _IproductRepository.GetAll2(page);
             if (prSearch.Count > 0)
             {
                 return View(prSearch);

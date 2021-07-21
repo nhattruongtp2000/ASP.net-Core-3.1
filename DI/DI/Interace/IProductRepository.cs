@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using ViewModel;
+using X.PagedList;
 
 namespace DI.DI.Interace
 {
@@ -16,7 +17,9 @@ namespace DI.DI.Interace
 
         Task<List<ProductVm>> GetAll ();
 
-        Task<List<ProductVm>> Search(string key);
+        Task<IPagedList<ProductVm>> GetAll2(int? page);
+
+        Task<IPagedList<ProductVm>> Search(string key, int? page);
 
         Task<ProductVm> GetProduct(int IdProduct);
 

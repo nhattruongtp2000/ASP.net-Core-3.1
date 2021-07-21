@@ -17,9 +17,9 @@ namespace Web.Areas.Admin.Controllers
         {
             _IorderRepository = iorderRepository;
         }
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page)
         {
-            var c = await _IorderRepository.GetAll();
+            var c = await _IorderRepository.GetAll(page);
             return View(c);
         }
 

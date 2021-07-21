@@ -107,7 +107,7 @@ namespace Web
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Accounts}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Indexx}/{id?}");
 
                 endpoints.MapAreaControllerRoute(
                  name: "Admin",
