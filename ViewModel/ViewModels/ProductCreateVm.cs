@@ -22,6 +22,10 @@ namespace ViewModel.ViewModels
 
         public int IdBrand { get; set; }
 
+        public string Content { get; set; }
+
+        public string Description { get; set; }
+
         public IFormFile PhotoReview { get; set; }
     }
 }

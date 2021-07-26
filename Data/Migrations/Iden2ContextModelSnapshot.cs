@@ -280,8 +280,14 @@ namespace Data.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("DateAccept")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("IdBrand")
                         .HasColumnType("int");
@@ -336,6 +342,15 @@ namespace Data.Migrations
 
                     b.Property<string>("FromFile")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("IdBrand")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdCategory")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdProduct")
+                        .HasColumnType("int");
 
                     b.Property<string>("SlideName")
                         .HasColumnType("nvarchar(max)");

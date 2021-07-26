@@ -1,5 +1,4 @@
 ﻿
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,115 +29,133 @@
     <link rel="stylesheet" href="/css/responsive.css">
 </head>
 <body>
-    <div class="header-area">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="user-menu">
-                        <ul>
-                            <li><a href="@Url.ActionLink("GetUser","Accounts")"><i class="fa fa-user"></i> My Account</a></li>
-                            <li><a href="#"><i class="fa fa-heart"></i> Wishlist</a></li>
-                            <li><a href="cart.html"><i class="fa fa-user"></i> My Cart</a></li>
-                            <li><a href="@Url.ActionLink("Checkout","Cart")"><i class="fa fa-user"></i> Checkout</a></li>
-                            <li><a href="#"><i class="fa fa-user"></i> Login</a></li>
-                        </ul>
+    <div class="area">
+        <div class="header-area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="user-menu">
+                            <ul>
+                                <li><a href="#"><i class="fa fa-heart"></i> Wishlist</a></li>
+                                <li><a href="cart.html"><i class="fa fa-user"></i> My Cart</a></li>
+                                <li><a href="@Url.ActionLink("Checkout","Cart")"><i class="fa fa-user"></i> Checkout</a></li>
+                                @if (!User.Identity.IsAuthenticated)
+                                {
+                                    <li><a href="/Accounts/Index"><i class="fa fa-user"></i> Login</a></li>
+                                }
+                            </ul>
+                        </div>
                     </div>
+
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <div class="col-md-4">
+                            <div class="header-right">
+                                <ul class="list-unstyled list-inline">
+                                    <li><a href="@Url.ActionLink("GetUser", "Accounts")"><i class="fa fa-user"></i> My Account</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    }
                 </div>
+            </div>
+        </div> <!-- End header area -->
 
-                <div class="col-md-4">
-                    <div class="header-right">
-                        <ul class="list-unstyled list-inline">
-                            <li class="dropdown dropdown-small">
-                                <a data-toggle="dropdown" data-hover="dropdown" class="dropdown-toggle" href="#"><span class="key">currency :</span><span class="value">USD </span><b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">USD</a></li>
-                                    <li><a href="#">INR</a></li>
-                                    <li><a href="#">GBP</a></li>
-                                </ul>
-                            </li>
-
-                            <li class="dropdown dropdown-small">
-                                <a data-toggle="dropdown" data-hover="dropdown" class="dropdown-toggle" href="#"><span class="key">language :</span><span class="value">English </span><b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">English</a></li>
-                                    <li><a href="#">French</a></li>
-                                    <li><a href="#">German</a></li>
-                                </ul>
-                            </li>
-                        </ul>
+        <div class="site-branding-area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="logo pt-0">
+                            <h1><a href="/Home/Indexx"><img src="/img/logo.png"></a></h1>
+                        </div>
                     </div>
+
+                    <div class="col-sm-4">
+                        <form class="form-inline pt-5" asp-controller="Products" asp-action="GetAllProduct" method="post">
+                            <input name="key" class="form-control" placeholder="Search" style="width:300px" />
+                            <button class="btn btn-primary" type="button"><i class="fa fa-search"></i></button>
+                        </form>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <div class="shopping-item mt-5">
+                            <a href="@Url.ActionLink("Cart","Cart")">Cart<i class="fa fa-shopping-cart"></i> @await Html.PartialAsync("~/Views/Shared/_CartPartial.cshtml")</a>
+</div>
+                    </div>
+
                 </div>
             </div>
         </div>
-    </div> <!-- End header area -->
+    </div>@*End site branding area*@
 
-    <div class="site-branding-area">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-4">
-                    <div class="logo pt-0">
-                        <h1><a href="./"><img src="/img/logo.png"></a></h1>
+        <div class="mainmenu-area">
+            <div class="container">
+                @*<nav class="navbar navbar-expand-sm row">
+
+                    <div class="navbar-collapse collapse" id="cll">
+                        <ul class="navbar-nav mr-auto">
+                            <li class="active nav-item"><a href="/Home/Indexx">Home</a></li>
+                            <li class="nav-item"><a href="/Cart/Cart">Cart</a></li>
+                            <li class="nav-item"><a href="checkout.html">Checkout</a></li>
+                            <li class="nav-item dropdown">
+                                <a class=" dropdown-toggle" data-toggle="dropdown" href="#">Category</a>
+                                <div class="dropdown-menu">
+                                     <a class="dropdown-item bg-primary" href="@Url.ActionLink("GetProductPerCategory","Products",new {IdCategory=1})">Shirt</a>
+                                    <a class="dropdown-item bg-primary" href="@Url.ActionLink("GetProductPerCategory","Products",new {IdCategory=2})">Pants</a>
+                                    <a class="dropdown-item bg-primary" href="@Url.ActionLink("GetProductPerCategory","Products",new {IdCategory=3})">Cap</a>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Brands</a>
+                                <ul class="dropdown-menu">
+                                    <li> <a class="bg-primary" href="@Url.ActionLink("GetProductPerBrand","Products",new {IdBrand=1})">Dior</a></li>
+                                    <li> <a class="bg-primary" href="@Url.ActionLink("GetProductPerBrand","Products",new {IdBrand=2})">Channel</a></li>
+                                    <li><a class="bg-primary" href="@Url.ActionLink("GetProductPerBrand","Products",new {IdBrand=3})">Louis Vutton</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item"><a href="#">Contact</a></li>
+                        </ul>
                     </div>
-                </div>
+                </nav>*@
+                <div class="menu_header2 clearfix">
+                    
+                    <!-- div con dùng float thì thêm class clearfix ở div cha -->
+                    <div id="menu_contain">
+                        <ul class="menu_hmain menuheader_mid clearfix">
+                            <li class="li_co_cap ">
+                                <a class="active para" onclick="Data(this)" href="/Home/Indexx" id="Ao">Home</a>
+                            </li>
+                            <li class="li_co_cap">
+                                <a class="para" onclick="Data(this)" href="#montht">Category</a>
+                                <ul class="menu_con">
+                                    <li><a class="para" onclick="Data(this)" href="@Url.ActionLink("GetProductPerCategory","Products",new {IdCategory=1})">Laptop</a></li>
+                                    <li><a  class="para" onclick="Data(this)" href="@Url.ActionLink("GetProductPerCategory","Products",new {IdCategory=2})">Phone</a></li>
+                                    <li><a class="para" onclick="Data(this)" href="#">Headphone</a></li>
+                                    <li><a class="para" onclick="Data(this)" href="#">PC</a></li>
+                                    <li><a class="para" onclick="Data(this)" href="#">Mouse</a></li>
+                                </ul>
+                            </li>
+                            <li class="li_co_cap">
+                                <a href="#">Brand</a>
+                                <ul class="menu_con">
+                                    <li><a class="para" onclick="Data(this)"  href="#">SamSung</a></li>
+                                    <li><a class="para" onclick="Data(this)"  href="#">Dell</a></li>
+                                    <li><a class="para" onclick="Data(this)"  href="#">Apple</a></li>
+                                    <li><a class="para" onclick="Data(this)"  href="#">Asus</a></li>
+                                    <li><a class="para" onclick="Data(this)"  href="#">LG</a></li>
+                                    <li><a class="para" onclick="Data(this)"  href="#">Lenovo</a></li>
+                                </ul>
+                            </li>
+                            <li class="li_co_cap">
+                                <a class="para" onclick="Data(this)"  href="/Contact/Index">Contact</a>
+                            </li>
 
-                <div class="col-sm-4">
-                    <form class="form-inline pt-5" asp-controller="Products" asp-action="GetAllProduct" method="post">
-                        <input name="key" class="input-group-sm " placeholder="Search" />
-                        <button class="btn btn-primary fa fa-search" type="submit"></button>
-                    </form>
-                </div>
-
-
-                <div class="col-sm-4">
-                    <div class="shopping-item mt-5">
-                        <a href="@Url.ActionLink("Cart","Cart")">Cart - <span class="cart-amunt">$100</span> <i class="fa fa-shopping-cart"></i> <span class="product-count">@TempData["CartCount"]</span></a>
+                        </ul>
                     </div>
-                </div>
 
+                </div>
             </div>
         </div>
-    </div>  @*End site branding area*@
-
-    <div class="mainmenu-area">
-        <div class="container">
-            <nav class="navbar navbar-expand-sm row">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#cll">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                </div>
-                <div class="navbar-collapse collapse" id="cll">
-                    <ul class="nav navbar-nav">
-                        <li class="active nav-item"><a href="index.html">Home</a></li>
-                        <li class="nav-item"><a href="shop.html">Shop page</a></li>
-                        <li class="nav-item"><a href="single-product.html">Single product</a></li>
-                        <li class="nav-item"><a href="cart.html">Cart</a></li>
-                        <li class="nav-item"><a href="checkout.html">Checkout</a></li>
-                        <li class="nav-item dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Category</a>
-                            <ul class="dropdown-menu">
-                                <li> <a class="bg-primary" href="@Url.ActionLink("GetProductPerCategory","Products",new {IdCategory=1})">Shirt</a></li>
-                                <li> <a class="bg-primary" href="@Url.ActionLink("GetProductPerCategory","Products",new {IdCategory=2})">Pants</a></li>
-                                <li><a class="bg-primary" href="@Url.ActionLink("GetProductPerCategory","Products",new {IdCategory=3})">Cap</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Brands</a>
-                            <ul class="dropdown-menu">
-                                <li> <a class="bg-primary" href="@Url.ActionLink("GetProductPerBrand","Products",new {IdBrand=1})">Dior</a></li>
-                                <li> <a class="bg-primary" href="@Url.ActionLink("GetProductPerBrand","Products",new {IdBrand=2})">Channel</a></li>
-                                <li><a class="bg-primary" href="@Url.ActionLink("GetProductPerBrand","Products",new {IdBrand=3})">Louis Vutton</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item"><a href="#">Contact</a></li>
-                    </ul>
-                </div>
-            </nav>
-        </div>
-    </div>
 
     <div class="container">
         <main role="main" class="pb-3">
@@ -279,6 +296,7 @@
                 },
                 success: function () {
                     swal("Thông báo", "Gửi thành công");
+                
                 },
                 error: function () {
                     swal("Thông báo", "Gửi thất bại");
@@ -288,4 +306,33 @@
         });
     });
 </script>
+<script>
+    function Data(el) {
+        $('.para').css("font-weight","normal");
+        $(el).css("font-weight","bold");
+    }
+</script>
 
+<script>
+
+    $(document).ready(function () {
+            $(".test").click(function (event) {
+                event.preventDefault();
+                var IdProduct = $(this).attr("data-IdProduct");
+                $.ajax({
+                    type: "POST",
+                    url: '/Cart/AddToCart', //đường dẫn
+                    data: {
+                        IdProduct: IdProduct,  //tham số chuyển tới controller
+                    },
+                    success: function (data) {
+                        swal("Thông báo", "Add to Card Success");
+                        $("#cartcount").html(data);
+                    },
+                    error: function () {
+                        swal("Thông báo", "Add Failure");
+                    }
+                });
+            });
+        });
+</script>

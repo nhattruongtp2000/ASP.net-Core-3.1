@@ -39,6 +39,7 @@ namespace Web.Controllers
             var c = _cartRepository.GetCartItems().Count();
             TempData["CartCount"] = c;
 
+
             return View(x);
         }
     }

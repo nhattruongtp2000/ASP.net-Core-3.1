@@ -86,7 +86,10 @@ namespace DI.DI.Repository
             { 
             SlideName=x.SlideName,
             FromFile=x.FromFile,
-            Id=x.Id     
+            Id=x.Id,
+            IdBrand=x.IdBrand,
+            IdCategory=x.IdCategory,
+            IdProduct=x.IdProduct
             }).ToListAsync();
             return xx;
         }
@@ -105,9 +108,11 @@ namespace DI.DI.Repository
             var x = await k.Select(x=>new QuantityProducts()
             {
             IdProduct=x.pt.IdProduct,
-            TotalQuantity=x.p.Quality,
+            TotalQuantity=x.p.Quality*x.p.Price,
             IFromFile=x.pt.PhotoReview,
-            Price=x.p.Price
+            Price=x.p.Price,
+            Description=x.pt.Description,
+            ProductName=x.pt.ProductName
             }).ToListAsync();
 
             List<int> Id = await product.Select(x => x.IdProduct).ToListAsync();
@@ -132,6 +137,8 @@ namespace DI.DI.Repository
                         a[i].TotalQuantity += x[j].TotalQuantity;
                         a[i].IFromFile = x[j].IFromFile;
                         a[i].Price = x[j].Price;
+                        a[i].Description = x[j].Description;
+                        a[i].ProductName = x[j].ProductName;
                     }
                 }
             }
@@ -153,10 +160,12 @@ namespace DI.DI.Repository
                 var x = await orderDetails.Select(x => new QuantityProducts()
                 {
                     IdProduct = x.pt.IdProduct,
-                    TotalQuantity = x.pt.Quality,
-                    IFromFile=x.ptt.PhotoReview,
-                    Price=x.pt.Price
-                
+                    TotalQuantity = x.pt.Quality * x.pt.Price,
+                    IFromFile =x.ptt.PhotoReview,
+                    Price=x.pt.Price,
+                    Description = x.ptt.Description,
+                    ProductName = x.ptt.ProductName
+
                 }).ToListAsync();
 
                 List<int> Id = await product.Select(x => x.IdProduct).ToListAsync();
@@ -181,6 +190,8 @@ namespace DI.DI.Repository
                             a[i].TotalQuantity += x[j].TotalQuantity;
                             a[i].IFromFile = x[j].IFromFile;
                             a[i].Price = x[j].Price;
+                        a[i].Description = x[j].Description;
+                        a[i].ProductName = x[j].ProductName;
                         }
                     }
                 }

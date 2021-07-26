@@ -24,12 +24,13 @@ namespace Web.Controllers
             return View(cart);
         }
 
-        public IActionResult AddToCart(int IdProduct)
+        //add product
+        public int AddToCart(int IdProduct)
         {
             _cartRepository.AddtoCart(IdProduct);
             var c = _cartRepository.GetCartItems().Count();
-            TempData["CartCount"] = c;
-            return RedirectToAction("ProductDetails","Products",new {IdProduct=IdProduct });
+            TempData["CartCount"] = c.ToString();
+            return c;
         }
 
         [HttpPost]

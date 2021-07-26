@@ -1,6 +1,7 @@
 ﻿@model ViewModel.ViewModels.HomeVm
 
 
+
 <!DOCTYPE html>
 <!--
     ustora by freshdesignweb.com
@@ -51,7 +52,7 @@
                             <h2 class="caption title">
                                 @slide.SlideName<span class="primary"></span>
                             </h2>
-                            <a class="caption button-radius" href="#"><span class="icon"></span>Shop now</a>
+                            <a class="caption button-radius" href="@Url.ActionLink("ProductDetails","Products",new {IdProduct=Model.HomeSlide[i].IdProduct })"><span class="icon"></span>Shop now</a>
                         </div>
                     </li>
                 }
@@ -69,6 +70,7 @@
                     <div class="single-promo promo1">
                         <i class="fa fa-refresh"></i>
                         <p>30 Days return</p>
+                        
                     </div>
                 </div>
                 <div class="col-md-3 col-sm-6">
@@ -101,95 +103,24 @@
                     <div class="latest-product">
                         <h2 class="section-title">Latest Products</h2>
                         <div class="product-carousel">
-                            <div class="single-product">
-                                <div class="product-f-image">
-                                    <img src="/img/product-1.jpg" alt="">
-                                    <div class="product-hover">
-                                        <a href="#" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Add to cart</a>
-                                        <a href="single-product.html" class="view-details-link"><i class="fa fa-link"></i> See details</a>
+                            @for (int i = 0; i < 7; i++)
+                            {
+                                <div class="single-product">
+                                    <div class="product-f-image">
+                                        <img style="height:282px;width:226px" src="~/@Model.NewProduct[i].PhotoReview" alt="">
+                                        <div class="product-hover">
+                                            <a  class="add-to-cart-link test" data-IdProduct=@Model.NewProduct[i].IdProduct><i class="fa fa-shopping-cart"></i> Add to cart</a>
+                                            <a href="@Url.ActionLink("ProductDetails","Products",new {IdProduct=Model.NewProduct[i].IdProduct })" class="view-details-link"><i class="fa fa-link"></i> See details</a>
+                                        </div>
+                                    </div>
+
+                                    <h2><a href="single-product.html">@Model.NewProduct[i].ProductName</a></h2>
+
+                                    <div class="product-carousel-price">
+                                        <ins>@Model.NewProduct[i].Price</ins> 
                                     </div>
                                 </div>
-
-                                <h2><a href="single-product.html">Samsung Galaxy s5- 2015</a></h2>
-
-                                <div class="product-carousel-price">
-                                    <ins>$700.00</ins> <del>$100.00</del>
-                                </div>
-                            </div>
-                            <div class="single-product">
-                                <div class="product-f-image">
-                                    <img src="/img/product-2.jpg" alt="">
-                                    <div class="product-hover">
-                                        <a href="#" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Add to cart</a>
-                                        <a href="single-product.html" class="view-details-link"><i class="fa fa-link"></i> See details</a>
-                                    </div>
-                                </div>
-
-                                <h2>Nokia Lumia 1320</h2>
-                                <div class="product-carousel-price">
-                                    <ins>$899.00</ins> <del>$999.00</del>
-                                </div>
-                            </div>
-                            <div class="single-product">
-                                <div class="product-f-image">
-                                    <img src="/img/product-3.jpg" alt="">
-                                    <div class="product-hover">
-                                        <a href="#" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Add to cart</a>
-                                        <a href="single-product.html" class="view-details-link"><i class="fa fa-link"></i> See details</a>
-                                    </div>
-                                </div>
-
-                                <h2>LG Leon 2015</h2>
-
-                                <div class="product-carousel-price">
-                                    <ins>$400.00</ins> <del>$425.00</del>
-                                </div>
-                            </div>
-                            <div class="single-product">
-                                <div class="product-f-image">
-                                    <img src="/img/product-4.jpg" alt="">
-                                    <div class="product-hover">
-                                        <a href="#" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Add to cart</a>
-                                        <a href="single-product.html" class="view-details-link"><i class="fa fa-link"></i> See details</a>
-                                    </div>
-                                </div>
-
-                                <h2><a href="single-product.html">Sony microsoft</a></h2>
-
-                                <div class="product-carousel-price">
-                                    <ins>$200.00</ins> <del>$225.00</del>
-                                </div>
-                            </div>
-                            <div class="single-product">
-                                <div class="product-f-image">
-                                    <img src="/img/product-5.jpg" alt="">
-                                    <div class="product-hover">
-                                        <a href="#" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Add to cart</a>
-                                        <a href="single-product.html" class="view-details-link"><i class="fa fa-link"></i> See details</a>
-                                    </div>
-                                </div>
-
-                                <h2>iPhone 6</h2>
-
-                                <div class="product-carousel-price">
-                                    <ins>$1200.00</ins> <del>$1355.00</del>
-                                </div>
-                            </div>
-                            <div class="single-product">
-                                <div class="product-f-image">
-                                    <img src="/img/product-6.jpg" alt="">
-                                    <div class="product-hover">
-                                        <a href="#" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Add to cart</a>
-                                        <a href="single-product.html" class="view-details-link"><i class="fa fa-link"></i> See details</a>
-                                    </div>
-                                </div>
-
-                                <h2><a href="single-product.html">Samsung gallaxy note 4</a></h2>
-
-                                <div class="product-carousel-price">
-                                    <ins>$400.00</ins>
-                                </div>
-                            </div>
+                            }
                         </div>
                     </div>
                 </div>
@@ -204,14 +135,12 @@
                 <div class="col-md-12">
                     <div class="brand-wrapper">
                         <div class="brand-list">
-                            <img src="/img/brand1.png" alt="">
-                            <img src="/img/brand2.png" alt="">
-                            <img src="/img/brand3.png" alt="">
-                            <img src="/img/brand4.png" alt="">
-                            <img src="/img/brand5.png" alt="">
-                            <img src="/img/brand6.png" alt="">
-                            <img src="/img/brand1.png" alt="">
-                            <img src="/img/brand2.png" alt="">
+                            <a href="@Url.ActionLink("GetProductPerBrand","Products",new { IdBrand = 1 })"><img src="/img/brand3.png" alt=""></a>
+                            <a href="@Url.ActionLink("GetProductPerBrand","Products",new { IdBrand = 1 })"><img src="/img/brand4.png" alt=""></a>
+                            <a href="@Url.ActionLink("GetProductPerBrand","Products",new { IdBrand = 1 })"><img src="/img/brand6.png" alt=""></a>
+                            <a href="@Url.ActionLink("GetProductPerBrand","Products",new { IdBrand = 1 })"><img style="width:130px" src="/img/asus.png" alt=""></a>
+                            <a href="@Url.ActionLink("GetProductPerBrand","Products",new { IdBrand = 1 })"><img src="/img/187.png" alt=""></a>
+                            <a href="@Url.ActionLink("GetProductPerBrand","Products",new { IdBrand = 1 })"><img src="/img/brand4.png" alt=""></a>
                         </div>
                     </div>
                 </div>
@@ -226,21 +155,28 @@
                 <div class="col-md-4">
                     <div class="single-product-widget">
                         <h2 class="product-wid-title">Hot Sell</h2>
-                        <a href="@Url.Action("GetAllHotProduct","Products")" class="wid-view-more">View All</a>
-                        @for (int i = 0; i < 2; i++)
+                        
+                        @for (int i = 0; i < 3; i++)
                         {
                             var hotsell = Model.HotSeller[i];
-                            <div class="single-wid-product">
-                                <a href="@Url.ActionLink("ProductDetails","Products",new {IdProduct=Model.HotSeller[i].IdProduct })"><img src="~/@hotsell.IFromFile" alt="" class="product-thumb" /></a>
-                                <h2><a href="single-product.html">@hotsell.IdProduct</a></h2>
-                                <div>
-                                    <!---->     <a class="btn btn-primary test" data-IdProduct="@Model.HotSeller[i].IdProduct" @*href=@Url.ActionLink("AddToCart","Cart",new {IdProduct=Model.HotSeller[i].IdProduct})*@>Add To Cart</a>
-                                </div>
-                                <div class="product-wid-price">
-                                    <ins>@hotsell.Price $</ins>
+                    <div class="single-wid-product">
+                        <a href="@Url.ActionLink("ProductDetails","Products",new {IdProduct=Model.HotSeller[i].IdProduct })"><img style="height:130px;width:110px" src="~/@hotsell.IFromFile" alt="" class="product-thumb" /></a>
+                        <h2><a href="single-product.html">@hotsell.ProductName</a></h2>
+                        <div class="product-wid-rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                        </div>
+                        <div>
+                            <!---->     <a class="btn btn-primary test" data-IdProduct="@Model.HotSeller[i].IdProduct" @*href=@Url.ActionLink("AddToCart","Cart",new {IdProduct=Model.HotSeller[i].IdProduct})*@>Add To Cart</a>
+                        </div>
+                        <div class="product-wid-price">
+                            <ins>@hotsell.Price $</ins>
 
-                                </div>
-                            </div>
+                        </div>
+                    </div>
                         }
 
                     </div>
@@ -248,27 +184,30 @@
                 <div class="col-md-4">
                     <div class="single-product-widget">
                         <h2 class="product-wid-title">Top Sell</h2>
-                        <a href="#" class="wid-view-more">View All</a>
-                        @for (int i = 0; i < 2; i++)
+                        @*<a href="#" class="wid-view-more">View All</a>*@
+                        @for (int i = 0; i < 3; i++)
                         {
                             var topsell = @Model.TopSeller[i];
-                            <div class="single-wid-product">
-                                <a href="single-product.html"><img src="~/@topsell.IFromFile" alt="" class="product-thumb" /></a>
-                                <h2><a href="single-product.html">@topsell.IdProduct</a></h2>
-                                <div class="product-wid-rating">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                </div>
-                                <div class="product-wid-price">
-                                    <ins>@topsell.Price $</ins>
+                    <div class="single-wid-product">
+                        <a href="@Url.ActionLink("ProductDetails","Products",new {IdProduct=Model.TopSeller[i].IdProduct })"><img style="height:130px;width:110px" src="~/@topsell.IFromFile" alt="" class="product-thumb" /></a>
+                        <h2><a href="single-product.html">@topsell.ProductName</a></h2>
+                        <div class="product-wid-rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                        </div>
+                        <div>
+                            <!---->     <a class="btn btn-primary test" data-IdProduct="@topsell.IdProduct" @*href=@Url.ActionLink("AddToCart","Cart",new {IdProduct=Model.HotSeller[i].IdProduct})*@>Add To Cart</a>
+                        </div>
+                        <div class="product-wid-price">
+                            <ins>@topsell.Price VND</ins>
 
-                                </div>
+                        </div>
 
 
-                            </div>
+                    </div>
                         }
                         @*<div class="single-wid-product">
                                 <a href="single-product.html"><img src="/img/product-thumb-4.jpg" alt="" class="product-thumb"></a>
@@ -317,27 +256,30 @@
                 <div class="col-md-4">
                     <div class="single-product-widget">
                         <h2 class="product-wid-title">Top New</h2>
-                        <a href="#" class="wid-view-more">View All</a>
-                        @for (int i = 0; i < 2; i++)
+                        @*<a href="#" class="wid-view-more">View All</a>*@
+                        @for (int i = 0; i < 3; i++)
                         {
-                            var hotsell = @Model.HotSeller[i];
-                            <div class="single-wid-product">
-                                <a href="single-product.html"><img src="~/@hotsell.IFromFile" alt="" class="product-thumb" /></a>
-                                <h2><a href="single-product.html">@hotsell.IdProduct</a></h2>
-                                <div class="product-wid-rating">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                </div>
-                                <div class="product-wid-price">
-                                    <ins>@hotsell.Price $</ins>
+                            var NewProduct = @Model.NewProduct[i];
+                    <div class="single-wid-product">
+                        <a href="@Url.ActionLink("ProductDetails","Products",new {IdProduct=Model.NewProduct[i].IdProduct })"><img style="height:130px;width:110px" src="~/@NewProduct.PhotoReview" alt="" class="product-thumb" /></a>
+                        <h2><a href="single-product.html">@NewProduct.ProductName</a></h2>
+                        <div class="product-wid-rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                        </div>
+                        <div>
+                            <!---->     <a class="btn btn-primary test" data-IdProduct="@NewProduct.IdProduct" @*href=@Url.ActionLink("AddToCart","Cart",new {IdProduct=Model.HotSeller[i].IdProduct})*@>Add To Cart</a>
+                        </div>
+                        <div class="product-wid-price">
+                            <ins>@NewProduct.Price VND</ins>
 
-                                </div>
+                        </div>
 
 
-                            </div>
+                    </div>
                         }
                     </div>
                 </div>
@@ -370,23 +312,7 @@
 
 
 @section Scripts {
-    <script>
-        $(document).ready(function () {
-            $(".test").click(function (event) {
-                event.preventDefault();
-                var IdProduct = $(this).attr("data-IdProduct");
-                $.ajax({
-                    type: "POST",
-                    url: '/Cart/AddToCart', //đường dẫn
-                    data: {
-                        IdProduct: IdProduct,  //tham số chuyển tới controller
-                    },
-                    success: function (result) {
-                        window.location.href = '/Home/Indexx'
-                    }
-                });
-            });
-        });
-    </script>
+    
 
 }
+

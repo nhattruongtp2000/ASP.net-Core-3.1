@@ -1,11 +1,150 @@
-.floatleft { float: left }
+﻿.floatleft { float: left }
 .floatright { float: right }
 .alignleft {
     float: left;
     margin-right: 15px;
 }
 
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}
 
+.li_co_cap {
+    position: relative; /* thằng cha dùng relative*/
+    text-decoration: none;
+    display: inline-block;
+    border: none;
+}
+
+.menu_con {
+    position: absolute; /* thằng con dùng absolute*/
+    top: 100%;
+    left: 50%;
+    transform: translate(-50%, 0px);
+    display: none;
+    width: 150px;
+    z-index: 99999; /* độ chìm độ nổi , càng cao càng nổi */
+    border: 1px solid #ebebeb;
+    border-top: none;
+    padding: 20px;
+    background: #fff;
+}
+
+    .menu_con li {
+        display: block;
+        margin-bottom: 8px;
+        float: none;
+        padding: 0;
+    }
+
+        .menu_con li a {
+            font-size: 13px;
+        }
+
+.li_co_cap:hover .menu_con {
+    display: block
+}
+
+.menu_hmain > li {
+    float: left;
+    padding: 0.8em 1.5em;
+}
+
+.menu_hmain li a {
+    display: block;
+    color: #666;
+}
+/* block :: full het hix*/ /* inline_block giữ nguyên ảnh gốc*/
+
+.active {
+    font-weight:bold;   
+}
+
+.menuheader_mid {
+    display: inline-block;
+    text-align: center;
+    font-size: 20px;
+}
+
+    .menuheader_mid li {
+        border: none;
+    }
+/*menu header*/
+
+#menu_contain {
+    
+    width: calc(100% - 400px);
+    padding: 0 10px;
+    
+}
+
+    #menu_contain li {
+        padding: 0 30px;
+        line-height: 72px;
+    }
+
+    #menu_contain ul {
+      
+    }
+
+    #menu_contain > ul > li > a {
+        text-transform: uppercase;
+        font-size: 20px;
+        
+        color: #333 ;
+        text-decoration:none;
+    }
+    /*uppercase :viet hoa het*  capital :viet hoa ky tud dau*/
+    #menu_contain .menu_con {
+        width: 250px;
+        text-align: left;
+        top: 100%;
+        box-shadow: 0px 5px 5px rgba(0,0,0,0.3);
+        padding: 0
+    }
+
+        #menu_contain .menu_con li {
+            line-height: 1.5;
+            padding: 10px;
+            transition: all ease 0.5s;
+            margin-bottom: 0;
+            position: relative;
+        }
+
+            #menu_contain .menu_con li:hover {
+                background: #ebebeb;
+            }
+
+            #menu_contain .menu_con li a {
+                display: block;
+            }
+
+            #menu_contain .menu_con li:hover > a {
+                color: #000
+            }
+
+    #menu_contain .li_co_cap:hover {
+        border: none;
+    }
+
+        #menu_contain .li_co_cap:hover:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translate(-50%,0);
+            width: 100%;
+            border-top: 2px solid #666;
+        }
+
+
+.menu_header2 {
+    border-bottom: 1px solid #ebebeb;
+    border-top: 1px solid #ebebeb;
+    padding: 0 10px;
+}
 
 
 .alignright {
@@ -76,18 +215,28 @@ body { font-family:Arial, Helvetica, sans-serif; }
     min-width: 100px;
     text-align: center;
 }
-
+/*
 .mainmenu-area {background: none repeat scroll 0 0 #fbfbfb;
 font-family: "Roboto Condensed",sans-serif;
 text-transform: uppercase;
 width: 100%;
-z-index: 999;}
+z-index: 999;}*/
+
+.area {
+    background: none repeat scroll 0 0 #fbfbfb;
+    font-family: "Roboto Condensed",sans-serif;
+    text-transform: uppercase;
+    width: 100%;
+    z-index: 999;
+}
+
 
 
 
 .logo h1 {
     font-size: 40px;
-    margin: 30px 0;font-weight: 400;
+    margin: 30px 0;
+    font-weight: 400;
 }
 .logo h1 a {
     color: #999;
@@ -139,6 +288,10 @@ z-index: 999;}
     top: -10px;
     width: 20px;
 }
+
+
+
+
 .shopping-item i.fa {
     margin-left: 15px;
 }
@@ -258,7 +411,7 @@ z-index: 999;}
 .block-slider .caption-group{
 	position: absolute;
     top: 26%;
-    right: 16%;
+    right: 0%;
 }
 .block-slider .caption-group .title{
 	margin: 0;
@@ -713,7 +866,7 @@ width: 10px;
 .single-product-area .zigzag-bottom {background-color: #f4f4f4}
 
 .single-product-area {
-  padding: 80px 0 130px;
+  padding: 20px 0 130px;
 }
 
 

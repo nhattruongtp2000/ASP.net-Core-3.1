@@ -13,6 +13,7 @@ namespace Web.Controllers
         private readonly IAnalystRepository _ianalystRepository;
         private readonly ICartRepository _cartRepository;
 
+
         public ProductsController(IProductRepository iproductRepository, IAnalystRepository ianalystRepository, ICartRepository cartRepository)
         {
             _iproductRepository = iproductRepository;
@@ -47,16 +48,16 @@ namespace Web.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> GetProductPerCategory(int IdCategory)
+        public async Task<IActionResult> GetProductPerCategory(int IdCategory,int? page)
         {
-            var x = await _iproductRepository.GetProductPerCategory(IdCategory);
+            var x = await _iproductRepository.GetProductPerCategory(IdCategory,page);
             return View(x);
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetProductPerBrand(int IdBrand)
+        public async Task<IActionResult> GetProductPerBrand(int IdBrand,int? page)
         {
-            var x = await _iproductRepository.GetProductPerBrand(IdBrand);
+            var x = await _iproductRepository.GetProductPerBrand(IdBrand,page);
             return View(x);
         }
 

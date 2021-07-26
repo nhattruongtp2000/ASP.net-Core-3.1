@@ -19,8 +19,27 @@
             </div>
             <div class="form-group">
                 <label asp-for="IdCategory" class="control-label"></label>
-                <input asp-for="IdCategory" class="form-control" />
+                <select asp-for="IdCategory" class="form-control" asp-items="@ViewBag.Categories">
+                    <option>Select Categories</option>
+                </select>
                 <span asp-validation-for="IdCategory" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdBrand" class="control-label"></label>
+                <select asp-for="IdBrand" class="form-control" asp-items="@ViewBag.Brands">
+                    <option>Select Brands</option>
+                </select>
+                <span asp-validation-for="IdBrand" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Content" class="control-label"></label>
+                <input asp-for="Content" class="form-control" />
+                <span asp-validation-for="Content" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description"  class="form-control" placeholder="Write Description"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Price" class="control-label"></label>
@@ -36,13 +55,6 @@
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="UseVoucher" /> @Html.DisplayNameFor(model => model.UseVoucher)
                 </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="IdBrand" class="control-label"></label>
-                <select asp-for="IdBrand" class="form-control" asp-items="@ViewBag.Brands"> 
-                    <option>Select Brands</option>
-                </select>
-                <span asp-validation-for="IdBrand" class="text-danger"></span>
             </div>
             <div>
                 <label asp-for="PhotoReview" class="control-label"></label>

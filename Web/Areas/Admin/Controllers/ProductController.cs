@@ -1,10 +1,12 @@
-﻿using DI.DI.Interace;
+﻿using ClosedXML.Excel;
+using DI.DI.Interace;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using ViewModel.ViewModels;
@@ -17,14 +19,16 @@ namespace Web.Areas.Admin.Controllers
     {
         private readonly IProductRepository _IproductRepository;
         private readonly IBrandRepository _IbrandRepository;
-        public ProductController(IProductRepository productRepository, IBrandRepository IbrandRepository)
+        private readonly ICategoryRepository _IcategoryRepository;
+        public ProductController(IProductRepository productRepository, IBrandRepository IbrandRepository,ICategoryRepository IcategoryRepository)
         {
             _IproductRepository = productRepository;
             _IbrandRepository = IbrandRepository;
+            _IcategoryRepository = IcategoryRepository;
         }
 
-        
-        public async Task<IActionResult> Index(string key,int? page)
+
+        public async Task<IActionResult> Index(string key, int? page)
         {
             if (TempData["Success"] != null)
             {
@@ -43,24 +47,32 @@ namespace Web.Areas.Admin.Controllers
 
 
 
-            var prSearch = await _IproductRepository.Search(key,page);
+            var prSearch = await _IproductRepository.Search(key, page);
             var products = await _IproductRepository.GetAll2(page);
             if (prSearch.Count > 0)
             {
                 return View(prSearch);
-            }           
+            }
 
             return View(products);
         }
 
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            var brands = _IbrandRepository.GetAllBrand();
+            var brands =await _IbrandRepository.GetAllBrand();
+            var categories =await _IcategoryRepository.GetAllCategory();
+
             ViewBag.Brands = brands.Select(x => new SelectListItem()
             {
-                Value = x.ToString(),
-                Text=x.ToString()
+                Value = x.IdBrand.ToString(),
+                Text = x.BrandName.ToString()
+            });
+
+            ViewBag.Categories = categories.Select(x => new SelectListItem() 
+            {    
+                Value=x.IdCategory.ToString(),
+                Text=x.NameCategory.ToString(),              
             });
             return View();
 
@@ -70,26 +82,26 @@ namespace Web.Areas.Admin.Controllers
         public async Task<IActionResult> Create(ProductCreateVm request)
         {
             var products = await _IproductRepository.Create(request);
-            if (products>0)
+            if (products > 0)
             {
                 TempData["Success"] = "Add Successful";
                 return RedirectToAction("Index");
             }
-            return Content("Add Failure");            
+            return Content("Add Failure");
         }
 
         [HttpGet]
         public async Task<IActionResult> Edit(int IdProduct)
         {
             var c = await _IproductRepository.GetProduct(IdProduct);
-            return View(c); 
+            return View(c);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(int IdProduct,ProductVm request)
+        public async Task<IActionResult> Edit(int IdProduct, ProductVm request)
         {
             var product = await _IproductRepository.Edit(IdProduct, request);
-            if (product >0)
+            if (product > 0)
             {
                 TempData["Edit"] = "Edit Successful";
                 return RedirectToAction("Index");
@@ -112,10 +124,57 @@ namespace Web.Areas.Admin.Controllers
             if (a != 0)
             {
                 TempData["AddImage"] = "Add new Images Success";
-                return Redirect("Admin/Product/Index");
+                return Redirect("Index");
             }
             return Content("Add Failure");
         }
 
+        public async Task<ActionResult> Excel()
+        {
+            string contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            string fileName = "Products.xlsx";
+
+            var products =await _IproductRepository.GetAll(); //get list products để export ra bên ngoài
+
+            using (var workbook = new XLWorkbook())
+            {
+                IXLWorksheet worksheet =
+                   workbook.Worksheets.Add("Products");
+                worksheet.Cell(1, 1).Value = "IdProduct";
+                worksheet.Cell(1, 2).Value = "IdBrand";
+                worksheet.Cell(1, 3).Value = "ProductName";
+                worksheet.Cell(1, 4).Value = "UseVoucher";
+                worksheet.Cell(1, 5).Value = "PhotoReview";
+                worksheet.Cell(1, 6).Value = "IdCategory";
+                worksheet.Cell(1, 7).Value = "Price";
+                worksheet.Cell(1, 8).Value = "IsFree";
+                worksheet.Cell(1, 9).Value = "DateAccept";
+
+                for (int index = 1; index <= 9; index++)
+                {
+                    worksheet.Cell(1, index).Style.Font.Bold = true; //dùng mực
+                }
+
+                for (int index = 1; index <= products.Count(); index++)
+                {
+                    worksheet.Cell(index + 1, 1).Value = products[index - 1].IdProduct;
+                    worksheet.Cell(index + 1, 2).Value = products[index - 1].IdBrand;
+                    worksheet.Cell(index + 1, 3).Value = products[index - 1].ProductName;
+                    worksheet.Cell(index + 1, 4).Value = products[index - 1].UseVoucher;
+                    worksheet.Cell(index + 1, 5).Value = products[index - 1].PhotoReview;
+                    worksheet.Cell(index + 1, 6).Value = products[index - 1].IdCategory;
+                    worksheet.Cell(index + 1, 7).Value = products[index - 1].Price;
+                    worksheet.Cell(index + 1, 8).Value = products[index - 1].IsFree;
+                    worksheet.Cell(index + 1, 8).Value = products[index - 1].DateAccept;
+                }
+
+                using (var stream = new MemoryStream())
+                {
+                    workbook.SaveAs(stream);
+                    var content = stream.ToArray();
+                    return File(content, contentType, fileName);
+                }
+            }
+        }
     }
 }

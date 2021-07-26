@@ -12,6 +12,8 @@ namespace ViewModel.ViewModels
         public int IdCategory { get; set; }
         public string ProductName { get; set; }
 
+        public string Description { get; set; }
+
         public DateTime DateAccept { get; set; }
 
         public int Price { get; set; }
@@ -27,5 +29,7 @@ namespace ViewModel.ViewModels
         public List<CommentVm> Comments { get; set; }
 
         public List<ProductVm> RelatedProducts { get; set; }
+
+        public List<ProductVm> MaybeLike { get; set; }
     }
 }

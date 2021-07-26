@@ -37,9 +37,11 @@ namespace Web
             services.AddTransient<IAccountRepository, AccountRepository>();
             services.AddTransient<ICartRepository, CartRepository>();
             services.AddTransient<IContactRepository, ContactRepository>();
-
+            services.AddTransient<ICategoryRepository, CategoryRepository>();
             services.AddTransient<IOrderRepository, OrderRepository>();
             services.AddTransient<IBrandRepository, BrandRepository>();
+
+            services.AddControllersWithViews().AddRazorRuntimeCompilation();
 
 
             services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<Iden2Context>().AddDefaultTokenProviders();

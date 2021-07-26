@@ -144,7 +144,7 @@ namespace DI.DI.Repository
 
             var user = await _userManager.GetUserAsync(_httpContextAccessor.HttpContext.User);
             string Id = user.Id;
-            var freeProduct = await _iden2Context.Products.Where(x => x.IsFree==true).FirstOrDefaultAsync();
+            //var freeProduct = await _iden2Context.Products.Where(x => x.IsFree==true).FirstOrDefaultAsync();
 
             var b = GetCartItems();
             foreach (var item in b)
@@ -172,18 +172,18 @@ namespace DI.DI.Repository
             {
                 a.TotalPice = a.TotalPice * 90 / 100;
             }
-            if (a.TotalPice >= 10000)
-            {
-                var orderdetails = new OrderDetails()
-                {
-                    IdOrder = IdOrder,
-                    IdProduct = freeProduct.IdProduct,
-                    StatusDetails = Data.Enums.Status.Process,
-                    Price = 0,
-                    Quality = 0
-                };
-                _iden2Context.OrderDetails.Add(orderdetails);
-            }
+            //if (a.TotalPice >= 10000)
+            //{
+            //    var orderdetails = new OrderDetails()
+            //    {
+            //        IdOrder = IdOrder,
+            //        IdProduct = freeProduct.IdProduct,
+            //        StatusDetails = Data.Enums.Status.Process,
+            //        Price = 0,
+            //        Quality = 0
+            //    };
+            //    _iden2Context.OrderDetails.Add(orderdetails);
+            //}
             _iden2Context.Orders.Add(a);
             ClearCart();
             await _iden2Context.SaveChangesAsync();

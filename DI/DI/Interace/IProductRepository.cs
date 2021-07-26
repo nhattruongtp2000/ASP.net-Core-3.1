@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using ViewModel;
 using X.PagedList;
+using ClosedXML.Excel;
 
 namespace DI.DI.Interace
 {
@@ -31,9 +32,9 @@ namespace DI.DI.Interace
 
         Task<int> Delete(int IdProduct);
 
-        Task<List<ProductVm>> GetProductPerCategory(int IdCategory);
+        Task<IPagedList<ProductVm>> GetProductPerCategory(int IdCategory,int? page);
 
-        Task<List<ProductVm>> GetProductPerBrand(int IdBrand);
+        Task<IPagedList<ProductVm>> GetProductPerBrand(int IdBrand,int? page);
 
         Task<string> UpLoadFile(IFormFile fromFile);
 
@@ -41,8 +42,9 @@ namespace DI.DI.Interace
 
         Task<int> AddComment(int IdProduct, string Content);
 
-        Task<List<ProductVm>> RelatedProduct (int IdBrandm,int IdProduct);
+        Task<List<ProductVm>> RelatedProduct (int IdCategory,int IdProduct);
 
+        Task<List<ProductVm>> MaybeLike(int IdBrand, int IdProduct);
 
         
 
