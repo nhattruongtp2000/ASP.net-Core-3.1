@@ -40,6 +40,7 @@ namespace Web
             services.AddTransient<ICategoryRepository, CategoryRepository>();
             services.AddTransient<IOrderRepository, OrderRepository>();
             services.AddTransient<IBrandRepository, BrandRepository>();
+            services.AddTransient<IVoucherRepository, VoucherRepository>();
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
 

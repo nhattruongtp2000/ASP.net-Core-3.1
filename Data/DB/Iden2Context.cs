@@ -33,6 +33,8 @@ namespace Data.DB
         public DbSet<Comment> Comments { get; set; }
         public DbSet<ProductPhoto> ProductPhotos { get; set; }
 
+        public DbSet<Voucher> Vouchers { get; set; }
+
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -38,7 +38,7 @@ namespace DI.DI.Interace
 
         Task<string> UpLoadFile(IFormFile fromFile);
 
-        Task<List<ProductVm>> Filters(int pricemin, int pricemax);
+        Task<IPagedList<ProductVm>> Filters(int pricemin, int pricemax,int? page);
 
         Task<int> AddComment(int IdProduct, string Content);
 

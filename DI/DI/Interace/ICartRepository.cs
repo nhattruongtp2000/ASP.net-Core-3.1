@@ -22,9 +22,9 @@ namespace DI.DI.Interace
 
         Task<List<ProductVm>> GetAll();
 
-        Task<string> Purchase(int total);
+        Task<string> Purchase(string IdOrder,string EmailShip, string NameShip, string AddressShip, string NumberShip, string NoticeShip, int total,string voucherCode);
 
-        Task<List<OrderDetailsVm>> Checkout(string IdUser);
+        //Task<List<OrderDetailsVm>> Checkout(string IdUser);
 
         Task<string> PayPal(double total);
 

@@ -26,5 +26,7 @@ namespace DI.DI.Interace
 
         Task<int> ConfirmEmail(string token, string email);
 
+        Task<int> ChangePassword(ChangePasswordVm request,string UserName);
+
     }
 }

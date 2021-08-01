@@ -4,14 +4,16 @@ using Data.DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Data.Migrations
 {
     [DbContext(typeof(Iden2Context))]
-    partial class Iden2ContextModelSnapshot : ModelSnapshot
+    [Migration("20210727022038_addvoucher")]
+    partial class addvoucher
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -231,22 +233,7 @@ namespace Data.Migrations
                     b.Property<string>("IdOrder")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("AddressShip")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("EmailShip")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("IdUser")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NameShip")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NoticeShip")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NumberShip")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("OrderDay")
@@ -260,9 +247,6 @@ namespace Data.Migrations
 
                     b.Property<decimal>("TotalPice")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("VoucherCode")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("IdOrder");
 
@@ -397,17 +381,14 @@ namespace Data.Migrations
                     b.Property<DateTime>("FromDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("ToDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("TypeVoucher")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("TypeVoucher")
+                        .HasColumnType("int");
 
                     b.Property<string>("VoucherCode")
                         .HasColumnType("nvarchar(max)");

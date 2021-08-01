@@ -9,6 +9,11 @@
     if (jsoncart != null)
     {
         var cart = JsonConvert.DeserializeObject<List<ViewModel.ViewModels.CartItem>>(jsoncart);
-         <span id="cartcount" class="product-count">@cart.Count</span>
+        <span id="cartcount" class="product-count">@cart.Count</span>
+    }
+    else
+    {
+        <span id="cartcount" class="product-count">0</span>
+
     }
 }

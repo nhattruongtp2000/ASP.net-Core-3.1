@@ -10,7 +10,7 @@ namespace ViewModel.ViewModels
     {
         public string IdOrder { get; set; }
 
-        public int IdProduct { get; set; }
+        public string ProductName { get; set; }
 
         public int Quality { get; set; }
 
@@ -18,9 +18,7 @@ namespace ViewModel.ViewModels
 
         public string PhotoReview { get; set; }
 
-        public DateTime DateOrder { get; set; }
-
-        public Status StatusDetails { get; set; } 
+        public Status Status { get; set; }
 
     }
 }

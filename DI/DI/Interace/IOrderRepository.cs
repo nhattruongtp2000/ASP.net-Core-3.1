@@ -12,11 +12,13 @@ namespace DI.DI.Interace
     {
         Task<IPagedList<OrdersVm>> GetAll(int? page);
 
-        Task<OrderDetailsVm> GetDetails(string IdOrder,int IdProduct);
+        Task<List<OrderDetailsVm>> GetDetails(string IdOrder);
 
-        Task<int> ChangeStatusDetails(string IdOrder, int IdProduct,string x);
+        Task<int> ChangeStatusDetails(string IdOrder,string x);
 
-        
+        Task<string> GetStatus(string IdOrder);
+
+        Task<IPagedList<OrdersVm>> OrderHistory(string IdUser, int? page);
         
     }
 }

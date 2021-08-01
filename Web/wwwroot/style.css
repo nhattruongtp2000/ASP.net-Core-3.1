@@ -5,6 +5,21 @@
     margin-right: 15px;
 }
 
+/*.father{
+   position:relative;
+}
+
+.son {
+    position: absolute;
+    top: 0%;
+    left: 0;
+    display: none;
+    list-style-type: none;
+    padding-left: 0;
+    background: #ebebeb;
+}*/
+
+
 .clearfix::after {
     content: "";
     clear: both;
@@ -1071,7 +1086,7 @@ text-transform: uppercase;}
 table.shop_table {
     border-bottom: 1px solid #ddd;
     border-right: 1px solid #ddd;
-    margin-bottom: 50px;
+    margin-bottom: 20px;
     width: 100%;
 }
 table.shop_table th, table.shop_table td {
@@ -1116,9 +1131,24 @@ td.actions div.coupon {
     width: 57%;
 }
 .cart_totals {
-    float: right;
+    float: left;
     margin-bottom: 50px;
     width: 40%;
+
+}
+.pay {
+    float: left;
+    margin-left: 40px;
+}
+
+.pay table {
+       border:1px solid #ddd;
+       width:100%;
+}
+.pay table th,.pay table td
+{
+     border:1px solid #ddd;
+     width:100%;
 }
 .cart-collaterals h2 {
     color: #5a88ca;

@@ -1,16 +1,20 @@
-﻿@model IEnumerable<ViewModel.ViewModels.OrderDetailsVm>
+﻿@model List<ViewModel.ViewModels.CartItem>
 
-@{
-    ViewData["Title"] = "Checkout";
-}
 
-<h1>Checkout</h1>
 
+
+<!DOCTYPE html>
+<!--
+    ustora by freshdesignweb.com
+    Twitter: https://twitter.com/freshdesignweb
+    URL: https://www.freshdesignweb.com/ustora/
+-->
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Product Page - Ustora Demo</title>
+    <title>Cart Page - Ustora Demo</title>
 
     <!-- Google Fonts -->
     <link href='https://fonts.googleapis.com/css?family=Titillium+Web:400,200,300,700,600' rel='stylesheet' type='text/css'>
@@ -18,16 +22,6 @@
     <link href='https://fonts.googleapis.com/css?family=Raleway:400,100' rel='stylesheet' type='text/css'>
 
     <!-- Bootstrap -->
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
-
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="/css/font-awesome.min.css">
-
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/owl.carousel.css">
-    <link rel="stylesheet" href="/style.css">
-    <link rel="stylesheet" href="/css/responsive.css">
-
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -35,75 +29,358 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.IdOrder)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdProduct)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Quality)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PhotoReview)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DateOrder)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StatusDetails)
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.IdOrder)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.IdProduct)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Quality)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Price)
-                </td>
-                <td>
-                    <img src="https://localhost:5001\@item.PhotoReview" height="50" width="50" />
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DateOrder)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.StatusDetails)
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-<script src="https://code.jquery.com/jquery.min.js"></script>
+<body>
 
-<!-- Bootstrap JS form CDN -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
-<!-- jQuery sticky menu -->
-<script src="/js/owl.carousel.min.js"></script>
-<script src="/js/jquery.sticky.js"></script>
 
-<!-- jQuery easing -->
-<script src="/js/jquery.easing.1.3.min.js"></script>
+    <div class="single-product-area">
+        <div class="zigzag-bottom"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
 
-<!-- Main Script -->
-<script src="/js/main.js"></script>
+                    <div class="single-sidebar">
+                        <h2 class="sidebar-title">Products</h2>
+                        <div class="thubmnail-recent">
+                            <img src="/img/product-thumb-1.jpg" class="recent-thumb" alt="">
+                            <h2><a href="single-product.html">Sony Smart TV - 2015</a></h2>
+                            <div class="product-sidebar-price">
+                                <ins>$700.00</ins> <del>$800.00</del>
+                            </div>
+                        </div>
+                        <div class="thubmnail-recent">
+                            <img src="/img/product-thumb-1.jpg" class="recent-thumb" alt="">
+                            <h2><a href="single-product.html">Sony Smart TV - 2015</a></h2>
+                            <div class="product-sidebar-price">
+                                <ins>$700.00</ins> <del>$800.00</del>
+                            </div>
+                        </div>
+                        <div class="thubmnail-recent">
+                            <img src="/img/product-thumb-1.jpg" class="recent-thumb" alt="">
+                            <h2><a href="single-product.html">Sony Smart TV - 2015</a></h2>
+                            <div class="product-sidebar-price">
+                                <ins>$700.00</ins> <del>$800.00</del>
+                            </div>
+                        </div>
+                        <div class="thubmnail-recent">
+                            <img src="/img/product-thumb-1.jpg" class="recent-thumb" alt="">
+                            <h2><a href="single-product.html">Sony Smart TV - 2015</a></h2>
+                            <div class="product-sidebar-price">
+                                <ins>$700.00</ins> <del>$800.00</del>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="single-sidebar">
+                        <h2 class="sidebar-title">Recent Posts</h2>
+                        <ul>
+                            <li><a href="#">Sony Smart TV - 2015</a></li>
+                            <li><a href="#">Sony Smart TV - 2015</a></li>
+                            <li><a href="#">Sony Smart TV - 2015</a></li>
+                            <li><a href="#">Sony Smart TV - 2015</a></li>
+                            <li><a href="#">Sony Smart TV - 2015</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                @if (Model.Count > 0)
+                {
+                    var stt = 1;
+                    var total = 0;
+                    <div class="col-md-8">
+                        <div class="product-content-right">
+                            <div class="woocommerce">
+                                <div style="">
+                                    <h2 class="text-primary">Please fill in your information</h2>
+
+                                    <form class="form-group">
+                                        <input name="EmailShip" id="emailship" placeholder="Email" class="form-control col-md-8 mb-3" />
+
+                                        <input name="NameShip" id="nameship" placeholder="Your Name" class="form-control col-md-8 mb-3" />
+
+                                        <input name="AddressShip" id="addressship" placeholder="Your Address" class="form-control col-md-8 mb-3" />
+
+                                        <input name="NumberShip" type="number" id="numbership" placeholder="Your Number" class="form-control col-md-8 mb-3" />
+
+                                        <textarea name="NoticeShip" id="noticeship" placeholder="Your Notice" class="form-control col-md-8 mb-5"></textarea>
+
+                                    </form>
+                                </div>
+
+                                <form method="post" action="#">
+                                    <table cellspacing="0" class="shop_table cart">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th class="product-remove">&nbsp;</th>
+                                                <th class="product-name">Product</th>
+                                                <th class="product-price">Price</th>
+                                                <th class="product-quantity">Quantity</th>
+                                                <th class="product-subtotal">Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            @foreach (var cart in Model)
+                                            {
+                                                var thanhtien = cart.Quantity * cart.Product.Price;
+                                                total += thanhtien;
+
+                                                <tr class="cart_item">
+                                                    <td>@(stt++)</td>
+
+                                                    <td style="width:100px" class="product-thumbnail">
+                                                        <a href="single-product.html"><img width="145" height="145" alt="poster_1_up" class="shop_thumbnail" src="~/@cart.Product.PhotoReview"></a>
+                                                    </td>
+
+                                                    <td class="product-name">
+                                                        <a href="single-product.html">@cart.Product.ProductName</a>
+                                                    </td>
+
+                                                    <td class="product-price">
+                                                        <span class="amount">@cart.Product.Price</span>
+                                                    </td>
+
+                                                    <td class="product-quantity">
+                                                        <div class="quantity buttons_added">
+                                                            <input type="number" size="4" asp-for="@cart.Quantity" id="Quanlity" class="input-text qty text" title="Qty">
+                                                        </div>
+                                                    </td>
+
+                                                    <td class="product-subtotal">
+                                                        <span class="amount">@thanhtien</span>
+                                                    </td>
+                                                </tr>
+
+
+                                            }
+                                            <tr>
+                                                <td class="actions" colspan="6">
+                                                    <div class="coupon">
+                                                        <label for="coupon_code">Coupon:</label>
+                                                        <input style="width:100px" type="text" placeholder="Voucher" id="vouchercode" class="input-text" name="coupon_code">
+                                                        <input id="voucher" data-total="@total" type="submit" value="Apply Coupon" name="apply_coupon" class="button">
+                                                    </div>
+                                                    <div style="display:none" id="alerts" class="alert-primary col-md-4 ml-3">YOUR VOUCHER USE SUCCESS</div>
+                                                </td>
+                                            </tr>
+
+
+
+                                        </tbody>
+                                    </table>
+                                </form>
+
+                                <div class="cart-collaterals">
+                                    <div class="cart_totals ">
+                                        <h2>Cart Totals</h2>
+
+                                        <table cellspacing="0">
+                                            <tbody>
+                                                <tr class="cart-subtotal">
+                                                    <th>Cart Subtotal</th>
+                                                    <td><span class="amount">@total</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Used Voucher</th>
+                                                    <td id="totalmoney">@total</td>
+                                                </tr>
+                                                <tr class="shipping">
+                                                    <th>Shipping and Handling</th>
+                                                    <td>Free Shipping</td>
+                                                </tr>
+
+                                                <tr class="order-total">
+                                                    <th>Order Total</th>
+                                                    <td id="totalmoney2">@total </td>
+                                                </tr>
+                                                <tr style="border:none">
+                                                    <th><span class="text-primary">50 VNĐ</span> more for <span class="text-primary">Fast Delivery</span></th>
+                                                    <td style="text-align:center"><input onclick="deli()"  data-total="@total" id="fastdeli" name="fastdeli" class="form-control" type="checkbox" /></td>
+                                                </tr>
+
+                                                
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div class="pay">
+                                        <h2>Payment</h2>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Payment Method</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td><button id="purchase" class="btn btn-info">Payment on delivery</button></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align:center"><button data-total=""  class="btn btn-primary"><icon class="fa fa-paypal"></icon>PayPal</button></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+
+                                   
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Latest jQuery form server -->
+    <script src="https://code.jquery.com/jquery.min.js"></script>
+
+    <!-- Bootstrap JS form CDN -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+    <!-- jQuery sticky menu -->
+    <script src="/js/owl.carousel.min.js"></script>
+    <script src="/js/jquery.sticky.js"></script>
+
+    <!-- jQuery easing -->
+    <script src="/js/jquery.easing.1.3.min.js"></script>
+
+    <!-- Main Script -->
+    <script src="/js/main.js"></script>
+</body>
+</html>
+
+@section Scripts {
+    <script>
+    
+        $(document).ready(function () {
+            $("#purchase").click(function (event) {
+                event.preventDefault();
+                event.preventDefault();
+                swal({
+                    title: "Order Confirmation",
+                    text: "The order cannot return when you order. Do you want to continue?",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonClass: "btn-danger",
+                    confirmButtonText: "Continue to Buy",
+
+                    cancelButtonText: "Close",
+                    closeOnConfirm: false,
+                    closeOnCancel: false
+                },
+                    function (isConfirm) {
+                        if (isConfirm) {
+                            var Total = document.getElementById("totalmoney2").textContent;
+                            var EmailShip = $("#emailship").val();
+                            var NameShip = $("#nameship").val();
+                            var AddressShip = $("#addressship").val();
+                            var NumberShip = $("#numbership").val();
+                            var NoticeShip = $("#noticeship").val();
+                            var voucherCOde = $("#vouchercode").val();
+                            $.ajax({
+                                type: "POST",               //update
+                                url: '/Cart/Purchase',
+                                data: {
+                                    Total: Total,
+                                    voucherCode: voucherCOde,
+                                    EmailShip: EmailShip,
+                                    NameShip: NameShip,
+                                    AddressShip: AddressShip,
+                                    NumberShip: NumberShip,
+                                    NoticeShip: NoticeShip
+                                },
+                                success: function (result) {
+                                    window.alert = 'Order Success'
+                                    window.location.href = '/Cart/Success?IdOrder=' + result;
+                                }
+                            });
+                        } else {
+                            swal("Close", "The order has not been sent , please complete your order", "error");
+                        }
+                    });
+            });
+        });
+
+        $(document).ready(function () {
+            $(".paypal").click(function (event) {
+                event.preventDefault();
+                var Total = $(this).attr("data-total");
+                $.ajax({
+                    type: "POST",
+                    url: '/Cart/PayPal',
+                    data: {
+                        Total: Total,
+                    },
+                    success: function (result) {
+                        window.location.href = result;
+                    }
+                });
+            });
+        });
+
+        function deli() {
+            var total = document.getElementById("totalmoney2");
+            total = parseInt(total.textContent);
+            var check = document.getElementById("fastdeli");
+            if (check.checked) {
+                total = total + 50;
+                $("#totalmoney2").html(total);
+            }
+            else
+            {
+                total = total - 50;
+                $("#totalmoney2").html(total);
+            }
+        };
+
+
+        $(document).ready(function () { //cart voucher js
+            $("#voucher").click(function (event) {
+                event.preventDefault();
+                var Total = parseInt($(this).attr("data-total"));
+                var idvoucher = $("#vouchercode").val();
+                if (idvoucher == "TET2021" && Total > 10000000) {
+                    Total = Total - 1000000;
+                    $("#alerts").css("display", "");
+                }
+                else if (idvoucher == "HE2021" && Total > 10000000) {
+                    Total = Total - (Total * 5 / 100);
+                }
+                else {
+                    swal("Thông báo", "Voucher is not available");
+                    $("#alerts").css("display", "none");
+                }
+                document.getElementById("totalmoney").innerHTML = Total;
+                document.getElementById("totalmoney2").innerHTML = Total;
+            });
+        });
+
+
+   
+
+                    //$(document).ready(function () {
+                    //    $("#voucher").click(function (event) {
+                    //        event.preventDefault();
+                    //        var vouchercode = $("#vouchercode").val();
+                    //        $.ajax({
+                    //            type: "POST",
+                    //            url: '/Cart/SubmitVoucher',
+                    //            data: {
+                    //                VoucherCode: vouchercode,
+                    //            },
+                    //            success: function (result) {
+                    //                $(".updatecartitem").text(result);
+                    //            }
+                    //        });
+                    //    });
+                    //});
+
+
+    </script>
+}

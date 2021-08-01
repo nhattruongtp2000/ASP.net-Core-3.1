@@ -26,9 +26,10 @@ namespace DI.DI.Repository
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
+        private readonly IVoucherRepository _IvoucherRepository;
         private readonly string _clientId;
         private readonly string _secretKey;
-        public CartRepository(Iden2Context iden2Context, IHttpContextAccessor httpContextAccessor, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager,IConfiguration config)
+        public CartRepository(Iden2Context iden2Context, IHttpContextAccessor httpContextAccessor, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager,IConfiguration config,IVoucherRepository IvoucherRepository)
         {
             _iden2Context = iden2Context;
             _httpContextAccessor = httpContextAccessor;
@@ -36,13 +37,14 @@ namespace DI.DI.Repository
             _userManager = userManager;
             _clientId = "AV-BEqQ4nyfYnUsK6_tkEim9gvX_wWaldPQETeF8DqUg6StRBlikt07ap6efAfcUd477BY77DmZ-ZNMN";
             _secretKey = /*config["PaypalSettings:SecretKey"];         */  "ENt8I6wQejmZJpmoe10v1Ah-q8G16mBsCjpVcgQsvIHbhLmGDXiC9K-hDJFFqQbVhi9m427R3QUNqI27";
+            _IvoucherRepository = IvoucherRepository;
         }
 
         public double TyGiaUSD = 23300;//store in Database
         public void AddtoCart(int IdProduct)
         {
             var x = _iden2Context.Products.Where(x => x.IdProduct == IdProduct).FirstOrDefault();
-
+            
             ProductVm product2 = new ProductVm() 
             { 
             DateAccept=x.DateAccept,
@@ -113,6 +115,7 @@ namespace DI.DI.Repository
             if (jsoncart != null)
             {
                 var a = JsonConvert.DeserializeObject<List<CartItem>>(jsoncart);
+
                 return a;
             }
             return new List<CartItem>();
@@ -136,15 +139,24 @@ namespace DI.DI.Repository
 
       
 
-        public async Task<string> Purchase(int total)
+        public async Task<string> Purchase(string IdOrder,string EmailShip, string NameShip, string AddressShip, string NumberShip, string NoticeShip, int total,string voucherCode)
         {
-            Random generator = new Random();
-            string IdOrder = generator.Next(0, 1000000).ToString("D6");
-            
-
+       
             var user = await _userManager.GetUserAsync(_httpContextAccessor.HttpContext.User);
             string Id = user.Id;
             //var freeProduct = await _iden2Context.Products.Where(x => x.IsFree==true).FirstOrDefaultAsync();
+
+            var vouchers = _iden2Context.Vouchers;
+
+
+            foreach(var item in vouchers)
+            {
+                if (voucherCode != null && voucherCode == item.VoucherCode && item.Quantity > 0)
+                {
+                    item.Quantity = item.Quantity - 1;
+                }
+            }
+
 
             var b = GetCartItems();
             foreach (var item in b)
@@ -166,49 +178,40 @@ namespace DI.DI.Repository
                 Status = Data.Enums.Status.Process,
                 OrderDay = DateTime.Now,
                 TotalPice = total,
-                PaymentType= "Direct Payment"
+                NameShip=NameShip,
+                EmailShip=EmailShip,
+                NumberShip=NumberShip,
+                NoticeShip=NoticeShip,
+                AddressShip=AddressShip,
+                VoucherCode=voucherCode,
+                PaymentType= "Payment on delivery"
             };
-            if (a.TotalPice >= 1000)
-            {
-                a.TotalPice = a.TotalPice * 90 / 100;
-            }
-            //if (a.TotalPice >= 10000)
-            //{
-            //    var orderdetails = new OrderDetails()
-            //    {
-            //        IdOrder = IdOrder,
-            //        IdProduct = freeProduct.IdProduct,
-            //        StatusDetails = Data.Enums.Status.Process,
-            //        Price = 0,
-            //        Quality = 0
-            //    };
-            //    _iden2Context.OrderDetails.Add(orderdetails);
-            //}
+
             _iden2Context.Orders.Add(a);
             ClearCart();
             await _iden2Context.SaveChangesAsync();
             return IdOrder;
         }
 
-        public async Task<List<OrderDetailsVm>> Checkout(string IdUser)
-        {
-            var a = from p in _iden2Context.Orders
-                    join pt in _iden2Context.OrderDetails on p.IdOrder equals pt.IdOrder
-                    join ptt in _iden2Context.Products on pt.IdProduct equals ptt.IdProduct
-                    select new { p, pt,ptt };
-            var order = a.Where(x => x.p.IdUser == IdUser);
-            var checkout = await order.Select(x => new OrderDetailsVm()
-            {
-                IdOrder = x.p.IdOrder,
-                StatusDetails = x.pt.StatusDetails,
-                IdProduct = x.pt.IdProduct,
-                Price = x.pt.Price,
-                Quality = x.pt.Quality,
-                DateOrder = x.p.OrderDay,
-                PhotoReview = x.ptt.PhotoReview
-            }).ToListAsync();
-            return checkout;
-        }
+        //public async Task<List<OrderDetailsVm>> Checkout(string IdUser)
+        //{
+        //    var a = from p in _iden2Context.Orders
+        //            join pt in _iden2Context.OrderDetails on p.IdOrder equals pt.IdOrder
+        //            join ptt in _iden2Context.Products on pt.IdProduct equals ptt.IdProduct
+        //            select new { p, pt,ptt };
+        //    var order = a.Where(x => x.p.IdUser == IdUser);
+        //    var checkout = await order.Select(x => new OrderDetailsVm()
+        //    {
+        //        IdOrder = x.p.IdOrder,
+        //        StatusDetails = x.pt.StatusDetails,
+        //        IdProduct = x.pt.IdProduct,
+        //        Price = x.pt.Price,
+        //        Quality = x.pt.Quality,
+        //        DateOrder = x.p.OrderDay,
+        //        PhotoReview = x.ptt.PhotoReview
+        //    }).ToListAsync();
+        //    return checkout;
+        //}
 
         public async Task<string> PayPal(double total)
             {

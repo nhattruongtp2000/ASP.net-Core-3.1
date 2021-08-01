@@ -56,22 +56,26 @@ namespace Web.Controllers
         }
 
         [Authorize]
-        public async Task<IActionResult> Purchase(int Total)
+        public async Task<string> Purchase(string EmailShip,string NameShip,string AddressShip,string NumberShip,string NoticeShip, int Total,string voucherCode)
         {
-           string a= await _cartRepository.Purchase(Total);
+            Random generator = new Random();
+            string IdOrder = generator.Next(0, 1000000).ToString("D6");
+
+            string a= await _cartRepository.Purchase(IdOrder,EmailShip,  NameShip,  AddressShip,  NumberShip,  NoticeShip, Total, voucherCode);
             _accountRepository.SendTo(User.Identity.Name, "Đơn hàng đã được xác nhận", "ĐƠn hàng" + a + "đang trong quá trị xử lý,cảm ơn bạn đã tin tương chúng tôi");
-            return Ok();
+            return IdOrder;
         }
 
-        public async Task<IActionResult> Checkout()
+        public IActionResult Checkout()
         {
-            var IdUser =await _accountRepository.GetId();
-            var a = await _cartRepository.Checkout(IdUser);
-            return View(a);
+            return View(_cartRepository.GetCartItems());
         }
 
-        public IActionResult Success()
+
+
+        public IActionResult Success(string IdOrder)
         {
+            ViewBag.Order = IdOrder;
             return View();
         }
        
@@ -95,5 +99,14 @@ namespace Web.Controllers
             var paypal = await _cartRepository.CheckoutSuccess(b);
             return View();
         }
+
+
+        [HttpPost]
+        public IActionResult SubmitVoucher(string VoucherCode)
+        {
+            return Content(VoucherCode) ;
+        }
+
+        
     }
 }

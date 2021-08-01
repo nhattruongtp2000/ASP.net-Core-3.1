@@ -30,6 +30,24 @@ namespace DI.DI.Repository
             
         }
 
+        public async Task<int> ChangePassword(ChangePasswordVm request, string UserName)
+        {
+            
+
+            var user =await _iden2Context.Users.Where(x => x.UserName == UserName).FirstOrDefaultAsync();
+            var x= await _userManager.CheckPasswordAsync(user, request.OldPass);
+            if (x ==false)
+            {
+                return 0;
+            }
+            else
+            {
+                await _userManager.ChangePasswordAsync(user, request.OldPass, request.NewPass);
+            }
+            await _iden2Context.SaveChangesAsync();
+            return 1;
+        }
+
         public async Task<int> ConfirmEmail(string token, string email)
         {
             var user = await _userManager.FindByEmailAsync(email);

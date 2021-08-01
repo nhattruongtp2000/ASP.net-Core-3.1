@@ -37,8 +37,13 @@ namespace DI.DI.Repository
             {
                 IdOrder = x.IdOrder,
                 Status = x.Status,
-                IdProduct = 1,
-                IdUser = x.IdUser,
+                UserName = x.IdUser,
+                AddressShip = "",
+                NameShip = "",
+                EmailShip = "",
+                NoticeShip = "",
+                NumberShip = "",
+                VoucherCode = "",
                 OrderDay = x.OrderDay,
                 TotalPice = x.TotalPice
             }).ToListAsync();
@@ -55,8 +60,13 @@ namespace DI.DI.Repository
             {
                 IdOrder = x.IdOrder,
                 Status = x.Status,
-                IdProduct = 1,
-                IdUser = x.IdUser,
+                UserName = x.IdUser,
+                AddressShip="",
+                NameShip="",
+                EmailShip="",
+                NoticeShip="",
+                NumberShip="",
+                VoucherCode="",
                 OrderDay = x.OrderDay,
                 TotalPice = x.TotalPice
             }).ToListAsync();
@@ -68,13 +78,18 @@ namespace DI.DI.Repository
         {
             var get = _iden2Context.Orders.Where(x => x.OrderDay.DayOfYear == date.DayOfYear);
             var x = await get.Select(x => new OrdersVm() 
-            { 
-               IdOrder=x.IdOrder,
-               Status=x.Status,
-               IdProduct=1,
-               IdUser=x.IdUser,
-               OrderDay=x.OrderDay,
-               TotalPice=x.TotalPice
+            {
+                IdOrder = x.IdOrder,
+                Status = x.Status,
+                UserName = x.IdUser,
+                AddressShip = "",
+                NameShip = "",
+                EmailShip = "",
+                NoticeShip = "",
+                NumberShip = "",
+                VoucherCode = "",
+                OrderDay = x.OrderDay,
+                TotalPice = x.TotalPice
             }).ToListAsync();
             return x;
         }
@@ -200,3 +215,6 @@ namespace DI.DI.Repository
             }
     }
 }
+
+
+

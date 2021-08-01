@@ -15,10 +15,12 @@ namespace Web.Controllers
     public class AccountsController : Controller
     {
         private readonly IAccountRepository _IaccountRepository;
+        private readonly IOrderRepository _IorderRepository;
 
-        public AccountsController(IAccountRepository IaccountRepository)
+        public AccountsController(IAccountRepository IaccountRepository, IOrderRepository IorderRepository)
         {
             _IaccountRepository = IaccountRepository;
+            _IorderRepository = IorderRepository;
         }
 
 
@@ -118,6 +120,52 @@ namespace Web.Controllers
             
         }
 
-      
+        public async Task<IActionResult> OrderHistory(string IdUser,int? page)
+        {
+            var x = await _IorderRepository.OrderHistory(IdUser, page);
+            return View(x);
+        }
+
+        public async Task<IActionResult> OrderHistoryDetails(string IdOrder)
+        {
+            var x =await _IorderRepository.GetDetails(IdOrder);
+            return View(x);
+        }
+
+
+        public  IActionResult ChangePassword()
+        {
+            if (TempData["Change"] != null)
+            {
+                ViewBag.Change = TempData["Change"];
+            }
+            return View();
+        }
+
+
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(ChangePasswordVm request)
+        {
+            string UserName = User.Identity.Name;
+
+            var x = await _IaccountRepository.ChangePassword(request,UserName);
+            if (ModelState.IsValid)
+            {
+                if (x == 1)
+                {
+                    TempData["Change"] = "Change Password Success";
+                    return RedirectToAction("ChangePassword");
+                }
+                else
+                {
+                    TempData["Change"] = "Change Password Failure ";
+                    return RedirectToAction("ChangePassword");
+                }
+            }
+            
+            return View();
+        }
+
     }
 }

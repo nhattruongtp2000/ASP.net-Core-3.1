@@ -1,4 +1,5 @@
-﻿
+﻿@using Microsoft.AspNetCore.Identity;
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -52,11 +53,14 @@
                         <div class="col-md-4">
                             <div class="header-right">
                                 <ul class="list-unstyled list-inline">
-                                    <li><a href="@Url.ActionLink("GetUser", "Accounts")"><i class="fa fa-user"></i> My Account</a></li>
+                                    <li><a href="@Url.ActionLink("OrderHistory","Accounts",new {IdUser=User.Identity.Name })"><i class="fa fa-shopping-cart"></i>Order History</a></li>
+                                    <li>
+                                        <a href="@Url.ActionLink("GetUser", "Accounts")"><i class="fa fa-user"></i> My Account</a>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
-                    }
+                }
                 </div>
             </div>
         </div> <!-- End header area -->
@@ -73,14 +77,14 @@
                     <div class="col-sm-4">
                         <form class="form-inline pt-5" asp-controller="Products" asp-action="GetAllProduct" method="post">
                             <input name="key" class="form-control" placeholder="Search" style="width:300px" />
-                            <button class="btn btn-primary" type="button"><i class="fa fa-search"></i></button>
+                            <button style="height:35px;width:50px" class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
                         </form>
                     </div>
 
                     <div class="col-sm-4">
                         <div class="shopping-item mt-5">
                             <a href="@Url.ActionLink("Cart","Cart")">Cart<i class="fa fa-shopping-cart"></i> @await Html.PartialAsync("~/Views/Shared/_CartPartial.cshtml")</a>
-</div>
+                        </div>
                     </div>
 
                 </div>
@@ -88,9 +92,9 @@
         </div>
     </div>@*End site branding area*@
 
-        <div class="mainmenu-area">
-            <div class="container">
-                @*<nav class="navbar navbar-expand-sm row">
+    <div class="mainmenu-area">
+        <div class="container">
+            @*<nav class="navbar navbar-expand-sm row">
 
                     <div class="navbar-collapse collapse" id="cll">
                         <ul class="navbar-nav mr-auto">
@@ -117,52 +121,51 @@
                         </ul>
                     </div>
                 </nav>*@
-                <div class="menu_header2 clearfix">
-                    
-                    <!-- div con dùng float thì thêm class clearfix ở div cha -->
-                    <div id="menu_contain">
-                        <ul class="menu_hmain menuheader_mid clearfix">
-                            <li class="li_co_cap ">
-                                <a class="active para" onclick="Data(this)" href="/Home/Indexx" id="Ao">Home</a>
-                            </li>
-                            <li class="li_co_cap">
-                                <a class="para" onclick="Data(this)" href="#montht">Category</a>
-                                <ul class="menu_con">
-                                    <li><a class="para" onclick="Data(this)" href="@Url.ActionLink("GetProductPerCategory","Products",new {IdCategory=1})">Laptop</a></li>
-                                    <li><a  class="para" onclick="Data(this)" href="@Url.ActionLink("GetProductPerCategory","Products",new {IdCategory=2})">Phone</a></li>
-                                    <li><a class="para" onclick="Data(this)" href="#">Headphone</a></li>
-                                    <li><a class="para" onclick="Data(this)" href="#">PC</a></li>
-                                    <li><a class="para" onclick="Data(this)" href="#">Mouse</a></li>
-                                </ul>
-                            </li>
-                            <li class="li_co_cap">
-                                <a href="#">Brand</a>
-                                <ul class="menu_con">
-                                    <li><a class="para" onclick="Data(this)"  href="#">SamSung</a></li>
-                                    <li><a class="para" onclick="Data(this)"  href="#">Dell</a></li>
-                                    <li><a class="para" onclick="Data(this)"  href="#">Apple</a></li>
-                                    <li><a class="para" onclick="Data(this)"  href="#">Asus</a></li>
-                                    <li><a class="para" onclick="Data(this)"  href="#">LG</a></li>
-                                    <li><a class="para" onclick="Data(this)"  href="#">Lenovo</a></li>
-                                </ul>
-                            </li>
-                            <li class="li_co_cap">
-                                <a class="para" onclick="Data(this)"  href="/Contact/Index">Contact</a>
-                            </li>
+            <div class="menu_header2 clearfix">
 
-                        </ul>
-                    </div>
+                <!-- div con dùng float thì thêm class clearfix ở div cha -->
+                <div id="menu_contain">
+                    <ul class="menu_hmain menuheader_mid clearfix">
+                        <li class="li_co_cap ">
+                            <a class="active para" onclick="Data(this)" href="/Home/Indexx" id="Ao">Home</a>
+                        </li>
+                        <li class="li_co_cap">
+                            <a class="para" onclick="Data(this)" href="#montht">Category</a>
+                            <ul class="menu_con">
+                                <li><a class="para" onclick="Data(this)" href="@Url.ActionLink("GetProductPerCategory","Products",new {IdCategory=1})">Laptop</a></li>
+                                <li><a class="para" onclick="Data(this)" href="@Url.ActionLink("GetProductPerCategory","Products",new {IdCategory=2})">Phone</a></li>
+                                <li><a class="para" onclick="Data(this)" href="#">Headphone</a></li>
+                                <li><a class="para" onclick="Data(this)" href="#">PC</a></li>
+                                <li><a class="para" onclick="Data(this)" href="#">Mouse</a></li>
+                            </ul>
+                        </li>
+                        <li class="li_co_cap">
+                            <a href="#">Brand</a>
+                            <ul class="menu_con">
+                                <li><a class="para" onclick="Data(this)" href="#">SamSung</a></li>
+                                <li><a class="para" onclick="Data(this)" href="#">Dell</a></li>
+                                <li><a class="para" onclick="Data(this)" href="#">Apple</a></li>
+                                <li><a class="para" onclick="Data(this)" href="#">Asus</a></li>
+                                <li><a class="para" onclick="Data(this)" href="#">LG</a></li>
+                                <li><a class="para" onclick="Data(this)" href="#">Lenovo</a></li>
+                            </ul>
+                        </li>
+                        <li class="li_co_cap">
+                            <a class="para" onclick="Data(this)" href="/Contact/Index">Contact</a>
+                        </li>
 
+                    </ul>
                 </div>
+
             </div>
         </div>
+    </div>
 
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
-
 
     <div class="footer-top-area">
         <div class="zigzag-bottom"></div>
@@ -219,6 +222,11 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            </br>
+            <div>
+                <h2 class="footer-wid-title">Follow us in</h2>
+                <iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FUstora-101257308908899%2F&tabs=timeline&width=500&height=250&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId" width="700" height="250" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
             </div>
         </div>
     </div> <!-- End footer top area -->
@@ -296,7 +304,7 @@
                 },
                 success: function () {
                     swal("Thông báo", "Gửi thành công");
-                
+
                 },
                 error: function () {
                     swal("Thông báo", "Gửi thất bại");
@@ -308,31 +316,31 @@
 </script>
 <script>
     function Data(el) {
-        $('.para').css("font-weight","normal");
-        $(el).css("font-weight","bold");
+        $('.para').css("font-weight", "normal");
+        $(el).css("font-weight", "bold");
     }
 </script>
 
 <script>
 
     $(document).ready(function () {
-            $(".test").click(function (event) {
-                event.preventDefault();
-                var IdProduct = $(this).attr("data-IdProduct");
-                $.ajax({
-                    type: "POST",
-                    url: '/Cart/AddToCart', //đường dẫn
-                    data: {
-                        IdProduct: IdProduct,  //tham số chuyển tới controller
-                    },
-                    success: function (data) {
-                        swal("Thông báo", "Add to Card Success");
-                        $("#cartcount").html(data);
-                    },
-                    error: function () {
-                        swal("Thông báo", "Add Failure");
-                    }
-                });
+        $(".test").click(function (event) {
+            event.preventDefault();
+            var IdProduct = $(this).attr("data-IdProduct");
+            $.ajax({
+                type: "POST",
+                url: '/Cart/AddToCart', //đường dẫn
+                data: {
+                    IdProduct: IdProduct,  //tham số chuyển tới controller
+                },
+                success: function (data) {
+                    swal("Thông báo", "Add to Card Success");
+                    $("#cartcount").html(data);
+                },
+                error: function () {
+                    swal("Thông báo", "Add Failure");
+                }
             });
         });
+    });
 </script>

@@ -35,8 +35,10 @@ namespace Web.Controllers
 
             if (key != null)
             {
+                TempData["Search"] = key;
                  c = await _iproductRepository.Search(key,page);
             }
+            
             return View(c);
         }
 
@@ -72,9 +74,9 @@ namespace Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Filter(int pricemin,int pricemax)
+        public async Task<IActionResult> Filter(int pricemin,int pricemax,int? page)
         {
-            var c = await _iproductRepository.Filters(pricemin, pricemax);
+            var c = await _iproductRepository.Filters(pricemin, pricemax,page);
             return View(c);
         }
 

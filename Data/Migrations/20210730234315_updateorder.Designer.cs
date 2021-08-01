@@ -4,14 +4,16 @@ using Data.DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Data.Migrations
 {
     [DbContext(typeof(Iden2Context))]
-    partial class Iden2ContextModelSnapshot : ModelSnapshot
+    [Migration("20210730234315_updateorder")]
+    partial class updateorder
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -260,9 +262,6 @@ namespace Data.Migrations
 
                     b.Property<decimal>("TotalPice")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("VoucherCode")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("IdOrder");
 

@@ -95,7 +95,7 @@ namespace DI.DI.Repository
         public async Task<IPagedList<ProductVm>> GetProductPerCategory(int IdCategory, int? page)
         {
             var pageNumber = page ?? 1;
-            int pageSize = 10;
+            int pageSize = 9;
 
             var x = _iden2Context.Products.Where(x => x.IdCategory == IdCategory);
             var a = await x.Select(x => new ProductVm()
@@ -118,7 +118,7 @@ namespace DI.DI.Repository
             var products = _iden2Context.Products;
 
             var pageNumber = page ?? 1;
-            int pageSize=10;
+            int pageSize=9;
 
             var a = await products.Select(x => new ProductVm()
             {
@@ -176,7 +176,7 @@ namespace DI.DI.Repository
         {
             var products =  _iden2Context.Products.Where(x => x.ProductName.Contains(key));
             var pageNumber = page ?? 1;
-            int pageSize = 10;
+            int pageSize = 9;
 
             var a =await products.Select(x=> new ProductVm()
             {
@@ -185,9 +185,10 @@ namespace DI.DI.Repository
                 IdBrand = x.IdBrand,
                 ProductName = x.ProductName,
                 UseVoucher = x.UseVoucher,
-                Price=x.Price,
-                IdCategory=x.IdCategory,
-                PhotoReview=x.PhotoReview
+                PhotoReview = x.PhotoReview,
+                IdCategory = x.IdCategory,
+                IsFree = x.IsFree,
+                Price = x.Price
             }).ToPagedListAsync(pageNumber,pageSize);
 
             return a;
@@ -274,9 +275,13 @@ namespace DI.DI.Repository
             return a;
         }
 
-        public async Task<List<ProductVm>> Filters(int pricemin, int pricemax)
+        public async Task<IPagedList<ProductVm>> Filters(int pricemin, int pricemax,int? page)
         {
             var a = _iden2Context.Products.Where(x => x.Price >= pricemin && x.Price <= pricemax);
+
+            var pageNumber = page ?? 1;
+            int pageSize = 9;
+
             var b = await a.Select(x => new ProductVm()
             {
                 IdProduct = x.IdProduct,
@@ -284,8 +289,11 @@ namespace DI.DI.Repository
                 IdBrand = x.IdBrand,
                 ProductName = x.ProductName,
                 UseVoucher = x.UseVoucher,
-                PhotoReview = x.PhotoReview
-            }).ToListAsync();
+                PhotoReview = x.PhotoReview,
+                IdCategory = x.IdCategory,
+                IsFree = x.IsFree,
+                Price = x.Price
+            }).ToPagedListAsync(pageNumber,pageSize);
             return b;
 
         }
@@ -311,7 +319,7 @@ namespace DI.DI.Repository
             var x = _iden2Context.Products.Where(x => x.IdBrand == IdBrand);
 
             var pageNumber = page ?? 1;
-            int pageSize = 10;
+            int pageSize = 9;
 
             var a = await x.Select(x => new ProductVm()
             {
