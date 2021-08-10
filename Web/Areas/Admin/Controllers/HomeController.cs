@@ -25,14 +25,19 @@ namespace Web.Areas.Admin.Controllers
         }
 
 
-        [Authorize]        
+        //[Authorize]        
         public async Task<IActionResult> Index()
         {
-            await _IaccountRepository.CountAccess();
+            
+
             var x =await GetOrdersPerDay();
             var y = await GetALlProcessOrdersPerDay();
+            var z = await GetALlDeliveredOrdersPerDay();
+            var t = _IanalystRepository.IPAccessDay();
             ViewBag.GetOD = x;
             ViewBag.GetAP = y;
+            ViewBag.GetAD = z;
+            ViewBag.IP = t;
             return View();
         }
 
@@ -66,6 +71,13 @@ namespace Web.Areas.Admin.Controllers
             return View(x);
         }
 
+        public async Task<int> GetALlDeliveredOrdersPerDay()
+        {
+            var date = DateTime.Now;
+            var x = await _IanalystRepository.GetALlDeliveredOrdersPerDay(date);
+
+            return x.Count();
+        }
 
 
 

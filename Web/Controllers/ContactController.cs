@@ -16,9 +16,11 @@ namespace Web.Controllers
     {
 
         private readonly IContactRepository _contactRepository;
-        public ContactController(IContactRepository contactRepository)
+        private readonly IAccountRepository _iaccountRepository;
+        public ContactController(IContactRepository contactRepository,IAccountRepository iaccountRepository)
         {
             _contactRepository = contactRepository;
+            _iaccountRepository = iaccountRepository;
         }
         public async Task<IActionResult> Index()
         {
@@ -79,6 +81,21 @@ namespace Web.Controllers
 
             return View(mailChimpListCollection);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> SendOrderReceived(string IdOrder)
+        {
+             await _contactRepository.SendOrderReceived(IdOrder);
+            return Ok();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SendOrderDelivered(string IdOrder)
+        {
+            await _contactRepository.SendOrderDeliveried(IdOrder);
+            return Ok();
+        }
+
     }
 }
 

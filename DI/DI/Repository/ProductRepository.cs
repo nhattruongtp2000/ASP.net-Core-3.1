@@ -45,7 +45,7 @@ namespace DI.DI.Repository
                 Price=request.Price,
                 PhotoReview = c,
                 Content=request.Content,
-                Description=request.Description
+                Description=request.Description,               
             };
              _iden2Context.Products.Add(product);
             return await _iden2Context.SaveChangesAsync();
@@ -87,7 +87,8 @@ namespace DI.DI.Repository
                 PhotoReview = x.PhotoReview,
                 IdCategory=x.IdCategory,
                 IsFree=x.IsFree,
-                Price=x.Price
+                Price=x.Price,
+                Alias=x.Alias
             }).ToListAsync();
             return a;
         }
@@ -108,7 +109,8 @@ namespace DI.DI.Repository
                 PhotoReview = x.PhotoReview,
                 IdCategory = x.IdCategory,
                 IsFree = x.IsFree,
-                Price = x.Price
+                Price = x.Price,
+                Alias = x.Alias
             }).ToPagedListAsync(pageNumber, pageSize);
             return a;
         }
@@ -130,28 +132,12 @@ namespace DI.DI.Repository
                 PhotoReview = x.PhotoReview,
                 IdCategory = x.IdCategory,
                 IsFree = x.IsFree,
-                Price = x.Price
+                Price = x.Price,
+                Alias = x.Alias
             }).ToPagedListAsync(pageNumber, pageSize);
             return a;
         }
 
-        public async Task<List<ProductVm>> GetNewProduct()
-        {
-            var products = _iden2Context.Products;
-
-
-            var a = await products.Select(x => new ProductVm() 
-            {
-                IdProduct = x.IdProduct,
-                DateAccept = x.DateAccept,
-                IdBrand = x.IdBrand,
-                ProductName = x.ProductName,
-                UseVoucher = x.UseVoucher,
-                PhotoReview = x.PhotoReview,
-                Price=x.Price
-            }).OrderBy(x=>x.IdProduct).ToListAsync();
-            return a;
-        }
 
         public async Task<ProductVm> GetProduct(int IdProduct)
         {
@@ -164,8 +150,9 @@ namespace DI.DI.Repository
                 ProductName = product.ProductName,
                 UseVoucher = product.UseVoucher,
                 IdCategory=product.IdCategory,
-                Price=product.Price
-                
+                Price=product.Price,
+                Alias = product.Alias
+
             };
             return a;
         }
@@ -188,7 +175,8 @@ namespace DI.DI.Repository
                 PhotoReview = x.PhotoReview,
                 IdCategory = x.IdCategory,
                 IsFree = x.IsFree,
-                Price = x.Price
+                Price = x.Price,
+                Alias = x.Alias
             }).ToPagedListAsync(pageNumber,pageSize);
 
             return a;
@@ -237,8 +225,11 @@ namespace DI.DI.Repository
             return 1;
         }
 
-        public async Task<ProductDetailsVm> GetProductDetail(int IdProduct)
+        public async Task<ProductDetailsVm> GetProductDetail(string Alias)
         {
+            var k = _iden2Context.Products.Where(x => x.Alias == Alias).FirstOrDefault();
+            var IdProduct = k.IdProduct;
+
             var photos = _iden2Context.ProductPhotos.Where(x => x.IdProduct == IdProduct);
             List<string> linkPhotos =await photos.Select(x => x.IFromFile).ToListAsync();
 
@@ -251,6 +242,8 @@ namespace DI.DI.Repository
             UserName=x.UserName
              
             }).ToListAsync();
+            
+            
 
             var relateProduct = await RelatedProduct(product.IdCategory,IdProduct);
 
@@ -270,7 +263,8 @@ namespace DI.DI.Repository
                 Price=product.Price,
                 Comments=commentvm,
                 Description=product.Description,
-                MaybeLike=MaybeLikes
+                MaybeLike=MaybeLikes,
+                Alias=product.Alias
             };
             return a;
         }
@@ -292,7 +286,8 @@ namespace DI.DI.Repository
                 PhotoReview = x.PhotoReview,
                 IdCategory = x.IdCategory,
                 IsFree = x.IsFree,
-                Price = x.Price
+                Price = x.Price,
+                Alias = x.Alias
             }).ToPagedListAsync(pageNumber,pageSize);
             return b;
 
@@ -330,7 +325,8 @@ namespace DI.DI.Repository
                 IdCategory = x.IdCategory,
                 ProductName = x.ProductName,
                 UseVoucher = x.UseVoucher,
-                Price = x.Price
+                Price = x.Price,
+                Alias = x.Alias
             }).ToPagedListAsync(pageNumber,pageSize);
             return a;
         }
@@ -347,7 +343,8 @@ namespace DI.DI.Repository
                 IdCategory = x.IdCategory,
                 ProductName = x.ProductName,
                 UseVoucher = x.UseVoucher,
-                Price = x.Price
+                Price = x.Price,
+                Alias = x.Alias
             }).ToListAsync();
             return a;
         }
@@ -364,7 +361,8 @@ namespace DI.DI.Repository
                 IdCategory = x.IdCategory,
                 ProductName = x.ProductName,
                 UseVoucher = x.UseVoucher,
-                Price = x.Price
+                Price = x.Price,
+                Alias = x.Alias
             }).ToListAsync();
             return a;
         }

@@ -14,9 +14,12 @@ namespace DI.DI.Repository
     public class ContactRepository : IContactRepository
     {
         private readonly Iden2Context _iden2Context;
-        public ContactRepository(Iden2Context iden2Context)
+        private readonly IAccountRepository _IaccountRepository;
+
+        public ContactRepository(Iden2Context iden2Context,IAccountRepository IaccountRepository)
         {
             _iden2Context = iden2Context;
+            _IaccountRepository = IaccountRepository;
         }
 
         public async Task<int> Feedback(string UserName, string PhoneNumber, string Email, string Content)
@@ -53,5 +56,28 @@ namespace DI.DI.Repository
             a.Add(email);
             return await _iden2Context.SaveChangesAsync();
         }
+
+        public async Task<string> SendOrderDeliveried(string IdOrder)
+        {
+            var order = await _iden2Context.Orders.Where(x => x.IdOrder == IdOrder).FirstOrDefaultAsync();
+            var user = await _iden2Context.Users.Where(x => x.Id == order.IdUser).FirstOrDefaultAsync();
+            var email = user.Email;
+
+            _IaccountRepository.SendTo(email, "Your order" +IdOrder+ "has been delivered", "Your order" + IdOrder + "has been delivered, thank you for use our service!");
+            return IdOrder;
+        }
+
+        public async Task<string> SendOrderReceived(string IdOrder)
+        {
+            var order =await  _iden2Context.Orders.Where(x =>x.IdOrder == IdOrder).FirstOrDefaultAsync();
+            var user = await _iden2Context.Users.Where(x => x.Id == order.IdUser).FirstOrDefaultAsync();
+            var email = user.Email;
+
+            _IaccountRepository.SendTo(email, "Ustora has been received your order request : " + IdOrder, "Ustora has been received you order request : " + IdOrder + ", your order will be process soon");
+            return IdOrder;
+        }
+
+
+
     }
 }

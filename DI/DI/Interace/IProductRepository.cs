@@ -24,9 +24,8 @@ namespace DI.DI.Interace
 
         Task<ProductVm> GetProduct(int IdProduct);
 
-        Task<ProductDetailsVm> GetProductDetail(int IdProduct);
-
-        Task<List<ProductVm>> GetNewProduct();
+        Task<ProductDetailsVm> GetProductDetail(string Alias);
+        
 
         Task<int> Edit(int IdProduct,ProductVm request);
 

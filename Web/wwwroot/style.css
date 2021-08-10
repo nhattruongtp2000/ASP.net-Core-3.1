@@ -19,11 +19,21 @@
     background: #ebebeb;
 }*/
 
+div.header-area {
+    background-color: lightgrey;
+    border-bottom:1px solid white;
+}
+
+.site-branding-area{
+    background-color:lightgrey;
+    height:95px;
+}
 
 .clearfix::after {
     content: "";
     clear: both;
     display: table;
+    border-bottom: 1px
 }
 
 .li_co_cap {

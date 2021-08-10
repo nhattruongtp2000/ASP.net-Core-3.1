@@ -62,8 +62,21 @@
     </tbody>
 </table>
 
+<div class="row" style="display:block">
+    <div style="height:30px;width:390px;text-align:center;margin-bottom:5px" class="alert-primary col-sm-4">Send Email Order Status </div>
+    <div >
+        <a id="receive" class="btn btn-warning col-sm-2" style="display:inline-block" >Order has been received</a>
+        <a id="delivery" class="btn btn-success col-sm-2" style="display:inline-block">Order has been delivered</a>
+    </div>
+</div>
+
+
+
+
+@section Scripts{ 
 
 <script>
+
     function change() {
         var IdOrder = document.getElementById("cc").getAttribute("data-value");
         var x = $("#a option:selected").text();
@@ -83,4 +96,53 @@
             }
         });
     }
+
+
 </script>
+<script>
+    $(document).ready(function () {
+        $("#receive").click(function (event) {
+            event.preventDefault();
+            var IdOrder = document.getElementById("cc").getAttribute("data-value");
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("SendOrderReceived", "Contact")',
+                data:
+                {
+                    IdOrder: IdOrder
+                },
+                success: function () {
+                    swal("Notification", "Send Email Success")
+                },
+                error: function () {
+                    swal("Notification", "Send Email Fail")
+                }
+            });
+        });
+    });
+
+        $(document).ready(function(){
+        $("#delivery").click(function (event)
+        {
+            event.preventDefault();
+            var IdOrder = document.getElementById("cc").getAttribute("data-value");
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("SendOrderDelivered", "Contact")',
+                data:
+                {
+                    IdOrder: IdOrder
+                },
+                success: function () {
+                    swal("Notification","Send Email Success")
+                },
+                error: function () {
+                    swal("Notification","Send Email Fail")
+                }
+            });
+        });
+    });
+
+</script>
+
+}

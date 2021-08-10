@@ -14,11 +14,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Web.Hubs;
 
 namespace Web
 {
     public class Startup
     {
+        // Enables SignalR for online user count.
+        public static bool EnableSignalR { get; } = true;
+
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -80,6 +85,9 @@ namespace Web
 
             });
 
+            if (EnableSignalR)
+                services.AddSignalR();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -106,17 +114,74 @@ namespace Web
 
             app.UseSession();
             app.UseDeveloperExceptionPage();
+
+
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
+              name: "news",
+              pattern: "home",
+              defaults: new { controller = "Home", action = "Indexx" });
+
+
+                endpoints.MapControllerRoute(
+               name: "news",
+               pattern: "login",
+               defaults: new { controller = "Accounts", action = "Index" });
+
+
+                endpoints.MapControllerRoute(
+               name: "news",
+               pattern: "products/{Alias}",
+               defaults: new { controller = "Products", action = "ProductDetails" });
+
+
+
+
+
+                endpoints.MapControllerRoute(
+                name: "default",
+                pattern: "laptop",
+                new { controller = "Products", action = "GetProductPerCategory" ,IdCategory="1"});
+
+                endpoints.MapControllerRoute(
+                name: "default",
+                pattern: "phone",
+                new { controller = "Products", action = "GetProductPerCategory", IdCategory =2});
+
+                endpoints.MapControllerRoute(
+                name: "default",
+                pattern: "headphone",
+                new { controller = "Products", action = "GetProductPerCategory", IdCategory = "3" });
+
+                endpoints.MapControllerRoute(
+                name: "news",
+                pattern: "pc",
+                new { controller = "Products", action = "GetProductPerCategory", IdCategory = "4" });
+
+                endpoints.MapControllerRoute(
+                name: "news",
+                pattern: "mouse",
+                new { controller = "Products", action = "GetProductPerCategory", IdCategory = "5" });
+
+
+
+                endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Indexx}/{id?}");
+
 
                 endpoints.MapAreaControllerRoute(
                  name: "Admin",
                  areaName: "Admin",
                 pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
+                if (EnableSignalR)
+                    endpoints.MapHub<OnlineCountHub>("/onlinecount");
             });
+
+
         }
     }
 }

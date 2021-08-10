@@ -231,7 +231,7 @@ namespace DI.DI.Repository
                 {
                 Name=item.Product.ProductName,
                 Currency="USD",
-                Price=Math.Round(item.Product.Price/TyGiaUSD,2).ToString(),
+                Price=Math.Round(item.Product.Price,2).ToString(),
                 Quantity=item.Quantity.ToString(),
                 Sku="sku",
                 Tax="0"               

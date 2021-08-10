@@ -10,7 +10,6 @@ namespace DI.DI.Interace
 {
     public interface IAccountRepository
     {
-        Task<int> CountAccess();
 
         Task<string> Register(RegisterVm request);
 
@@ -18,7 +17,11 @@ namespace DI.DI.Interace
 
         Task<string> GetId();
 
+        Task<string> GetEmail();
+
         Task<UserVm> GetUser();
+
+         void Logout();
 
         Task<int> EditUser(UserVm request);
 

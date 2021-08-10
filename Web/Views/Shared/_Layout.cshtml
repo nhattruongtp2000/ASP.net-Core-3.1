@@ -11,7 +11,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Ustora Demo</title>
+
+    <title>Product Page - Ustora Demo</title>
 
     <!-- Google Fonts -->
     <link href='https://fonts.googleapis.com/css?family=Titillium+Web:400,200,300,700,600' rel='stylesheet' type='text/css'>
@@ -42,7 +43,7 @@
                                 <li><a href="@Url.ActionLink("Checkout","Cart")"><i class="fa fa-user"></i> Checkout</a></li>
                                 @if (!User.Identity.IsAuthenticated)
                                 {
-                                    <li><a href="/Accounts/Index"><i class="fa fa-user"></i> Login</a></li>
+                                    <li><a href="/login"><i class="fa fa-user"></i> Login</a></li>
                                 }
                             </ul>
                         </div>
@@ -57,10 +58,13 @@
                                     <li>
                                         <a href="@Url.ActionLink("GetUser", "Accounts")"><i class="fa fa-user"></i> My Account</a>
                                     </li>
+                                    <li>
+                                        <a href="@Url.ActionLink("Logout", "Accounts")"><i class="fa fa-sign-out"></i>Log out</a>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
-                }
+                    }
                 </div>
             </div>
         </div> <!-- End header area -->
@@ -343,4 +347,11 @@
             });
         });
     });
+
+
 </script>
+@if (Startup.EnableSignalR)
+{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/3.1.7/signalr.min.js"></script>
+    <script src="~/js/onlinecount.js"></script>
+}

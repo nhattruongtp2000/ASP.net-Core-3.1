@@ -37,15 +37,15 @@ namespace Web.Controllers
             {
                 if (x != null)
                 {
-                    var confirmationLink = Url.Action(nameof(ConfirmEmail), "Accounts", new { x, email = request.UserName }, Request.Scheme);
-                    _IaccountRepository.SendTo(request.UserName, "Confirmation email link", confirmationLink);
+                    var confirmationLink = Url.Action(nameof(ConfirmEmail), "Accounts", new { x, email = request.Email }, Request.Scheme);
+                    _IaccountRepository.SendTo(request.Email, "Confirmation email link", confirmationLink);
                     return RedirectToAction(nameof(SuccessRegistration));
                 }
                 ModelState.AddModelError(string.Empty, "Invalid Login attemp");
             }
             return View(request);
         }
-
+            
         [HttpGet]
         public async Task<IActionResult> ConfirmEmail(string token, string email)
         {
@@ -167,5 +167,11 @@ namespace Web.Controllers
             return View();
         }
 
+        public IActionResult Logout()
+        {
+            _IaccountRepository.Logout();
+            return RedirectToAction("Indexx", "Home");
+
+        }
     }
 }

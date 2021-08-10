@@ -110,7 +110,7 @@
                                         <img style="height:282px;width:226px" src="~/@Model.NewProduct[i].PhotoReview" alt="">
                                         <div class="product-hover">
                                             <a  class="add-to-cart-link test" data-IdProduct=@Model.NewProduct[i].IdProduct><i class="fa fa-shopping-cart"></i> Add to cart</a>
-                                            <a href="@Url.ActionLink("ProductDetails","Products",new {IdProduct=Model.NewProduct[i].IdProduct })" class="view-details-link"><i class="fa fa-link"></i> See details</a>
+                                            <a href="@Url.ActionLink("ProductDetails","Products",new {Alias=Model.NewProduct[i].Alias})" class="view-details-link"><i class="fa fa-link"></i> See details</a>
                                         </div>
                                     </div>
 
@@ -154,14 +154,14 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="single-product-widget">
-                        <h2 class="product-wid-title">Hot Sell</h2>
+                        <h2 class="product-wid-title">Top Sell</h2>
                         
                         @for (int i = 0; i < 3; i++)
                         {
-                            var hotsell = Model.HotSeller[i];
+                            var topsell2 = Model.TopSell[i];
                     <div class="single-wid-product">
-                        <a href="@Url.ActionLink("ProductDetails","Products",new {IdProduct=Model.HotSeller[i].IdProduct })"><img style="height:130px;width:110px" src="~/@hotsell.IFromFile" alt="" class="product-thumb" /></a>
-                        <h2><a href="single-product.html">@hotsell.ProductName</a></h2>
+                        <a href="@Url.ActionLink("ProductDetails","Products",new {IdProduct=Model.TopSell[i].IdProduct })"><img style="height:130px;width:110px" src="~/@topsell2.PhotoReview" alt="" class="product-thumb" /></a>
+                        <h2><a href="single-product.html">@topsell2.ProductName</a></h2>
                         <div class="product-wid-rating">
                             <i class="fa fa-star"></i>
                             <i class="fa fa-star"></i>
@@ -170,10 +170,10 @@
                             <i class="fa fa-star"></i>
                         </div>
                         <div>
-                            <!---->     <a class="btn btn-primary test" data-IdProduct="@Model.HotSeller[i].IdProduct" @*href=@Url.ActionLink("AddToCart","Cart",new {IdProduct=Model.HotSeller[i].IdProduct})*@>Add To Cart</a>
+                            <!---->     <a class="btn btn-primary test" data-IdProduct="@Model.TopSell[i].IdProduct" @*href=@Url.ActionLink("AddToCart","Cart",new {IdProduct=Model.HotSeller[i].IdProduct})*@>Add To Cart</a>
                         </div>
                         <div class="product-wid-price">
-                            <ins>@hotsell.Price $</ins>
+                            <ins>@topsell2.Price $</ins>
 
                         </div>
                     </div>
@@ -183,14 +183,14 @@
                 </div>
                 <div class="col-md-4">
                     <div class="single-product-widget">
-                        <h2 class="product-wid-title">Top Sell</h2>
+                        <h2 class="product-wid-title">Top Standout</h2>
                         @*<a href="#" class="wid-view-more">View All</a>*@
                         @for (int i = 0; i < 3; i++)
                         {
-                            var topsell = @Model.TopSeller[i];
+                            var topstandout = @Model.TopStandout[i];
                     <div class="single-wid-product">
-                        <a href="@Url.ActionLink("ProductDetails","Products",new {IdProduct=Model.TopSeller[i].IdProduct })"><img style="height:130px;width:110px" src="~/@topsell.IFromFile" alt="" class="product-thumb" /></a>
-                        <h2><a href="single-product.html">@topsell.ProductName</a></h2>
+                        <a href="@Url.ActionLink("ProductDetails","Products",new {IdProduct=Model.TopStandout[i].IdProduct })"><img style="height:130px;width:110px" src="~/@topstandout.PhotoReview" alt="" class="product-thumb" /></a>
+                        <h2><a href="single-product.html">@topstandout.ProductName</a></h2>
                         <div class="product-wid-rating">
                             <i class="fa fa-star"></i>
                             <i class="fa fa-star"></i>
@@ -199,58 +199,16 @@
                             <i class="fa fa-star"></i>
                         </div>
                         <div>
-                            <!---->     <a class="btn btn-primary test" data-IdProduct="@topsell.IdProduct" @*href=@Url.ActionLink("AddToCart","Cart",new {IdProduct=Model.HotSeller[i].IdProduct})*@>Add To Cart</a>
+                            <!---->     <a class="btn btn-primary test" data-IdProduct="@topstandout.IdProduct" @*href=@Url.ActionLink("AddToCart","Cart",new {IdProduct=Model.HotSeller[i].IdProduct})*@>Add To Cart</a>
                         </div>
                         <div class="product-wid-price">
-                            <ins>@topsell.Price VND</ins>
+                            <ins>@topstandout.Price VND</ins>
 
                         </div>
 
 
                     </div>
-                        }
-                        @*<div class="single-wid-product">
-                                <a href="single-product.html"><img src="/img/product-thumb-4.jpg" alt="" class="product-thumb"></a>
-                                <h2><a href="single-product.html">Sony playstation microsoft</a></h2>
-                                <div class="product-wid-rating">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                </div>
-                                <div class="product-wid-price">
-                                    <ins>$400.00</ins> <del>$425.00</del>
-                                </div>
-                            </div>
-                            <div class="single-wid-product">
-                                <a href="single-product.html"><img src="/img/product-thumb-1.jpg" alt="" class="product-thumb"></a>
-                                <h2><a href="single-product.html">Sony Smart Air Condtion</a></h2>
-                                <div class="product-wid-rating">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                </div>
-                                <div class="product-wid-price">
-                                    <ins>$400.00</ins> <del>$425.00</del>
-                                </div>
-                            </div>
-                            <div class="single-wid-product">
-                                <a href="single-product.html"><img src="/img/product-thumb-2.jpg" alt="" class="product-thumb"></a>
-                                <h2><a href="single-product.html">Samsung gallaxy note 4</a></h2>
-                                <div class="product-wid-rating">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                </div>
-                                <div class="product-wid-price">
-                                    <ins>$400.00</ins> <del>$425.00</del>
-                                </div>
-                            </div>*@
+                        }                    
                     </div>
                 </div>
                 <div class="col-md-4">

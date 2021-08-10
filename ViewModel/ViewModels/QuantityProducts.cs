@@ -15,8 +15,8 @@ namespace ViewModel.ViewModels
 
         public string IFromFile { get; set; }
 
-        public int TotalQuantity { get; set; }
+        public decimal TotalQuantity { get; set; }
 
-        public int Price { get; set; }
+        public decimal Price { get; set; }
     }
 }

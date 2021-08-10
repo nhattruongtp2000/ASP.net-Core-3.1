@@ -65,9 +65,9 @@ namespace Web.Controllers
 
 
 
-        public async Task<IActionResult> ProductDetails(int IdProduct)
+        public async Task<IActionResult> ProductDetails(string Alias)
         {
-            var product = await _iproductRepository.GetProductDetail(IdProduct);
+            var product = await _iproductRepository.GetProductDetail(Alias);
             var c = _cartRepository.GetCartItems().Count();
             TempData["CartCount"] = c;
             return View(product);

@@ -66,38 +66,7 @@ namespace DI.DI.Repository
             return 0;
         }
 
-        public async Task<int> CountAccess()
-        {
-            var datetime = DateTime.Now;
-            var year = datetime.Date;
-
-            var json = _httpContextAccessor.HttpContext.Session.GetString(SystemConstants.AppSettings.Token); //get Token
-            if (_iden2Context.Accesses.All(x => x.DateAcess != year))   //tìm xem có tồn tại collumn trong bảng hay không bằng cách tìm year
-            {
-                var x = new Access()
-                {
-                    DateAcess = year,
-                    NumberOfAccess = 1
-                };
-                await _iden2Context.Accesses.AddAsync(x);
-                return await _iden2Context.SaveChangesAsync();
-            }
-
-            var access =  _iden2Context.Accesses.FirstOrDefault(x => x.DateAcess == year);
-
-
-            if (json != null)
-            {
-                access.NumberOfAccess = access.NumberOfAccess + 1;  // nếu không null + thêm 1 access
-            }
-            else if (access != null)
-            {
-                access.NumberOfAccess = access.NumberOfAccess + 1;  // nếu không null + thêm 1 access
-            }
-            //Cập nhật thông tin
-          
-            return await _iden2Context.SaveChangesAsync();
-        }
+       
 
         public async Task<int> EditUser(UserVm request)
         {
@@ -110,6 +79,13 @@ namespace DI.DI.Repository
             a.PhoneNumber = request.PhoneNumber;
 
             return await _iden2Context.SaveChangesAsync();
+        }
+
+        public async Task<string> GetEmail()
+        {
+            var user = await _userManager.GetUserAsync(_httpContextAccessor.HttpContext.User);
+            var EMail = user.Email;
+            return EMail;
         }
 
         public async Task<string> GetId()
@@ -142,19 +118,23 @@ namespace DI.DI.Repository
             return 0;
         }
 
+        public async void Logout()
+        {
+            await _signInManager.SignOutAsync();
+        }
+
         public async Task<string> Register(RegisterVm request)
         {
             var user = new AppUser()
             {
                 UserName = request.UserName,
-                Email = request.UserName 
+                Email = request.Email 
 
             };        
                 var result = await _userManager.CreateAsync(user, request.Pass);
             var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             if (result.Succeeded)
                 {
-                    await _signInManager.SignInAsync(user, isPersistent: false);
                 return token;
                 }
             return "";
