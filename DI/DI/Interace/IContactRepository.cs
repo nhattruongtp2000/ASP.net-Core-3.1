@@ -13,5 +13,9 @@ namespace DI.DI.Interace
         Task<int> Feedback(string UserName, string PhoneNumber, string Email, string Content);
 
         Task<int> SendEmailPromotion(string Email);
+
+        Task<string> SendOrderReceived(string IdOrder);
+
+        Task<string> SendOrderDeliveried(string IdOrder);
     }
 }

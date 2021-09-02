@@ -26,20 +26,35 @@ namespace Web.Controllers
         }
 
 
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> Indexx()
         {
+            await _ianalystRepository.IPAccess();
             var x = new HomeVm()
             {
                 HomeSlide = await _ianalystRepository.GetSlide(),
-                HotSeller = await _ianalystRepository.GetTotalQuantityProductsPerMonth(DateTime.Now.Month.ToString(), DateTime.Now.Year.ToString()),
-                TopSeller = await _ianalystRepository.GetTotalQuantityProducts(),
-                NewProduct = await _iproductRepository.GetNewProduct()
+                TopStandout = await _ianalystRepository.TopStandOut(DateTime.Now.Month.ToString(), DateTime.Now.Year.ToString()),
+                NewProduct = await _ianalystRepository.TopNew(),
+                TopSell=await _ianalystRepository.TopSell()
             };
             var c = _cartRepository.GetCartItems().Count();
             TempData["CartCount"] = c;
 
+
             return View(x);
         }
+
+        public async Task<IActionResult> TopSell()
+        {
+            var x = await _ianalystRepository.TopSell();
+            return View(x);
+        }
+
+        public IActionResult Test()
+        {
+            return View();
+        }
+
+        
     }
 }

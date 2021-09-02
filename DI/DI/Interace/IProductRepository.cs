@@ -5,6 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using ViewModel;
+using X.PagedList;
+using ClosedXML.Excel;
 
 namespace DI.DI.Interace
 {
@@ -16,32 +18,34 @@ namespace DI.DI.Interace
 
         Task<List<ProductVm>> GetAll ();
 
-        Task<List<ProductVm>> Search(string key);
+        Task<IPagedList<ProductVm>> GetAll2(int? page);
+
+        Task<IPagedList<ProductVm>> Search(string key, int? page);
 
         Task<ProductVm> GetProduct(int IdProduct);
 
-        Task<ProductDetailsVm> GetProductDetail(int IdProduct);
-
-        Task<List<ProductVm>> GetNewProduct();
+        Task<ProductDetailsVm> GetProductDetail(string Alias);
+        
 
         Task<int> Edit(int IdProduct,ProductVm request);
 
         Task<int> Delete(int IdProduct);
 
-        Task<List<ProductVm>> GetProductPerCategory(int IdCategory);
+        Task<IPagedList<ProductVm>> GetProductPerCategory(int IdCategory,int? page);
 
-        Task<List<ProductVm>> GetProductPerBrand(int IdBrand);
+        Task<IPagedList<ProductVm>> GetProductPerBrand(int IdBrand,int? page);
 
         Task<string> UpLoadFile(IFormFile fromFile);
 
-        Task<List<ProductVm>> Filters(int pricemin, int pricemax);
+        Task<IPagedList<ProductVm>> Filters(int pricemin, int pricemax,int? page);
 
         Task<int> AddComment(int IdProduct, string Content);
 
-        Task<List<ProductVm>> RelatedProduct (int IdBrandm,int IdProduct);
+        Task<List<ProductVm>> RelatedProduct (int IdCategory,int IdProduct);
 
+        Task<List<ProductVm>> MaybeLike(int IdBrand, int IdProduct);
 
-        
+        Task<IPagedList<ProductVm>> GetProductPerMutilpleBrandWithCategory(int IdCategory,int pricemin, int pricemax, int IdBrand1, int IdBrand2, int IdBrand3, int IdBrand4, int IdBrand5, int IdBrand6, int? page);
 
 
     }

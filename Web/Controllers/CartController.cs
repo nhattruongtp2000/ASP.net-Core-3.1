@@ -1,4 +1,5 @@
 ﻿using DI.DI.Interace;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Web.Controllers
 {
+    [Authorize]
     public class CartController : Controller
     {
         private readonly ICartRepository _cartRepository;
@@ -23,12 +25,13 @@ namespace Web.Controllers
             return View(cart);
         }
 
-        public IActionResult AddToCart(int IdProduct)
+        //add product
+        public int AddToCart(int IdProduct)
         {
             _cartRepository.AddtoCart(IdProduct);
             var c = _cartRepository.GetCartItems().Count();
-            TempData["CartCount"] = c;
-            return RedirectToAction("ProductDetails","Products",new {IdProduct=IdProduct });
+            TempData["CartCount"] = c.ToString();
+            return c;
         }
 
         [HttpPost]
@@ -46,32 +49,97 @@ namespace Web.Controllers
         }
 
 
-       
+   
         public IActionResult Cart()
         {
             
             return View(_cartRepository.GetCartItems());
         }
 
-        public async Task<IActionResult> Purchase(int Total)
+       
+        public async Task<string> Purchase(string EmailShip,string NameShip,string AddressShip,string NumberShip,string NoticeShip, decimal Total,string voucherCode)
         {
-           string a= await _cartRepository.Purchase(Total);
-            _accountRepository.SendTo(User.Identity.Name, "Đơn hàng đã được xác nhận", "ĐƠn hàng" + a + "đang trong quá trị xử lý,cảm ơn bạn đã tin tương chúng tôi");
-            return Ok();
+            Random generator = new Random();
+            string IdOrder = generator.Next(0, 1000000).ToString("D6");
+
+            string a= await _cartRepository.Purchase(IdOrder,EmailShip,  NameShip,  AddressShip,  NumberShip,  NoticeShip, Total, voucherCode);
+            string email =await _accountRepository.GetEmail();
+            _accountRepository.SendTo(email, "Đơn hàng đã được xác nhận", "ĐƠn hàng" + a + "đang trong quá trị xử lý,cảm ơn bạn đã tin tương chúng tôi");
+            return IdOrder;
         }
 
-        public async Task<IActionResult> Checkout()
+        public IActionResult Checkout()
         {
-            var IdUser =await _accountRepository.GetId();
-            var a = await _cartRepository.Checkout(IdUser);
-            return View(a);
+            return View(_cartRepository.GetCartItems());
         }
 
-        public IActionResult Success()
+
+
+        public IActionResult Success(string IdOrder)
         {
+            ViewBag.Order = IdOrder;
             return View();
         }
        
 
+        public async Task<IActionResult> PayPal(double Total)
+        {
+            TempData["test"] = Total.ToString();
+            var a = await _cartRepository.PayPal(Total);
+            return Json(new { redirectToUrl = a });
+        }
+
+        public  IActionResult CheckoutFail()
+        {         
+            return View();
+        }
+
+        public async Task<IActionResult> CheckoutSuccess()
+        {
+            var a = TempData["test"].ToString();
+            decimal b = decimal.Parse(a);
+            var paypal = await _cartRepository.CheckoutSuccess(b);
+            return View();
+        }
+
+
+        [HttpPost]
+        public IActionResult SubmitVoucher(string VoucherCode)
+        {
+            return Content(VoucherCode) ;
+        }
+
+        [HttpPost]
+        public IActionResult VNPay(string OrderCategory, decimal Amount, string txtOrderDesc, string cboBankCode)
+        {
+            var x = _cartRepository.VNpay(OrderCategory, Amount, txtOrderDesc, cboBankCode);    
+            return Redirect(x);
+        }
+
+
+        [HttpGet]
+        public IActionResult VNPay(decimal Amount)
+        {
+            return View();
+        }
+
+        public async Task<IActionResult> VNPayReturn(string EmailShip, string NameShip, string AddressShip, string NumberShip, string NoticeShip, string voucherCode)
+        {
+      
+            var x = await _cartRepository.VNPayReturn( EmailShip, NameShip, AddressShip, NumberShip, NoticeShip, voucherCode);
+            if (x == null)
+            {
+                return BadRequest("Cannot return");
+            }
+            return View(x);
+        }
+
+        [HttpPost]
+        public  IActionResult PassAmount(decimal Amount)
+        {
+            ViewBag.Amount = Amount;
+            return View("VNPay");
+        }
+        
     }
 }

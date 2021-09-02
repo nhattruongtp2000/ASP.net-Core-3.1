@@ -11,6 +11,7 @@ namespace Data.Utilities.Constants
         {
             public const string Token = "Token";
             public const string CARTKEY = "cart";
+            public const string IdUser = "IdUser";
         }
     }
 }

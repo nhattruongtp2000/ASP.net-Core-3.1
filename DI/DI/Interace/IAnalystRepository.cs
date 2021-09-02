@@ -8,20 +8,48 @@ namespace DI.DI.Interace
 {
     public interface IAnalystRepository
     {
-        public Task<List<AnalystAccess>> GetAccessForDay(string month, string year);
 
-        public Task<List<QuantityProducts>> GetTotalQuantityProductsPerMonth(string month, string year);
+        string GetAccess();
+
+        //
+        Task<List<QuantityProducts>> GetTotalQuantityProductsPerMonth(string month, string year);
+
+        Task<List<QuantityProducts>> GetTotalQuantityProductsPerDay(string day,string month, string year);
+
+        Task<List<QuantityProducts>> GetTotalQuantityProductsPerYear(string year);
 
         Task<List<QuantityProducts>> GetTotalQuantityProducts();
+        //
+        
 
         Task<List<OrdersVm>> GetOrdersPerDay(DateTime date);
 
         Task<List<OrdersVm>> GetALlProcessOrdersPerDay(DateTime date);
 
+        Task<List<OrdersVm>> GetALlDeliveredOrdersPerDay(DateTime date);
+
         Task<List<OrdersVm>> GetALlProcessOrdersPerMonthDetails(string month, string year);
+
+
+        //
 
         Task<List<SlideVm>> GetSlide();
 
+        Task<List<ProductVm>> TopSell();
 
+        Task<List<ProductVm>> TopNew();
+
+        Task<List<ProductVm>> TopStandOut(string month,string year);
+        //
+
+        Task<List<ToTalRevenue>> GetRevenueMonth(string month, string year);
+
+        //
+
+        Task<int> IPAccess();
+
+        int IPAccessDay();
+
+        int TotalAccess();
     }
 }

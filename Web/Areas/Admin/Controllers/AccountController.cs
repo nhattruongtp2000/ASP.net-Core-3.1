@@ -97,5 +97,7 @@ namespace Web.Areas.Admin.Controllers
             ViewBag.Message = "Gui mail cho" + To + "Thanh cong";
             return View();
         }
+
+        
     }
 }

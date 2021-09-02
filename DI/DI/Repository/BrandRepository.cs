@@ -1,10 +1,12 @@
 ﻿using Data.DB;
 using DI.DI.Interace;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ViewModel.ViewModels;
 
 namespace DI.DI.Repository
 {
@@ -15,15 +17,17 @@ namespace DI.DI.Repository
         {
             _iden2Context = iden2Context;
         }
-        public List<string> GetAllBrand()
+        public async Task<List<BrandVm>> GetAllBrand()
         {
-            var a = _iden2Context.Brands;
-            var Brands = new List<string>();
-            foreach(var item in a)
+
+            var query = from c in _iden2Context.Brands
+                        select new { c };
+            return await query.Select(x => new BrandVm()
             {
-                Brands.Add(item.BrandName);
-            }
-            return Brands;           
+                IdBrand = x.c.IdBrand,
+                BrandName = x.c.BrandName
+
+            }).ToListAsync();
         }
     }
 }

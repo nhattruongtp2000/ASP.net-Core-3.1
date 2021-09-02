@@ -13,6 +13,7 @@ namespace Web.Controllers
         private readonly IAnalystRepository _ianalystRepository;
         private readonly ICartRepository _cartRepository;
 
+
         public ProductsController(IProductRepository iproductRepository, IAnalystRepository ianalystRepository, ICartRepository cartRepository)
         {
             _iproductRepository = iproductRepository;
@@ -27,15 +28,17 @@ namespace Web.Controllers
             return View();
         }
 
-        public async Task<IActionResult> GetAllProduct(string key)
+        public async Task<IActionResult> GetAllProduct(string key,int? page)
         {
 
-            var c = await _iproductRepository.GetAll();
+            var c = await _iproductRepository.GetAll2(page);
 
             if (key != null)
             {
-                 c = await _iproductRepository.Search(key);
+                TempData["Search"] = key;
+                 c = await _iproductRepository.Search(key,page);
             }
+            
             return View(c);
         }
 
@@ -47,33 +50,33 @@ namespace Web.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> GetProductPerCategory(int IdCategory)
+        public async Task<IActionResult> GetProductPerCategory(int IdCategory,int? page)
         {
-            var x = await _iproductRepository.GetProductPerCategory(IdCategory);
+            var x = await _iproductRepository.GetProductPerCategory(IdCategory,page);
             return View(x);
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetProductPerBrand(int IdBrand)
+        public async Task<IActionResult> GetProductPerBrand(int IdBrand,int? page)
         {
-            var x = await _iproductRepository.GetProductPerBrand(IdBrand);
+            var x = await _iproductRepository.GetProductPerBrand(IdBrand,page);
             return View(x);
         }
 
 
 
-        public async Task<IActionResult> ProductDetails(int IdProduct)
+        public async Task<IActionResult> ProductDetails(string Alias)
         {
-            var product = await _iproductRepository.GetProductDetail(IdProduct);
+            var product = await _iproductRepository.GetProductDetail(Alias);
             var c = _cartRepository.GetCartItems().Count();
             TempData["CartCount"] = c;
             return View(product);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Filter(int pricemin,int pricemax)
+        public async Task<IActionResult> Filter(int pricemin,int pricemax,int? page)
         {
-            var c = await _iproductRepository.Filters(pricemin, pricemax);
+            var c = await _iproductRepository.Filters(pricemin, pricemax,page);
             return View(c);
         }
 
@@ -83,6 +86,14 @@ namespace Web.Controllers
             return RedirectToAction("ProductDetails",new {IdProduct=IdProduct });
         }
 
+        [HttpPost]
+        public async Task<IActionResult> GetProductPerMutilpleBrandWithCategory(int IdCategory,int pricemin, int pricemax, int IdBrand1, int IdBrand2, int IdBrand3, int IdBrand4, int IdBrand5, int IdBrand6, int? page)
+        {
+            var c = await _iproductRepository.GetProductPerMutilpleBrandWithCategory(IdCategory,pricemin, pricemax,IdBrand1, IdBrand2, IdBrand3, IdBrand4, IdBrand5, IdBrand6,page);
+           
+            return View(c);
+        }
         
+
     }
 }
