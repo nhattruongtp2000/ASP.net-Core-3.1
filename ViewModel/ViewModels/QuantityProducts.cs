@@ -9,10 +9,14 @@ namespace ViewModel.ViewModels
     {
         public int IdProduct { get; set; }
 
+        public string ProductName { get; set; }
+
+        public string Description { get; set; }
+
         public string IFromFile { get; set; }
 
-        public int TotalQuantity { get; set; }
+        public decimal TotalQuantity { get; set; }
 
-        public int Price { get; set; }
+        public decimal Price { get; set; }
     }
 }

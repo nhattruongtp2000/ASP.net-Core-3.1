@@ -1,104 +1,169 @@
-﻿@model ViewModel.ViewModels.OrderDetailsVm
-<head>
-    <style>
-        
+﻿@model IEnumerable<ViewModel.ViewModels.OrderDetailsVm>
 
+@{
+    ViewData["Title"] = "Details";
+}
 
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="row" style="background-color:red;height:80px;margin-bottom:50px">
-            <div class=clearfix>
-                <div class="card col-2">
-                    Mã đơn Hàng
-                    @Model.IdOrder
-                </div>
-                <div class="float-end card col-2">
-                    <button class="btn btn-primary clickme222" data-IdOrder="@Model.IdOrder", data-IdProduct="@Model.IdProduct" >
-                        Update
-                    </button>
-                </div>
+<h1>Details</h1>
 
-            </div>
+<p>
+    <div style="font-size:22px;font-weight:bold" >Status </div>
+</p>
 
+<div style="margin-bottom:40px  " >
+    <select onchange="change()" id="a" style="width:400px" asp-items="@ViewBag.Status" class="form-select col-md-4" >
+    <option>@ViewBag.GetStatus</option>
 
-        </div>
-        <div class="row ">
-            <div class="col-8 col bg-primary" style="height:500px">
-                <h4>Order Infomation</h4>
-                <hr />
-                <dl class="row">
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.IdOrder)
-                    </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.IdOrder)
-                    </dd>
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.IdProduct)
-                    </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.IdProduct)
-                    </dd>
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.Quality)
-                    </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.Quality)
-                    </dd>
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.Price)
-                    </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.Price)
-                    </dd>
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.StatusDetails)
-                    </dt>
-                    <dd class="col-sm-5">
-                        <div class="form-group">
-                            <select id="a" name="select2" asp-items="@ViewBag.Status" class="form-control">
-                                <option>@Html.DisplayFor(model => model.StatusDetails)</option>
-                            </select>
-                        </div>
-                    </dd>
-                </dl>
-            </div>
-            <div class="col-4 col bg-danger" style=" height:500px">
-            </div>
+    </select>
+</div>
 
-        </div>
-    </div>
-</body>
-@section Scripts{ 
-<script>
-    $(document).ready(function ()
-    {
-        $(".clickme222").click(function ()
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.IdOrder)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quality)
+            </th>
+            <th>
+                Price Product
+            </th>
+            <th>
+                Photo
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
         {
-            var IdOrder = $(this).attr("data-IdOrder");
-            var IdProduct = $(this).attr("data-IdProduct");
-            var status2 = $("#a option:selected").text();
-            $.ajax(
+            <tr>
+                <td id="cc" data-value="@item.IdOrder">
+                    @Html.DisplayFor(modelItem => item.IdOrder)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quality)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    <img src="~/@item.PhotoReview" class="rounded-circle" height="50" width="50" />
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="row" style="display:block">
+    <div style="height:30px;width:390px;text-align:center;margin-bottom:5px" class="alert-primary col-sm-4">Send Email Order Status </div>
+    <div>
+        <a id="receive" class="btn btn-warning col-sm-2" style="display:inline-block">Order has been received</a>
+        <a id="delivery" class="btn btn-success col-sm-2" style="display:inline-block">Order has been delivered</a>
+        <a id="completed" class="btn btn-success col-sm-2" style="display:inline-block">Order has been completed</a>
+    </div>
+</div>
+
+
+
+
+@section Scripts{ 
+
+<script>
+
+    function change() {
+        var IdOrder = document.getElementById("cc").getAttribute("data-value");
+        var x = $("#a option:selected").text();
+        $.ajax({
+            type: "POST",
+             url: '@Url.Action("Change","Orders")',
+                data:
                 {
-                    type: "POST",
-                    url: '/Orders/Change',
-                    data: {
-                        IdOrder: IdOrder,
-                        IdProduct: IdProduct,
-                        x: status2
-                    },
-                    success: function () {
-                        window.location.href = '@Url.Action("Details","Orders")' + '?IdOrder' + IdOrder, +"?IdProduct" + IdProduct;
-                    }
-                });
-
+                    IdOrder: IdOrder,
+                    x: x
+                },
+                success: function () {
+                    swal("Notification","Change Status Success")
+            },
+            error: function () {
+                swal("Notification", "Change Status Failure")
+            }
         });
-    });
-
-
+    }
 
 
 </script>
+<script>
+    $(document).ready(function () {
+        $("#receive").click(function (event) {
+            event.preventDefault();
+            var IdOrder = document.getElementById("cc").getAttribute("data-value");
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("SendOrderReceived", "Contact")',
+                data:
+                {
+                    IdOrder: IdOrder
+                },
+                success: function () {
+                    swal("Notification", "Send Email Success")
+                },
+                error: function () {
+                    swal("Notification", "Send Email Fail")
+                }
+            });
+        });
+    });
+
+        $(document).ready(function(){
+        $("#delivery").click(function (event)
+        {
+            event.preventDefault();
+            var IdOrder = document.getElementById("cc").getAttribute("data-value");
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("SendOrderDelivered", "Contact")',
+                data:
+                {
+                    IdOrder: IdOrder
+                },
+                success: function () {
+                    swal("Notification","Send Email Success")
+                },
+                error: function () {
+                    swal("Notification","Send Email Fail")
+                }
+            });
+        });
+    });
+
+     $(document).ready(function () {
+        $("#completed").click(function (event) {
+            event.preventDefault();
+            var IdOrder = document.getElementById("cc").getAttribute("data-value");
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("SendOrderCompleted", "Contact")',
+                data:
+                {
+                    IdOrder: IdOrder
+                },
+                success: function () {
+                    swal("Notification", "Send Email Success")
+                },
+                error: function () {
+                    swal("Notification", "Send Email Fail")
+                }
+            });
+        });
+    });
+</script>
+
 }

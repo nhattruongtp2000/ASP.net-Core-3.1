@@ -8,10 +8,14 @@ namespace ViewModel.ViewModels
 {
     public class LoginVm
     {
-     
+
+           
+        [Required(ErrorMessage ="Please fill your PhoneNumber")]
         public string UserName { get; set; }
 
         [DataType(DataType.Password)]
+
+        [Required(ErrorMessage ="Please fill your Password")]
         public string Pass { get; set; }
 
         public bool RememberMe { get; set; }

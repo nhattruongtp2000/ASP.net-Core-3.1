@@ -14,11 +14,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Web.Hubs;
 
 namespace Web
 {
     public class Startup
     {
+        // Enables SignalR for online user count.
+        public static bool EnableSignalR { get; } = true;
+
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -37,9 +42,13 @@ namespace Web
             services.AddTransient<IAccountRepository, AccountRepository>();
             services.AddTransient<ICartRepository, CartRepository>();
             services.AddTransient<IContactRepository, ContactRepository>();
-
+            services.AddTransient<ICategoryRepository, CategoryRepository>();
             services.AddTransient<IOrderRepository, OrderRepository>();
             services.AddTransient<IBrandRepository, BrandRepository>();
+            services.AddTransient<IVoucherRepository, VoucherRepository>();
+
+            services.AddControllersWithViews().AddRazorRuntimeCompilation();
+
 
 
             services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<Iden2Context>().AddDefaultTokenProviders();
@@ -71,11 +80,33 @@ namespace Web
 
 
             });
+
+            services.AddLogging();
             services.AddDistributedMemoryCache();
             services.AddSession(cfg => {
                 cfg.IdleTimeout = TimeSpan.FromMinutes(30);
 
             });
+
+            services.AddAuthentication().AddFacebook(options => {
+                options.AppId = Configuration["Facebook:AppId"];
+                options.AppSecret = Configuration["Facebook:AppSecret"];
+                options.CallbackPath = "/login-facebook";
+            });
+            services.AddAuthentication().AddGoogle(options =>
+            {
+                options.ClientId = Configuration["Google:ClientId"];
+                options.ClientSecret = Configuration["Google:ClientSecret"];
+                options.CallbackPath = "/login-google";
+            });
+            
+
+
+
+            if (EnableSignalR)
+                services.AddSignalR();
+
+            
 
         }
 
@@ -92,28 +123,145 @@ namespace Web
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
             
 
+
             app.UseAuthentication();
-            app.UseAuthorization();
 
             app.UseSession();
             app.UseDeveloperExceptionPage();
+            app.UseAuthorization();
+
+
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
+              name: "news",
+              pattern: "home",
+              defaults: new { controller = "Home", action = "Indexx" });
+
+
+                endpoints.MapControllerRoute(
+               name: "news",
+               pattern: "login",
+               defaults: new { controller = "Accounts", action = "Index" });
+
+
+                endpoints.MapControllerRoute(
+               name: "news",
+               pattern: "{Alias}",
+               defaults: new { controller = "Products", action = "ProductDetails" });
+
+
+
+                endpoints.MapControllerRoute(
+                name: "default",
+                pattern: "laptop",
+                new { controller = "Products", action = "GetProductPerCategory" ,IdCategory=1});
+
+                endpoints.MapControllerRoute(
+                name: "default",
+                pattern: "phone",
+                new { controller = "Products", action = "GetProductPerCategory", IdCategory =2});
+
+                endpoints.MapControllerRoute(
+                name: "default",
+                pattern: "headphone",
+                new { controller = "Products", action = "GetProductPerCategory", IdCategory = 3 });
+
+                endpoints.MapControllerRoute(
+                name: "news",
+                pattern: "pc",
+                new { controller = "Products", action = "GetProductPerCategory", IdCategory = 4 });
+
+                endpoints.MapControllerRoute(
+                name: "news",
+                pattern: "mouse",
+                new { controller = "Products", action = "GetProductPerCategory", IdCategory = 5 });
+
+                endpoints.MapControllerRoute(
+              name: "default",
+              pattern: "laptop",
+              new { controller = "Products", action = "GetProductPerCategory", IdCategory = 1 });
+
+                endpoints.MapControllerRoute(
+                name: "default",
+                pattern: "phone",
+                new { controller = "Products", action = "GetProductPerCategory", IdCategory = 2 });
+
+                endpoints.MapControllerRoute(
+                name: "default",
+                pattern: "headphone",
+                new { controller = "Products", action = "GetProductPerCategory", IdCategory = 3 });
+
+                endpoints.MapControllerRoute(
+                name: "news",
+                pattern: "pc",
+                new { controller = "Products", action = "GetProductPerCategory", IdCategory = 4 });
+
+                endpoints.MapControllerRoute(
+                name: "news",
+                pattern: "mouse",
+                new { controller = "Products", action = "GetProductPerCategory", IdCategory = 5 });
+
+                endpoints.MapControllerRoute(
+                name: "default",
+                pattern: "samsung",
+                new { controller = "Products", action = "GetProductPerBrand", IdBrand = 1 });
+
+                endpoints.MapControllerRoute(
+                name: "default",
+                pattern: "dell",
+                new { controller = "Products", action = "GetProductPerBrand", IdBrand = 2 });
+
+                endpoints.MapControllerRoute(
+                name: "default",
+                pattern: "apple",
+                new { controller = "Products", action = "GetProductPerBrand", IdBrand = 3 });
+
+                endpoints.MapControllerRoute(
+                name: "default",
+                pattern: "asus",
+                new { controller = "Products", action = "GetProductPerBrand", IdBrand = 4 });
+
+                endpoints.MapControllerRoute(
+                name: "default",
+                pattern: "lg",
+                new { controller = "Products", action = "GetProductPerBrand", IdBrand = 5 });
+
+                endpoints.MapControllerRoute(
+               name: "news",
+               pattern: "lenovo",
+               new { controller = "Products", action = "GetProductPerBrand", IdBrand = 6 });
+
+
+
+
+
+
+
+                endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Accounts}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Indexx}/{id?}");
+
 
                 endpoints.MapAreaControllerRoute(
                  name: "Admin",
                  areaName: "Admin",
                 pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
+                if (EnableSignalR)
+                    endpoints.MapHub<OnlineCountHub>("/onlinecount");
             });
+
+
         }
     }
 }

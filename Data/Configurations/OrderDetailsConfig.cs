@@ -13,6 +13,7 @@ namespace Data.Configurations
         public void Configure(EntityTypeBuilder<OrderDetails> builder)
         {
             builder.HasKey(x => new { x.IdOrder, x.IdProduct });
+            
 
             builder.HasOne(x => x.Order).WithMany(x => x.OrderDetails).HasForeignKey(x => x.IdOrder);
         }

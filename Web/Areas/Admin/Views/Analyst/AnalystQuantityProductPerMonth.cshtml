@@ -1,44 +1,166 @@
 ﻿@model IEnumerable<ViewModel.ViewModels.QuantityProducts>
+@using Newtonsoft.Json
 
 <head>
     <!-- Step 1 - Include the fusioncharts core library -->
     <script type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/fusioncharts.js"></script>
     <!-- Step 2 - Include the fusion theme -->
     <script type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.fusion.js"></script>
+    <style>
+        body {
+            background-color: aquamarine;
+        }
 
+        #one {
+            display: none;
+        }
+
+        #two {
+            display: none
+        }
+
+        #but {
+            margin-top: 5px;
+            margin-left: 40px;
+            display: flex;
+            justify-content: flex-start;
+            margin-bottom: 20px;
+        }
+
+            #but button {
+                width: 100px;
+            }
+    </style>
 
 </head>
 <body>
-    <form class="form-inline" asp-action="AnalystQuantityProductPerMonth" method="post">
-        <div name="month" class="form-group">
-            <label>Month</label>
-            <select name="month" class=" col-4 me-2">
-                <option selected>--</option>
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-                <option>6</option>
-                <option>7</option>
-                <option>8</option>
-                <option>9</option>
-                <option>10</option>
-                <option>11</option>
-                <option>12</option>
-            </select>
+    <div id="but" class="col-4">
+        <button onclick="clickone()" style="margin-right:50px" class="btn btn-primary">Day</button>
+        <button onclick="clicktwo()" style="margin-right:50px" class="btn btn-primary">Month</button>
+        <button onclick="clickthree()" class="btn btn-primary">Year</button>
+    </div>
 
-            <label>Year</label>
-            <select name="year" class="col-4 me-2">
-                <option selected>--</option>
-                <option>2020</option>
-                <option>2021</option>
-                <option>2022</option>
-            </select>
 
-            <button class="btn btn-primary">Submit</button>
-        </div>
-    </form>
+
+
+    <div id="one">
+        <form class="form-inline" asp-action="AnalystQuantityProductPerDay" method="post">
+            <div name="month" class="form-group">
+                <label>Days</label>
+                <select name="day" class=" col-2 me-2">
+                    <option selected>--</option>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    <option>6</option>
+                    <option>7</option>
+                    <option>8</option>
+                    <option>9</option>
+                    <option>10</option>
+                    <option>11</option>
+                    <option>12</option>
+                    <option>13</option>
+                    <option>14</option>
+                    <option>15</option>
+                    <option>16</option>
+                    <option>17</option>
+                    <option>18</option>
+                    <option>19</option>
+                    <option>20</option>
+                    <option>21</option>
+                    <option>22</option>
+                    <option>23</option>
+                    <option>24</option>
+                    <option>25</option>
+                    <option>26</option>
+                    <option>27</option>
+                    <option>28</option>
+                    <option>29</option>
+                    <option>30</option>
+                    <option>31</option>
+                </select>
+
+                <label>Months</label>
+                <select name="month" class=" col-2 me-2">
+                    <option selected>--</option>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    <option>6</option>
+                    <option>7</option>
+                    <option>8</option>
+                    <option>9</option>
+                    <option>10</option>
+                    <option>11</option>
+                    <option>12</option>
+                </select>
+
+                <label>Years</label>
+                <select name="year" class="col-2 me-2">
+                    <option selected>--</option>
+                    <option>2020</option>
+                    <option>2021</option>
+                    <option>2022</option>
+                </select>
+
+                <button class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </div>
+
+    <div id="two">
+        <form class="form-inline" asp-action="AnalystQuantityProductPerMonth" method="post">
+            <div name="month" class="form-group">
+                <label>Month</label>
+                <select name="month" class=" col-2 me-2">
+                    <option selected>--</option>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    <option>6</option>
+                    <option>7</option>
+                    <option>8</option>
+                    <option>9</option>
+                    <option>10</option>
+                    <option>11</option>
+                    <option>12</option>
+                </select>
+
+                <label>Year</label>
+                <select name="year" class="col-2 me-2">
+                    <option selected>--</option>
+                    <option>2020</option>
+                    <option>2021</option>
+                    <option>2022</option>
+                </select>
+
+                <button class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </div>
+
+    <div id="three">
+        <form class="form-inline" asp-action="AnalystQuantityProductPerYear" method="post">
+            <div name="month" class="form-group">
+
+                <label>Years</label>
+                <select name="year" class="col-2 me-2">
+                    <option selected>--</option>
+                    <option>2020</option>
+                    <option>2021</option>
+                    <option>2022</option>
+                </select>
+
+                <button class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </div>
 
     <div id="test"></div>
     @if (Model != null)
@@ -46,82 +168,70 @@
         <h2>Thống kê sản phẩm bán chạy tháng @ViewBag.month năm @ViewBag.year</h2>
 
         <div id="chart-container"></div>
-        @*<table class="table">
-                    <thead>
-                        <tr>
-                            <th>
 
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.IdProduct)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.TotalQuantity)
-                            </th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model)
-                        {
-                            <tr>
-                                <td>
-                                    TOP @i
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.IdProduct)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.TotalQuantity)
-                                </td>
-                            </tr>
-                            i++;
-                        }
-                    </tbody>
-                </table>
-            *@
     }
 
-    </body>
+</body>
+
+
 
 @section Scripts{
     <script>
-        var listmonth = '@ViewBag.list';
-        var obj = JSON.parse(listmonth);
+
+
+        var model=@Html.Raw(JsonConvert.SerializeObject(this.Model));
+
+
         const categories = [
             {
                 "category": [
-                    { "label": "1" },
-                    { "label": "2" },
-                    { "label": "3" },
-                    { "label": "4" },
-                    { "label": "5" },
-                    { "label": "6" },
-                    { "label": "7" },
-                    { "label": "8" },
-                    { "label": "9" },
-                    { "label": "10" },
+                    { "label": model[0].ProductName },
+                    { "label": model[1].ProductName },
+                    { "label": model[2].ProductName },
+                    { "label": model[3].ProductName },
+                    { "label": model[4].ProductName },
+                    { "label": model[5].ProductName },
+                    { "label": model[6].ProductName },
+                    { "label": model[7].ProductName },
+                    { "label": model[8].ProductName },
 
                 ]
-            }
+            },
+
         ];
         // Construct the dataset comprising multiple series
         const dataset = [
             {
-                "seriesName": "Profit",
+                "seriesName": "Top Product",
                 "renderAs": "area",
                 "data": [
-                    { "value": obj[0] },
-                    { "value": obj[1] },
-                    { "value": obj[2] },
-                    { "value": obj[3] },
-                    { "value": obj[4] },
-                    { "value": obj[5] },
-                    { "value": obj[6] },
-                    { "value": obj[7] },
-                    { "value": obj[8] },
-                    { "value": obj[9] },
-                    { "value": obj[10] },
+                    { "value": model[0].TotalQuantity },
+                    { "value": model[1].TotalQuantity },
+                    { "value": model[2].TotalQuantity },
+                    { "value": model[3].TotalQuantity },
+                    { "value": model[4].TotalQuantity },
+                    { "value": model[5].TotalQuantity },
+                    { "value": model[6].TotalQuantity },
+                    { "value": model[7].TotalQuantity },
+                    { "value": model[8].TotalQuantity },
+
+                ]
+            },
+            {
+                "seriesName": "Love",
+                "rederAs": "area2",
+                "data": [
+                    { "value": 2 },
+                    { "value": 2 },
+                    { "value": 2 },
+                    { "value": 2 },
+                    { "value": 2 },
+                    { "value": 2 },
+                    { "value": 2 },
+                    { "value": 2 },
+                    { "value": 2 },
+                    { "value": 2 },
+
                 ]
             }
         ];
@@ -135,9 +245,8 @@
             dataFormat: 'json',
             dataSource: {
                 "chart": {
-                    "caption": "Truong Company",
+                    "caption": "Ustora",
                     "subCaption": "Quantity Product analysis per month",
-                    "xAxisname": "Top",
                     "yAxisName": "Total Quantity",
                     "numberPrefix": "",
                     "divlineColor": "#999999",
@@ -150,17 +259,38 @@
                     "toolTipBgAlpha": "80",
                     "toolTipBorderRadius": "2",
                     "toolTipPadding": "5",
-                    "theme": "fusion"
+                    "theme": "fusion",                  
                 },
                 "categories": categories,
                 "dataset": dataset
             }
         }
         FusionCharts.ready(function () {
+            $("#one").hide();
+
             var fusioncharts = new FusionCharts(chartConfigurations);
             fusioncharts.render();
         });
 
         document.getElementById("test").innerHTML = listmonth[0];
+
+        function clickone() {
+            $("#one").css("display", "block");
+            $("#two").css("display", "none");
+            $("#three").css("display", "none");
+        }
+
+        function clicktwo() {
+            $("#one").css("display", "none");
+            $("#two").css("display", "block");
+            $("#three").css("display", "none");
+        }
+
+        function clickthree() {
+            $("#one").css("display", "none");
+            $("#two").css("display", "none");
+            $("#three").css("display", "block");
+        }
     </script>
 }
+
