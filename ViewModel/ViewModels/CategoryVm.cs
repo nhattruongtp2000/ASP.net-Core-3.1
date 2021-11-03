@@ -9,5 +9,7 @@ namespace ViewModel.ViewModels
         public int IdCategory { get; set; }
 
         public string NameCategory { get; set; }
+
+        public int? ParentId { get; set; }
     }
 }

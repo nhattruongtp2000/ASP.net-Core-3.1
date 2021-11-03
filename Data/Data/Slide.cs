@@ -12,6 +12,13 @@ namespace Data.Data
 
         public string SlideName { get; set; }
 
+        public string Alias { get; set; }
+
+        public int IdCategory { get; set; }
+
+        public int IdBrand { get; set; }
+
+
         public string FromFile { get; set; }
     }
 }

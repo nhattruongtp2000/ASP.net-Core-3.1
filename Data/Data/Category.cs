@@ -10,6 +10,9 @@ namespace Data.Data
         [Key]
         public int IdCategory { get; set; }
 
+        public int? ParentId { get; set; }
+
         public string NameCategory { get; set; }
+
     }
 }

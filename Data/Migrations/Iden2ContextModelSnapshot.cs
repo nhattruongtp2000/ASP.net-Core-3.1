@@ -19,19 +19,6 @@ namespace Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.0");
 
-            modelBuilder.Entity("Data.Data.Access", b =>
-                {
-                    b.Property<DateTime>("DateAcess")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("NumberOfAccess")
-                        .HasColumnType("int");
-
-                    b.HasKey("DateAcess");
-
-                    b.ToTable("Accesses");
-                });
-
             modelBuilder.Entity("Data.Data.AppUser", b =>
                 {
                     b.Property<string>("Id")
@@ -59,6 +46,9 @@ namespace Data.Migrations
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
@@ -124,6 +114,9 @@ namespace Data.Migrations
 
                     b.Property<string>("NameCategory")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ParentId")
+                        .HasColumnType("int");
 
                     b.HasKey("IdCategory");
 
@@ -226,22 +219,59 @@ namespace Data.Migrations
                     b.ToTable("Feedbacks");
                 });
 
+            modelBuilder.Entity("Data.Data.IpAccess", b =>
+                {
+                    b.Property<DateTime>("DateAccess")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CountAcess")
+                        .HasColumnType("int");
+
+                    b.Property<string>("IPAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("DateAccess");
+
+                    b.ToTable("IpAccesses");
+                });
+
             modelBuilder.Entity("Data.Data.Order", b =>
                 {
                     b.Property<string>("IdOrder")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("AddressShip")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EmailShip")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("IdUser")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NameShip")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NoticeShip")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NumberShip")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("OrderDay")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("PaymentType")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<int>("TotalPice")
-                        .HasColumnType("int");
+                    b.Property<decimal>("TotalPice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("VoucherCode")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("IdOrder");
 
@@ -256,8 +286,8 @@ namespace Data.Migrations
                     b.Property<int>("IdProduct")
                         .HasColumnType("int");
 
-                    b.Property<int>("Price")
-                        .HasColumnType("int");
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("Quality")
                         .HasColumnType("int");
@@ -266,6 +296,8 @@ namespace Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("IdOrder", "IdProduct");
+
+                    b.HasIndex("IdProduct");
 
                     b.ToTable("OrderDetails");
                 });
@@ -277,8 +309,17 @@ namespace Data.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
+                    b.Property<string>("Alias")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("DateAccept")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("IdBrand")
                         .HasColumnType("int");
@@ -286,22 +327,41 @@ namespace Data.Migrations
                     b.Property<int>("IdCategory")
                         .HasColumnType("int");
 
+                    b.Property<int>("IdProductGiveTo")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsFree")
                         .HasColumnType("bit");
+
+                    b.Property<bool>("IsGift")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Keyword")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhotoReview")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Price")
-                        .HasColumnType("int");
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("ProductName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("UseVoucher")
                         .HasColumnType("bit");
 
                     b.HasKey("IdProduct");
+
+                    b.HasIndex("Alias")
+                        .IsUnique()
+                        .HasFilter("[Alias] IS NOT NULL");
 
                     b.ToTable("Products");
                 });
@@ -331,8 +391,17 @@ namespace Data.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
+                    b.Property<string>("Alias")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("FromFile")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("IdBrand")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdCategory")
+                        .HasColumnType("int");
 
                     b.Property<string>("SlideName")
                         .HasColumnType("nvarchar(max)");
@@ -340,6 +409,48 @@ namespace Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Slides");
+                });
+
+            modelBuilder.Entity("Data.Data.Voucher", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<bool>("ApplyForAll")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal?>("DiscountAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int?>("DiscountPercent")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("FromDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("ToDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("TypeVoucher")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("VoucherCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("VoucherName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Vouchers");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -481,7 +592,15 @@ namespace Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Data.Data.Product", "Product")
+                        .WithMany("OrderDetails")
+                        .HasForeignKey("IdProduct")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Order");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -536,6 +655,11 @@ namespace Data.Migrations
                 });
 
             modelBuilder.Entity("Data.Data.Order", b =>
+                {
+                    b.Navigation("OrderDetails");
+                });
+
+            modelBuilder.Entity("Data.Data.Product", b =>
                 {
                     b.Navigation("OrderDetails");
                 });

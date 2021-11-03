@@ -20,6 +20,9 @@ namespace DI.DI.Repository
 
 
         }
+
+
+
         public async Task<List<CategoryVm>> GetAllCategory()
         {
 
@@ -28,9 +31,24 @@ namespace DI.DI.Repository
                 return await query.Select(x => new CategoryVm()
                 {
                     IdCategory=x.c.IdCategory,
-                    NameCategory=x.c.NameCategory
+                    NameCategory=x.c.NameCategory,
+                    ParentId=x.c.ParentId
 
                 }).ToListAsync();           
+        }
+
+        public List<CategoryVm> GetAllCategory2()
+        {
+            var query = from c in _iden2Context.Categories
+                        select new { c };
+            return  query.Select(x => new CategoryVm()
+            {
+                IdCategory = x.c.IdCategory,
+                NameCategory = x.c.NameCategory,
+                ParentId = x.c.ParentId
+
+
+            }).ToList();
         }
     }
 }

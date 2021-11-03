@@ -9,5 +9,7 @@ namespace DI.DI.Interace
     public interface ICategoryRepository
     {
         Task<List<CategoryVm>> GetAllCategory();
+
+        List<CategoryVm> GetAllCategory2();
     }
 }

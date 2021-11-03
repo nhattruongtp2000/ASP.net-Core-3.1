@@ -37,8 +37,8 @@ namespace Web.Areas.Admin.Controllers
             {
                 if (x !=null) 
                 {
-                    var confirmationLink = Url.Action(nameof(ConfirmEmail), "Account", new { x, email = request.UserName }, Request.Scheme);
-                     _IaccountRepository.SendTo(request.UserName, "Confirmation email link", confirmationLink);
+                    var confirmationLink = Url.Action(nameof(ConfirmEmail), "Account", new { x, email = request.Email }, Request.Scheme);
+                     _IaccountRepository.SendTo(request.Email, "Confirmation email link", confirmationLink);
                     return RedirectToAction(nameof(SuccessRegistration));
                 }
                 ModelState.AddModelError(string.Empty, "Invalid Login attemp");
@@ -97,5 +97,8 @@ namespace Web.Areas.Admin.Controllers
             ViewBag.Message = "Gui mail cho" + To + "Thanh cong";
             return View();
         }
+
+        
+        
     }
 }
