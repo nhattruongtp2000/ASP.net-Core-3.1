@@ -43,7 +43,7 @@
                                 <li><a href="@Url.ActionLink("Checkout","Cart")"><i class="fa fa-user"></i> Checkout</a></li>
                                 @if (!User.Identity.IsAuthenticated)
                                 {
-                                    <li><a href="~/Account/Login"><i class="fa fa-user"></i> Login</a></li>
+                                    <li><a href="~/Accounts/Login"><i class="fa fa-user"></i> Login</a></li>
                                 }
                             </ul>
                         </div>
@@ -54,12 +54,12 @@
                         <div class="col-md-4">
                             <div class="header-right">
                                 <ul class="list-unstyled list-inline">
-                                    <li><a href="@Url.ActionLink("OrderHistory","Account",new {IdUser=User.Identity.Name })"><i class="fa fa-shopping-cart"></i>Order History</a></li>
+                                    <li><a href="@Url.ActionLink("OrderHistory","Accounts",new {IdUser=User.Identity.Name })"><i class="fa fa-shopping-cart"></i>Order History</a></li>
                                     <li>
-                                        <a href="@Url.ActionLink("GetUser", "Account")"><i class="fa fa-user"></i> My Account</a>
+                                        <a href="@Url.ActionLink("GetUser", "Accounts")"><i class="fa fa-user"></i> My Account</a>
                                     </li>
                                     <li>
-                                        <a href="@Url.ActionLink("Logout", "Account")"><i class="fa fa-sign-out"></i>Log out</a>
+                                        <a href="@Url.ActionLink("Logout", "Accounts")"><i class="fa fa-sign-out"></i>Log out</a>
                                     </li>
                                 </ul>
                             </div>
@@ -87,7 +87,7 @@
 
                     <div class="col-sm-4">
                         <div class="shopping-item mt-5">
-                            <a  href="@Url.ActionLink("Cart","Cart")">Cart<i class="fa fa-shopping-cart"></i> @await Html.PartialAsync("~/Views/Shared/_CartPartial.cshtml")</a>
+                            <a href="@Url.ActionLink("Cart","Cart")">Cart<i class="fa fa-shopping-cart"></i> @await Html.PartialAsync("~/Views/Shared/_CartPartial.cshtml")</a>
                         </div>
                     </div>
 
@@ -133,24 +133,8 @@
                         <li class="li_co_cap ">
                             <a class="active para" onclick="Data(this)" href="/Home/Indexx" id="Ao">Home</a>
                         </li>
-                        @await Component.InvokeAsync("Category") 
-                        @*<li class="li_co_cap">
-                            <a class="para" onclick="Data(this)" href="#montht">Category</a>
-                            <ul class="menu_con">*@
-                                @*<li onmouseover="showcon()" onmouseout="hidecon()"><a class="para" onclick="Data(this)" href="@Url.ActionLink("GetProductPerCategory","Products",new {IdCategory=1})">Laptop</a>
-                                    <ul class="menu_con_con" style="display:none">
-                                        <li><a href="#">Love </a></li>
-                                    </ul>
-                                
-                                
-                                </li>*@
-                                
-                                <!--<li><a class="para" onclick="Data(this)" href="@Url.ActionLink("GetProductPerCategory","Products",new {IdCategory=2})">Phone</a></li>
-                                <li><a class="para" onclick="Data(this)" href="@Url.ActionLink("GetProductPerCategory","Products",new {IdCategory=3})">Headphone</a></li>
-                                <li><a class="para" onclick="Data(this)" href="@Url.ActionLink("GetProductPerCategory","Products",new {IdCategory=4})">PC</a></li>
-                                <li><a class="para" onclick="Data(this)" href="@Url.ActionLink("GetProductPerCategory","Products",new {IdCategory=5})">Mouse</a></li>
-                            </ul>
-                        </li>-->
+                        @await Component.InvokeAsync("Category")
+
                         <li class="li_co_cap">
                             <a href="#">Brand</a>
                             <ul class="menu_con">
@@ -164,6 +148,9 @@
                         </li>
                         <li class="li_co_cap">
                             <a class="para" onclick="Data(this)" href="/Contact/Index">Contact</a>
+                        </li>
+                        <li class="li_co_cap">
+                            <a class="para" onclick="Data(this)" href="/Blog/Index">Blog</a>
                         </li>
 
                     </ul>
@@ -206,13 +193,12 @@
 
                 <div class="col-md-3 col-sm-6">
                     <div class="footer-menu">
-                        <h2 class="footer-wid-title">User Navigation </h2>
+                        <h2 class="footer-wid-title">Chính sách </h2>
                         <ul>
-                            <li><a href="#">My account</a></li>
-                            <li><a href="#">Order history</a></li>
-                            <li><a href="#">Wishlist</a></li>
-                            <li><a href="#">Vendor contact</a></li>
-                            <li><a href="#">Front page</a></li>
+                            <li><a href="@Url.Action("BlogDetails","Blog",new {BlogId=16})">Bảo mật thông tin</a></li>
+                            <li><a href="@Url.Action("BlogDetails","Blog",new {BlogId=13})">Giá cả và hình thức thanh toán</a></li>
+                            <li><a href="@Url.Action("BlogDetails","Blog",new {BlogId=14})">Quyền và nghĩa vụ các bên</a></li>
+                            <li><a href="@Url.Action("BlogDetails","Blog",new {BlogId=15})">Phương thức thanh toán</a></li>
                         </ul>
                     </div>
                 </div>
@@ -286,7 +272,6 @@
 
 </body>
 </html>
-
 
 
 
@@ -376,6 +361,23 @@
         });
     });
 
+    $(document).ready(function () {
+        $("#search").click(function () {
+            var Iduser = $(this).attr("data-id");
+                var IdOrder = $("#idorder").val();
+                $.ajax({
+                    type: "POST",               //update
+                    url: '@Url.Action("SearchOrder", "Account")',
+                    data: {
+                        IdOrder: IdOrder,
+                        IdUser:Iduser
+                    },
+                    success: function (result) {
+                        $("#show").html(result);
+                    }
+                });
+        });
+    });
 
 </script>
 @if (Startup.EnableSignalR)

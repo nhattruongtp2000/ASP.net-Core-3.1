@@ -87,11 +87,19 @@
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input  class="form-check-input" asp-for="IsGift" /> @Html.DisplayNameFor(model => model.IsGift)
+                    <input class="form-check-input" asp-for="IsGift" /> @Html.DisplayNameFor(model => model.IsGift)
                 </label>
             </div>
-
-
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsShow" /> @Html.DisplayNameFor(model => model.IsShow)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsStandout" /> @Html.DisplayNameFor(model => model.IsStandout)
+                </label>
+            </div>
             <div>
                 <label asp-for="PhotoReview" class="control-label"></label>
                 <input type="file" name="PhotoReview" />

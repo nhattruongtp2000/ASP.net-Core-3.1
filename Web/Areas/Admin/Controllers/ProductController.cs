@@ -176,5 +176,20 @@ namespace Web.Areas.Admin.Controllers
                 }
             }
         }
+        [HttpPost]
+        public async Task<IActionResult> ChangeIsShow(int IdProduct)
+        {
+            var x = await _IproductRepository.ChangIsShow(IdProduct);
+            return RedirectToAction("Index");
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangeIsStandout(int IdProduct)
+        {
+            var x = await _IproductRepository.ChangeIsStandout(IdProduct);
+            return RedirectToAction("Index");
+
+        }
     }
 }

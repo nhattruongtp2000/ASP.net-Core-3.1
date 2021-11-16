@@ -59,6 +59,7 @@ namespace Web.Controllers
         }
 
        
+        [HttpPost]
         public async Task<string> Purchase(string EmailShip,string NameShip,string AddressShip,string NumberShip,string NoticeShip, decimal Total,string voucherCode)
         {
             Random generator = new Random();

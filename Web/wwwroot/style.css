@@ -188,6 +188,7 @@ div.header-area {
     border-bottom: 1px solid #ebebeb;
     border-top: 1px solid #ebebeb;
     padding: 0 10px;
+    width:1300px;
 }
 
 
@@ -1427,4 +1428,9 @@ div.cart-collaterals ul.products li.product:hover .add_to_cart_button{background
 
 .pagination > li > a, .pagination > li > span {
   color: #5a88ca;
+}
+
+.comment{
+    border: 1px solid #ddd;
+    display: block
 }

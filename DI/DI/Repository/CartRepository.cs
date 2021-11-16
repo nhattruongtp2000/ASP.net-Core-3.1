@@ -66,6 +66,7 @@ namespace DI.DI.Repository
                     Price = gift.Price,
                     ProductName = gift.ProductName,
                     UseVoucher = gift.UseVoucher,
+                    isGift=gift.IsGift,
                 };
             }
             ProductVm product2 = new ProductVm()
@@ -78,6 +79,8 @@ namespace DI.DI.Repository
                 Price = product.Price,
                 ProductName = product.ProductName,
                 UseVoucher = product.UseVoucher,
+                isGift=product.IsGift,
+                IdProductGiveTo = product.IdProductGiveTo
             };
             var cart = GetCartItems();
             var cartItems = cart.Find(x => x.Product.IdProduct == IdProduct);
@@ -109,6 +112,12 @@ namespace DI.DI.Repository
         {
             var cart = GetCartItems();
             var cartItem = cart.Find(x => x.Product.IdProduct == IdProduct);
+   
+            if (cartItem.Product.IdProductGiveTo != 0)
+            {
+                var CartItemGift = cart.Find(x => x.Product.IdProduct == cartItem.Product.IdProductGiveTo);
+                cart.Remove(CartItemGift);
+            }
             if (cartItem != null)
             {
                 cart.Remove(cartItem);

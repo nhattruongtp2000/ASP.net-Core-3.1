@@ -34,6 +34,7 @@ namespace Data.DB
         public DbSet<ProductPhoto> ProductPhotos { get; set; }
 
         public DbSet<Voucher> Vouchers { get; set; }
+        public DbSet<Blog> Blogs { get; set; }
 
 
 

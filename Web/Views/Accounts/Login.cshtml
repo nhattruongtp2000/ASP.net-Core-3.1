@@ -34,7 +34,7 @@
         <div class="main">
             <div class="row">
                 <div class="col-6">
-                    <form method="post" asp-controller="Account" asp-action="Login">
+                    <form method="post" asp-controller="Accounts" asp-action="Login">
                         <div class="form-group">
                             <label>PhoneNumber*</label>
                             <input asp-for="UserName" class="form-control col-12" placeholder="Please fill your PhoneNumber" />
@@ -51,19 +51,25 @@
 
                             <br>
                         </div>
+                        <div>
+                            <a href="/Accounts/ForgotPassword">Forgot Password</a>
+                        </div>
+                        @if (ViewBag.Error != null) { 
+                        <div style="color:red">@ViewBag.Error</div>
+                        }
                         <input type="submit" class="btn btn-danger col-12" value="Login" />
                     </form>
                 </div>
                 <div class="col-6">
                     <div>New User? Let's Register in there</div>
-                    <a style="margin-bottom:10px" href="@Url.Action("Register","Account")" class="btn btn-success col-12">Register</a>
+                    <a style="margin-bottom:10px" href="@Url.Action("Register","Accounts")" class="btn btn-success col-12">Register</a>
                     <p>or login with</p>
                     <div style="margin-bottom:10px">
-                        <form asp-action="ExternalLogin" asp-controller="Account">
+                        <form asp-action="ExternalLogin" asp-controller="Accounts">
                             <input style="background-color: #d34836" type="submit" value="Login With Google" class="btn  col-12" />
                         </form>
                     </div>
-                    <form asp-action="ExternalLoginFacebook" asp-controller="Account">
+                    <form asp-action="ExternalLoginFacebook" asp-controller="Accounts">
                         <input style="background-color: #3b5998" type="submit" value="Login With Facebook" class="btn col-12" />
                     </form>
                 </div>

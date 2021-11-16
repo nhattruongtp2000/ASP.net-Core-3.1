@@ -119,7 +119,7 @@ namespace DI.DI.Repository
             var c = await orders.Select(x => new OrdersVm()
             {
                 IdOrder = x.p.IdOrder,
-                UserName = "",
+                UserName = x.p.IdUser,
                 EmailShip = "",
                 AddressShip = "",
                 NameShip = "",
@@ -132,6 +132,31 @@ namespace DI.DI.Repository
                 VoucherCode = x.p.VoucherCode
             }).ToPagedListAsync(pageNumber, pageSize);
             return c;
+        }
+
+        public async Task<OrdersVm> SearchOrder(string IdOrder, string IdUser)
+        {
+            
+
+            var k = await _iden2Context.Orders.Where(x => x.IdUser == IdUser && x.IdOrder == IdOrder).FirstOrDefaultAsync() ;
+
+            //join pt in _iden2Context.OrderDetails on p.IdOrder equals pt.IdOrder
+            //join ptt in _iden2Context.Products on pt.IdProduct equals ptt.IdProduct
+
+            var ordervm = new OrdersVm()
+            {
+                IdOrder = k.IdOrder,
+                OrderDay = k.OrderDay,
+                TotalPice = k.TotalPice,
+                VoucherCode = k.VoucherCode,
+                OrderType = k.PaymentType,
+                Status = k.Status
+
+
+            };
+            return ordervm;
+
+
         }
     }
 }

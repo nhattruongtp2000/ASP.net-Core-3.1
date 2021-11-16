@@ -36,5 +36,8 @@ namespace DI.DI.Interace
 
         public Task<int> ExternalLoginCallback(string returnUrl = null, string remoteError = null);
 
+        Task<string> ForgotPassword(string email);
+
+        Task<int> ResetPassword(ResetPassword request);
     }
 }

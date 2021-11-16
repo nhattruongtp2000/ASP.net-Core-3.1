@@ -10,6 +10,8 @@ namespace ViewModel
         
         public string Content { get; set; }
 
+        public int Review { get; set; }
+
         public string UserName { get; set; }
     }
 }

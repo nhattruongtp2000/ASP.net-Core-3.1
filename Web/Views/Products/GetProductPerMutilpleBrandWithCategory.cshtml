@@ -35,6 +35,8 @@
                     <!---->
                     @foreach (var item in Model)
                     {
+                        var a = (int)item.Price;
+                        string res = a.ToString("#,##0");
                         <div class="col-sm-3 ml-2">
                             <div class="single-shop-product">
                                 <div class="product-upper">
@@ -42,7 +44,7 @@
                                 </div>
                                 <h2><a href="">@item.ProductName</a></h2>
                                 <div class="product-carousel-price">
-                                    <ins>@item.Price</ins> <label>VND</label>
+                                    <ins>@res</ins> <label>VND</label>
                                 </div>
 
                                 <div class="product-option-shop">

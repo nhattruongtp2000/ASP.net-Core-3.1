@@ -6,6 +6,7 @@ using log4net.Core;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
@@ -13,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using ViewModel.ViewModels;
 
@@ -37,7 +39,6 @@ namespace DI.DI.Repository
 
         public async Task<int> ChangePassword(ChangePasswordVm request, string UserName)
         {
-
 
             var user =await _iden2Context.Users.Where(x => x.UserName == UserName).FirstOrDefaultAsync();
             var x= await _userManager.CheckPasswordAsync(user, request.OldPass);
@@ -226,20 +227,61 @@ namespace DI.DI.Repository
             return "";
         }
 
-        public void SendTo(string To, string Subject, string Body)
-        {
+        //send email
+        public  void SendTo(string To, string Subject, string Body)
+            {
             MailMessage mm = new MailMessage();
             mm.To.Add(To);
             mm.Subject = Subject;
             mm.Body = Body;
-            mm.From = new MailAddress("nhattruongtp2000@gmail.com");
+            mm.From = new MailAddress("Ustoram@gmail.com");
             mm.IsBodyHtml = true;
             SmtpClient smtp = new SmtpClient("smtp.gmail.com");
             smtp.Port = 587;
             smtp.UseDefaultCredentials = false;
             smtp.EnableSsl = true;
-            smtp.Credentials = new System.Net.NetworkCredential("nhattruongtp2000@gmail.com", "kiki321*^^*");
+            smtp.Credentials = new System.Net.NetworkCredential("nhattruongtp2021@gmail.com", "kiprao123");
             smtp.Send(mm);
+        }
+
+        public async Task<string> ForgotPassword(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
+            {
+                return "";
+            }
+            var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+            return code;
+        }
+
+
+        public async Task<int> ResetPassword(ResetPassword request)
+        {
+            string code = null;
+            if (request.Code == null)
+            {
+                return 0;
+            }
+            else
+            {
+                code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(request.Code));
+            }
+            var user = await _userManager.FindByEmailAsync(request.Email);
+            if (user == null)
+            {
+                // Không thấy user
+                return 1;
+            }
+            var result = await _userManager.ResetPasswordAsync(user, code, request.NewPass);
+
+            if (result.Succeeded)
+            {
+                // Chuyển đến trang thông báo đã reset thành công
+                return 2;
+            }
+            return 3;
         }
     }
 }

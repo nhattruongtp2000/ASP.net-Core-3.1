@@ -20,18 +20,18 @@
                     if (Model.Any(x => x.ParentId == item.IdCategory))
                     {
                         <li onmouseover="showcon()" onmouseout="hidecon()">
-                            <a class="para" onclick="Data(this)" href="#">@item.NameCategory</a>
+                            <a class="para"  href="@Url.ActionLink("GetProductPerCategory","Products",new {IdCategory=item.IdCategory})">@item.NameCategory</a>
                             <ul class="menu_con_con" style="display:none">
                                 @foreach (var subitem in Model.Where(x => x.ParentId == item.IdCategory))
                                 {
-                                    <li><a href="#">@subitem.NameCategory</a></li>
+                                    <li><a href="">@subitem.NameCategory</a></li>
                                 }
                             </ul>
                         </li>
                     }
                     else
                     {
-                        <li class="nosub"><a class="para" onclick="Data(this)"  href="#">@item.NameCategory</a></li>
+                        <li class="nosub"><a class="para" onclick="Data(this)" href="@Url.ActionLink("GetProductPerCategory","Products",new {IdCategory=item.IdCategory})">@item.NameCategory</a></li>
                     }
 
 

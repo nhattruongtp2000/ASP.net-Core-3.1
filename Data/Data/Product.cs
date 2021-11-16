@@ -45,6 +45,11 @@ namespace Data.Data
 
         public bool IsFree { get; set; }
 
+        public bool IsShow { get; set; }
+
+        public bool IsStandout { get; set; }
+
+
         public ICollection<OrderDetails> OrderDetails { get; set; }
 
     }

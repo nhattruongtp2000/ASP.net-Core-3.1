@@ -39,7 +39,7 @@ namespace DI.DI.Interace
 
         Task<List<ProductVm>> TopNew();
 
-        Task<List<ProductVm>> TopStandOut(string month,string year);
+        Task<List<ProductVm>> TopStandOut();
         //
 
         Task<List<ToTalRevenue>> GetRevenueMonth(string month, string year);

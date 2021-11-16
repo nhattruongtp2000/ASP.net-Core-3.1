@@ -34,7 +34,7 @@ namespace Web.Controllers
             var x = new HomeVm()
             {
                 HomeSlide = await _ianalystRepository.GetSlide(),
-                TopStandout = await _ianalystRepository.TopStandOut(DateTime.Now.Month.ToString(), DateTime.Now.Year.ToString()),
+                TopStandout = await _ianalystRepository.TopStandOut(),
                 NewProduct = await _ianalystRepository.TopNew(),
                 TopSell=await _ianalystRepository.TopSell()
             };

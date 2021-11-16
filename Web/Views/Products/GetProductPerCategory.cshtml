@@ -188,18 +188,20 @@
     var slider1 = document.getElementById('pricemin');
     var slider2 = document.getElementById('pricemax');
 
+
     var output1 = document.getElementById("demo1")
     var output2 = document.getElementById("demo2")
 
-    output1.innerHTML = slider1.value;
-    output2.innerHTML = slider2.value;
+
 
     slider1.oninput = function () {
-        output1.innerHTML = this.value;
+        var x = parseInt(this.value);
+        output1.innerHTML = x.toLocaleString();
     }
 
     slider2.oninput = function () {
-        output2.innerHTML = this.value;
+        var x = parseInt(this.value);
+        output2.innerHTML = x.toLocaleString();
     }
 
     var id = [];
@@ -234,8 +236,12 @@
             var IdBrand4 = id[3];
             var IdBrand5 = id[4];
             var IdBrand6 = id[5];
-            var pricemin = $("#demo1").text();
-            var pricemax = $("#demo2").text();
+        var pricemin = $("#demo1").text();
+        var cleanstring = pricemin.replace(/[^\d\.\-\ ]/g, '');
+        
+        var pricemax = $("#demo2").text();
+        //bỏ đi dấu phẩy ở trong string
+            var x = pricemax.replace(/[^\d\.\-\ ]/g, '');
             $.ajax({
                 type: "POST",
                 url:'/Products/GetProductPerMutilpleBrandWithCategory',
@@ -247,8 +253,8 @@
                     IdBrand4: IdBrand4,
                     IdBrand5: IdBrand5,
                     IdBrand6: IdBrand6,
-                    pricemin: pricemin,
-                    pricemax: pricemax,
+                    pricemin: cleanstring,
+                    pricemax: x,
                     page:1  
                 },
                 success: function (x) {

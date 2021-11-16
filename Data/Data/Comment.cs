@@ -10,6 +10,7 @@ namespace Data.Data
         [Key]
         public int IdComment { get; set; }
 
+        public string Alias { get; set; }
         public int IdProduct { get; set; }
 
         public string UserName { get; set; }
@@ -20,6 +21,8 @@ namespace Data.Data
         public DateTime DatePost { get; set; }
 
         public bool Status { get; set; }
+
+        public int Review { get; set; }
 
         
 

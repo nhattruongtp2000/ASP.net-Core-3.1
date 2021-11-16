@@ -13,7 +13,8 @@
                 padding: 20px;
                 width: 300px;
                 height: 400px;
-                background-color: antiquewhite
+                background-color: antiquewhite;
+                height:500px;
             }
 
         h3 {
@@ -34,7 +35,7 @@
         <div class="main">
             <div>
                 <h4>Register User</h4>
-                <form method="post" asp-controller="Account" asp-action="Register">
+                <form method="post" asp-controller="Accounts" asp-action="Register">
                     <div class="form-group">
                         <label>PhoneNumber*</label>
                         <input asp-for="PhoneNumer" class="form-control col-12" placeholder="Please fill your PhoneNumber" />
@@ -52,7 +53,7 @@
                     </div>
                     <div class="form-group">
                         <label>Full Name</label>
-                        <input asp-for="Name"  class="form-control col-12" placeholder="Please fill your Name" />
+                        <input asp-for="Name" class="form-control col-12" placeholder="Please fill your Name" />
                         <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
                     <div class="form-group">
@@ -60,8 +61,13 @@
                         <input asp-for="Email" type="email" class="form-control col-12" placeholder="Please fill your Email" />
                         <span asp-validation-for="Email" class="text-danger"></span>
                     </div>
+                    @if (ViewBag.Email != null)
+                    {
+                        <div style="color:red">@ViewBag.Email</div>
+                    }
                     <input type="submit" class="btn btn-success col-12" value="Register" />
                 </form>
+              
             </div>
         </div>
     </div>

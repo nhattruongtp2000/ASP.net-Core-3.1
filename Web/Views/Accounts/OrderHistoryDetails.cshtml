@@ -40,7 +40,7 @@
                 @Html.DisplayFor(modelItem => item.Quality)
             </td>
             <td>
-                @Convert.ToInt32(item.Price)
+                @Convert.ToInt32(item.Price*item.Quality)
             </td>
             <td>
                <img src="~/@item.PhotoReview" class="img-rounded" height="40" width="40" />

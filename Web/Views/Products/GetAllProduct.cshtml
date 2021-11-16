@@ -129,6 +129,8 @@
                     <!---->
                     @foreach (var item in Model)
                     {
+                        var a = (int)item.Price;
+                        string res = a.ToString("#,##0");
                         <div class="col-sm-3 ml-2">
                             <div class="single-shop-product">
                                 <div class="product-upper">
@@ -136,7 +138,7 @@
                                 </div>
                                 <h2><a href="">@item.ProductName</a></h2>
                                 <div class="product-carousel-price">
-                                    <ins>@item.Price</ins> <label>VND</label>
+                                    <ins>@res</ins> <label>VND</label>
                                 </div>
 
                                 <div class="product-option-shop">
@@ -186,18 +188,20 @@
         var slider1 = document.getElementById('pricemin');
         var slider2 = document.getElementById('pricemax');
 
+
         var output1 = document.getElementById("demo1")
         var output2 = document.getElementById("demo2")
 
-        output1.innerHTML = slider1.value;
-        output2.innerHTML = slider2.value;
+
 
         slider1.oninput = function () {
-            output1.innerHTML = this.value;
+            var x = parseInt(this.value);
+            output1.innerHTML = x.toLocaleString();
         }
 
         slider2.oninput = function () {
-            output2.innerHTML = this.value;
+            var x = parseInt(this.value);
+            output2.innerHTML = x.toLocaleString();
         }
 
         var id = [];
@@ -225,7 +229,6 @@
     </script>
     <script>
     $("#test").click(function () {
-            var IdCategory = @Model.ElementAt(1).IdCategory;
             var IdBrand1 = id[0];
             var IdBrand2 = id[1];
             var IdBrand3 = id[2];
@@ -233,20 +236,24 @@
             var IdBrand5 = id[4];
             var IdBrand6 = id[5];
             var pricemin = $("#demo1").text();
+            //bỏ đi dấu phẩy ở trong string
+            var cleanstring1 = pricemin.replace(/[^\d\.\-\ ]/g, '');
             var pricemax = $("#demo2").text();
+            //bỏ đi dấu phẩy ở trong string
+            var cleanstring2 = pricemax.replace(/[^\d\.\-\ ]/g, '');
             $.ajax({
                 type: "POST",
                 url:'/Products/GetProductPerMutilpleBrandWithCategory',
                 data: {
-                    IdCategory: IdCategory,
+                    IdCategory: 0,
                     IdBrand1: IdBrand1,
                     IdBrand2: IdBrand2,
                     IdBrand3: IdBrand3,
                     IdBrand4: IdBrand4,
                     IdBrand5: IdBrand5,
                     IdBrand6: IdBrand6,
-                    pricemin: pricemin,
-                    pricemax: pricemax,
+                    pricemin: cleanstring1,
+                    pricemax: cleanstring2,
                     page:1
                 },
                 success: function (x) {

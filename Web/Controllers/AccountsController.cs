@@ -13,12 +13,12 @@ using ViewModel.ViewModels;
 
 namespace Web.Controllers
 {
-    public class AccountController : Controller
+    public class AccountsController : Controller
     {
         private readonly IAccountRepository _IaccountRepository;
         private readonly IOrderRepository _IorderRepository;
 
-        public AccountController(IAccountRepository IaccountRepository, IOrderRepository IorderRepository)
+        public AccountsController(IAccountRepository IaccountRepository, IOrderRepository IorderRepository)
         {
             _IaccountRepository = IaccountRepository;
             _IorderRepository = IorderRepository;
@@ -34,16 +34,23 @@ namespace Web.Controllers
         public async Task<IActionResult> Register(RegisterVm request)
         {
             var x = await _IaccountRepository.Register(request);
-            if (ModelState.IsValid)
+            if (x != "")
             {
-               
-                if (x != null)
+                if (ModelState.IsValid)
                 {
-                    var confirmationLink = Url.Action(nameof(ConfirmEmail), "Accounts", new { x, email = request.Email }, Request.Scheme);
-                    _IaccountRepository.SendTo(request.Email, "Confirmation email link", confirmationLink);
-                    return RedirectToAction(nameof(SuccessRegistration));
+
+                    if (x != null)
+                    {
+                        var confirmationLink = Url.Action("ConfirmEmail", "Accounts", new { x, email = request.Email }, Request.Scheme);
+                        _IaccountRepository.SendTo(request.Email, "Confirmation email link", confirmationLink);
+                        return RedirectToAction(nameof(SuccessRegistration));
+                    }
+                    ModelState.AddModelError(string.Empty, "Invalid Login attemp");
                 }
-                ModelState.AddModelError(string.Empty, "Invalid Login attemp");
+            }
+            else
+            {
+                ViewBag.Email = "Your Email duplicated";
             }
             return View(request);
         }
@@ -56,11 +63,65 @@ namespace Web.Controllers
             {
                 return Content("Faild");
             }
+
             return View(nameof(ConfirmEmail));
         }
 
         [HttpGet]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> ForgotPassword(string email)
+        {
+            var token = await _IaccountRepository.ForgotPassword(email);
+            if (token == "")
+            {
+                return RedirectToAction(nameof(SuccessRegistration));
+            }
+            var callback= Url.Action("ResetPassword", "Accounts", new { token, email = email }, Request.Scheme);
+            _IaccountRepository.SendTo(email, "Reset Password", callback);
+
+            return RedirectToAction(nameof(SuccessResetPassWork));
+        }
+
+        [HttpGet]
+        public IActionResult ResetPassword(string token,string email)
+            {
+            ViewBag.Email = email;
+            ViewBag.Code = token;
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(ResetPassword request)
+        {
+            var x = await _IaccountRepository.ResetPassword(request);
+            if (x == 1)
+            {
+                return BadRequest("CAnnot receive token");
+            }
+            else if (x == 2)
+            {
+                return RedirectToAction("SuccessResetPassWork");
+            }
+            return RedirectToAction("SuccessResetPassWork");
+
+        }
+
+
+
+
+        [HttpGet]
         public IActionResult SuccessRegistration()
+        {
+            return View();
+        }
+
+        public IActionResult SuccessResetPassWork()
         {
             return View();
         }
@@ -93,7 +154,10 @@ namespace Web.Controllers
                     return RedirectToAction("Indexx", "Home");
 
                 }
-                ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
+                else
+                {
+                    ViewBag.Error = "Your account or password is incorrect!";
+                }
             }
             return View(request);
         }
@@ -198,7 +262,7 @@ namespace Web.Controllers
 
             string provider = "Google";
             // Request a redirect to the external login provider.
-            var redirectUrl = Url.Action("ExternalLoginCallback", "Account", new { returnUrl });
+            var redirectUrl = Url.Action("ExternalLoginCallback", "Accounts", new { returnUrl });
             var properties = _IaccountRepository.ConfigureExternal(provider, redirectUrl);
             return Challenge(properties, provider);
         }
@@ -241,7 +305,7 @@ namespace Web.Controllers
 
             string provider = "Facebook";
             // Request a redirect to the external login provider.
-            var redirectUrl = Url.Action("ExternalLoginCallback", "Account", new { returnUrl });
+            var redirectUrl = Url.Action("ExternalLoginCallback", "Accounts", new { returnUrl });
             var properties = _IaccountRepository.ConfigureExternal(provider, redirectUrl);
             return Challenge(properties, provider);
         }
@@ -249,6 +313,13 @@ namespace Web.Controllers
         public IActionResult GoogleLogInSuccess()
         {
             return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SearchOrder(string IdOrder,string IdUser)
+        {
+            var x = await _IorderRepository.SearchOrder(IdOrder, IdUser);
+            return View(x);
         }
     }
 }

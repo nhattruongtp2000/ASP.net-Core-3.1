@@ -32,6 +32,9 @@ namespace ViewModel.ViewModels
         public string Keyword { get; set; }
         public string Title { get; set; }
         public int Quantity { get; set; }
+        public bool IsShow { get; set; }
+
+        public bool IsStandout { get; set; }
 
         public string Description { get; set; }
 

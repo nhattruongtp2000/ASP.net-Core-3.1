@@ -63,8 +63,8 @@ namespace Web.Controllers
         [HttpPost]
         public async Task<IActionResult> SendEmailPromotion(string Email)
         {
-            IMailChimpManager manager = new MailChimpManager("f9cd4a4963262963827ff0e155a83b97-us6"); //Key api
-            var listId = "b3ca7ac2b7"; //key list
+            IMailChimpManager manager = new MailChimpManager("f07c237b0de0705e9eed63b11ee98415-us6-us6"); //Key api
+            var listId = "e88e02cf2d"; //key list
             var member = new Member { EmailAddress = Email, StatusIfNew = Status.Subscribed };
             member.MergeFields.Add("FNAME", ""); //tên đầu
             member.MergeFields.Add("LNAME", ""); //tên cuối

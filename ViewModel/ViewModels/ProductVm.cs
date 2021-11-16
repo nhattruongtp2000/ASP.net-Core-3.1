@@ -26,5 +26,13 @@ namespace ViewModel.ViewModels
         public string PhotoReview { get; set; } //đây là file hiển thị
 
         public bool IsFree { get; set; }
+
+        public bool isGift { get; set; }
+
+        public int IdProductGiveTo { get; set; }
+
+        public bool IsShow { get; set; }
+
+        public bool IsStandout { get; set; }
     }
 }

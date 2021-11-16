@@ -386,7 +386,7 @@ namespace DI.DI.Repository
 
         public async Task<List<ProductVm>> TopNew()
         {
-            var products = _iden2Context.Products;
+            var products = _iden2Context.Products.Where(x => x.IsShow == true);
 
 
             var a = await products.Select(x => new ProductVm()
@@ -398,15 +398,14 @@ namespace DI.DI.Repository
                 UseVoucher = x.UseVoucher,
                 PhotoReview = x.PhotoReview,
                 Price = x.Price,
-                Alias=x.Alias
+                Alias=x.Alias,
             }).OrderByDescending(x => x.IdProduct).ToListAsync();
             return a;
         }
 
         public async Task<List<ProductVm>> TopSell()
         {
-           
-
+          
             var top2 = _iden2Context.OrderDetails
                 .GroupBy(x => x.IdProduct)
                 .Select(x => new
@@ -431,53 +430,28 @@ namespace DI.DI.Repository
                 IdCategory = x.pt.IdCategory,
                 IsFree = x.pt.IsFree,
                 Price = x.pt.Price,
-                Alias = x.pt.Alias
+                Alias = x.pt.Alias,
             }).ToListAsync();
             return productvm;
         }
 
-        public async Task<List<ProductVm>> TopStandOut(string month,string year)
+        public async Task<List<ProductVm>> TopStandOut()
         {
-       
+            var products = _iden2Context.Products.Where(x => x.IsStandout == true);
 
 
-
-            int month2 = int.Parse(month)-1;
-            int year2 = int.Parse(year);
-
-            var order = from p in _iden2Context.Orders  
-                        join pt in _iden2Context.OrderDetails on p.IdOrder equals pt.IdOrder
-                        select new { p, pt };
-
-           var order2= order.Where(x => x.p.OrderDay.Month == month2 && x.p.OrderDay.Year == year2);
-
-            var standout = order
-                .GroupBy(x => x.pt.IdProduct)
-                .Select(x => new
-                {
-                    key = x.Key,
-                    Countx = x.Count()
-                })
-                .OrderByDescending(x => x.Countx);
-
-            var products = from p in standout
-                           join pt in _iden2Context.Products on p.key equals pt.IdProduct
-                           select new { p, pt };
-
-            var productvm = await products.Select(x => new ProductVm()
+            var a = await products.Select(x => new ProductVm()
             {
-                IdProduct = x.pt.IdProduct,
-                DateAccept = x.pt.DateAccept,
-                IdBrand = x.pt.IdBrand,
-                ProductName = x.pt.ProductName,
-                UseVoucher = x.pt.UseVoucher,
-                PhotoReview = x.pt.PhotoReview,
-                IdCategory = x.pt.IdCategory,
-                IsFree = x.pt.IsFree,
-                Price = x.pt.Price,
-                Alias = x.pt.Alias
-            }).ToListAsync();
-            return productvm;
+                IdProduct = x.IdProduct,
+                DateAccept = x.DateAccept,
+                IdBrand = x.IdBrand,
+                ProductName = x.ProductName,
+                UseVoucher = x.UseVoucher,
+                PhotoReview = x.PhotoReview,
+                Price = x.Price,
+                Alias = x.Alias,
+            }).OrderByDescending(x => x.IdProduct).ToListAsync();
+            return a;
         }
 
         public async Task<List<OrdersVm>> GetALlDeliveredOrdersPerDay(DateTime date)

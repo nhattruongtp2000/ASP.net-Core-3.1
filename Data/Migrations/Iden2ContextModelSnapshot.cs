@@ -90,6 +90,51 @@ namespace Data.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("Data.Data.Blog", b =>
+                {
+                    b.Property<int>("BlogId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("Author")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BlogName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ParentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SeoAlias")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ViewCount")
+                        .HasColumnType("int");
+
+                    b.HasKey("BlogId");
+
+                    b.ToTable("Blogs");
+                });
+
             modelBuilder.Entity("Data.Data.Brand", b =>
                 {
                     b.Property<int>("IdBrand")
@@ -130,6 +175,9 @@ namespace Data.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
+                    b.Property<string>("Alias")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Content")
                         .HasMaxLength(2048)
                         .HasColumnType("nvarchar(2048)");
@@ -138,6 +186,9 @@ namespace Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int>("IdProduct")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Review")
                         .HasColumnType("int");
 
                     b.Property<bool>("Status")
@@ -334,6 +385,12 @@ namespace Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsGift")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsShow")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsStandout")
                         .HasColumnType("bit");
 
                     b.Property<string>("Keyword")

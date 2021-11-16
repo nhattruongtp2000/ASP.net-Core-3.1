@@ -35,6 +35,10 @@ namespace Web.Controllers
             {
                 TempData["Search"] = key;
                  c = await _iproductRepository.Search(key,page);
+                if (c.Count < 1)
+                {
+                    return RedirectToAction("SearchNotFound");
+                }
             }
             
             return View(c);
@@ -78,10 +82,10 @@ namespace Web.Controllers
             return View(c);
         }
 
-        public async Task<IActionResult> Comment(int IdProduct, string Content)
+        public async Task<IActionResult> Comment(string Alias, string Content,int Review)
         {
-            await _iproductRepository.AddComment(IdProduct, Content);
-            return RedirectToAction("ProductDetails",new {IdProduct=IdProduct });
+            await _iproductRepository.AddComment(Alias, Content,Review);
+            return Json(new { redirectToUrl = Url.Action("ProductDetails", "Products", new { Alias = Alias }) });
         }
 
         [HttpPost]
@@ -102,7 +106,7 @@ namespace Web.Controllers
         [Route("products/topstandout")]
         public async Task<IActionResult> TopStandout()
         {
-            var x = await _ianalystRepository.TopStandOut(DateTime.Now.Month.ToString(), DateTime.Now.Year.ToString());
+            var x = await _ianalystRepository.TopStandOut();
             return View(x);
         }
 
@@ -118,5 +122,10 @@ namespace Web.Controllers
         //    var x = _iproductRepository.GetbyId(IdProduct);
         //    return View(x);
         //}
+
+        public IActionResult SearchNotFound()
+        {
+            return View();
+        }
     }
 }
